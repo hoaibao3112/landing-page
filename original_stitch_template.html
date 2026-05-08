@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Editorial Intelligence - AI Assistants Talk</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-container": "#779dff",
+              "primary-dim": "#0048b3",
+              "primary": "#0053cc",
+              "on-secondary-fixed-variant": "#005777",
+              "inverse-surface": "#0b0f10",
+              "on-secondary": "#e7f4ff",
+              "surface-container-highest": "#d9dde0",
+              "tertiary-container": "#00d2fd",
+              "on-error": "#ffefee",
+              "surface-container-lowest": "#ffffff",
+              "secondary-container": "#9bd9ff",
+              "surface-container-high": "#dfe3e6",
+              "primary-fixed": "#779dff",
+              "secondary-fixed-dim": "#74ceff",
+              "tertiary-fixed": "#00d2fd",
+              "on-primary": "#f1f2ff",
+              "secondary": "#006286",
+              "on-primary-container": "#001f56",
+              "on-error-container": "#570008",
+              "on-secondary-container": "#004d6a",
+              "tertiary-fixed-dim": "#00c3eb",
+              "on-secondary-fixed": "#00394f",
+              "error": "#b31b25",
+              "surface-container-low": "#eef1f3",
+              "on-tertiary": "#e1f6ff",
+              "on-tertiary-container": "#004352",
+              "on-tertiary-fixed": "#002c37",
+              "on-primary-fixed-variant": "#00286a",
+              "surface-bright": "#f5f7f9",
+              "on-surface-variant": "#595c5e",
+              "on-tertiary-fixed-variant": "#004c5d",
+              "on-surface": "#2c2f31",
+              "surface-variant": "#d9dde0",
+              "on-primary-fixed": "#000000",
+              "error-dim": "#9f0519",
+              "outline": "#747779",
+              "tertiary-dim": "#00576a",
+              "tertiary": "#00647a",
+              "error-container": "#fb5151",
+              "surface-dim": "#d0d5d8",
+              "surface-container": "#e5e9eb",
+              "secondary-fixed": "#9bd9ff",
+              "outline-variant": "#abadaf",
+              "on-background": "#2c2f31",
+              "background": "#f5f7f9",
+              "surface": "#f5f7f9",
+              "secondary-dim": "#005676",
+              "inverse-primary": "#5b8cff",
+              "surface-tint": "#0053cc",
+              "inverse-on-surface": "#9a9d9f",
+              "primary-fixed-dim": "#608fff"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .editorial-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+        }
+        .data-pulse {
+            box-shadow: 0 0 15px rgba(0, 210, 253, 0.4);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container/30">
+<!-- Top Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,83,204,0.06)]">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<img alt="AIZEN Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uiHtjcIC2sz68HoLhAQPBq17rpmdGEKgi8L_ACQ-LCEtzk60oH_Bbm0eI59n6Wft2pvB5T7caNiNWHPCxg96NQVjq_l1rjQ6vVJEo254jCb8sh0xdQVgg8twIO9ekzjwoXvDJYjY87r88LjrT56Rv-D6n56JAtUVrcvJKA0vhQmn1goztpJmJpjkIm8fyfuGoWcaVaoAjWuK32vRY-Qo3mTJJJxpTn79dJI-w2fHzxjYsz7eTfR9ikx5NBm19YFxiFRmLhuPIdw"/>
+<span class="text-2xl font-extrabold tracking-tighter text-slate-900 font-headline">Editorial Intelligence</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-blue-600 font-bold border-b-2 border-blue-600 font-headline transition-all duration-300" href="#">Speakers</a>
+<a class="text-slate-600 font-medium hover:text-blue-500 font-headline transition-all duration-300" href="#">Agenda</a>
+<a class="text-slate-600 font-medium hover:text-blue-500 font-headline transition-all duration-300" href="#">Venue</a>
+<a class="text-slate-600 font-medium hover:text-blue-500 font-headline transition-all duration-300" href="#">Partners</a>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-headline font-bold text-sm hover:opacity-80 transition-all duration-300 active:scale-95">
+            Đăng ký ngay
+        </button>
+</div>
+</nav>
+<main class="pt-24 overflow-x-hidden">
+<!-- Hero Section -->
+<section class="relative min-h-[921px] flex items-center px-8 max-w-7xl mx-auto py-20">
+<div class="absolute top-0 right-0 -z-10 w-2/3 h-full opacity-20 blur-[120px] bg-gradient-to-br from-primary-container to-tertiary-container rounded-full transform translate-x-1/4 -translate-y-1/4"></div>
+<div class="editorial-grid w-full items-center">
+<div class="col-span-12 lg:col-span-7">
+<div class="inline-flex items-center gap-2 px-4 py-2 bg-error-container/10 text-error-dim rounded-full mb-8 data-pulse border border-error-container/20">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="text-xs font-bold uppercase tracking-widest font-headline">CHỈ CÒN 20 SUẤT CUỐI CÙNG</span>
+</div>
+<h1 class="text-5xl lg:text-7xl font-black font-headline text-on-surface leading-[1.1] mb-8 tracking-tighter">
+                    Buổi 1: AI Assistants <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-tertiary">Nhân bản trợ lý ảo</span> chuyên trách
+                </h1>
+<p class="text-xl text-on-surface-variant leading-relaxed mb-10 max-w-xl">
+                    Khai phá tiềm năng thực sự của AI thông qua việc xây dựng và tối ưu hóa hệ thống trợ lý ảo thông minh cho doanh nghiệp và cá nhân.
+                </p>
+<div class="flex flex-wrap gap-4 mb-12">
+<div class="flex items-center gap-3 bg-surface-container-low p-4 rounded-xl border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+<div>
+<p class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">Thời gian</p>
+<p class="font-headline font-bold">08:30 - 11:30, 04/04/2026</p>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-low p-4 rounded-xl border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<div>
+<p class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">Hình thức</p>
+<p class="font-headline font-bold">Offline thực hành trực tiếp</p>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="bg-gradient-to-r from-primary to-tertiary-fixed text-on-primary-fixed px-10 py-5 rounded-full font-headline font-extrabold text-lg shadow-[0_10px_30px_rgba(0,83,204,0.3)] hover:scale-105 transition-transform">
+                        Đăng ký ngay
+                    </button>
+<div class="flex -space-x-3">
+<img class="w-12 h-12 rounded-full border-4 border-background object-cover" data-alt="Profile of a professional AI expert attendee" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZewggAHJdj8tG7ld5Nxbcr4nOITtzhBxdISUNggjgI-9ac5OqNLTn3k9Bh7GOuLR6rbBgXrlzh-rOIXRcn1gwF3_RBJMCidwF_nJgSszDe3wnDeaqYXWgPYFjkfLetb-KjBL2DNbY6Wi83SCho8toDmxhQk9u5OWwafTPOFkwbBCR-5m_p5_KB7gUXuNbViEdZXTYfcS9ZuJmwxStB4FKAXTRnyHwdGTMbCrLFXpqkhNUFaxRNbFtqp3tzakt7WCqN8Y5yght1h0"/>
+<img class="w-12 h-12 rounded-full border-4 border-background object-cover" data-alt="Profile of a tech conference attendee" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_nlp9kaKFdJM8ljOulo7MY0jOSCoUBEOzpxFdoI2wmJZfBL9Kf5iWOYeAKcztQpbYaFitVt_TWq9o1qS9R2C3iV4u8nD5-yDntgGkv9339brLge3GK_BDeg67pK1Sv78mjwwdd--yqrP183FZbi86wpm2H8nN9g75diF6v2TBQ5ckS2Z7FLZCoAkwkXAY2bahWWScqt4cjsimJD2O4FezO3zseEIKom9zw9G1t6EUOXAR5L42aqBricdnEY5Rm_NE9Dpw3eQoz5Q"/>
+<img class="w-12 h-12 rounded-full border-4 border-background object-cover" data-alt="Profile of a female digital strategist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGbZaA8sQL6DmRd4Fjsoo51WBgvVP44JuAc_ifba9pZ9BMhxmkOyl21o3bE4Kzt4J54PdUoy9jbtO8aywsq5rZEi1xLiag1yifUK2uL1QcIDYkymR-j8OuT3GcKg289dJTP-bCB6wVRniy8PBo3pZVyo3z7xyj5h6brziaoZzJLP_oPcxDNkSNbaJzCzbnowGTzWA31EraLwQYVr5uIs5afykR0fhXWrHBylD8M_E4vKZ4Rw6y5FXKDuo_trF6NcYxrxIVihpEuPY"/>
+<div class="w-12 h-12 rounded-full border-4 border-background bg-surface-container flex items-center justify-center text-xs font-bold text-on-surface-variant">+150</div>
+</div>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-5 relative mt-12 lg:mt-0">
+<div class="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl transform rotate-2">
+<img alt="Professional and futuristic AI assistant interface" class="w-full aspect-[4/5] object-cover" data-alt="Abstract glowing blue neural network background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtXfYX39yfGQLJ0cCjaRrpLLv35GS77S78wD6S3oXyeNmD8m6wSPnbit2fq52H43-jUZh87os7vjgl4Gmdk14OeHBP0Qj5-Rw7WhiCFo84HLY-vn_xouicICbwC6Yb3WFAwShcxzvk-WOXZKrGunLYi9VveFJgXjU4CMV731sKHckda1v9U4kxA9K8KMYtDq615QQuTWS_-dFoCBJYwZxKLdvLvUf3a2uo8MMFIoM_EI9oFQGWImQbsskEHspz01bl1UnYvPnbxrI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent"></div>
+<div class="absolute bottom-8 left-8 right-8 p-6 glass-effect rounded-2xl border border-white/20">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></div>
+<span class="text-xs font-bold tracking-widest text-primary uppercase">Live Simulation</span>
+</div>
+<h3 class="font-headline font-bold text-lg mb-1">GPT-4o &amp; Gemini Pro</h3>
+<p class="text-sm text-on-surface-variant">Thực hành cấu hình trực tiếp trên các nền tảng AI hàng đầu thế giới.</p>
+</div>
+</div>
+<!-- Decorative Element -->
+<div class="absolute -bottom-10 -left-10 w-40 h-40 bg-tertiary-container/30 blur-[60px] rounded-full"></div>
+</div>
+</div>
+</section>
+<!-- Values Section - Bento Grid -->
+<section class="bg-surface-container py-24 px-8">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="text-4xl font-black font-headline tracking-tight mb-4 text-on-surface">Giá trị cốt lõi từ chương trình</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto">Học đi đôi với hành. Chúng tôi tập trung vào việc tạo ra kết quả thực tế ngay tại buổi talk.</p>
+</div>
+<div class="editorial-grid">
+<div class="col-span-12 md:col-span-4 bg-surface-container-lowest p-8 rounded-3xl shadow-[0_20px_40px_rgba(0,83,204,0.06)] flex flex-col items-start transition-all duration-300 hover:-translate-y-2">
+<div class="w-14 h-14 rounded-2xl bg-primary-container/20 text-primary flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl">settings_input_component</span>
+</div>
+<h3 class="text-2xl font-black font-headline mb-4">Tự tay cấu hình GPTs/Gemini</h3>
+<p class="text-on-surface-variant leading-relaxed">Nắm vững quy trình thiết kế prompt và tinh chỉnh tham số để tạo ra trợ lý ảo phản hồi chuẩn xác theo yêu cầu doanh nghiệp.</p>
+</div>
+<div class="col-span-12 md:col-span-4 bg-surface-container-lowest p-8 rounded-3xl shadow-[0_20px_40px_rgba(0,83,204,0.06)] flex flex-col items-start transition-all duration-300 hover:-translate-y-2">
+<div class="w-14 h-14 rounded-2xl bg-tertiary-container/20 text-tertiary flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl">groups_3</span>
+</div>
+<h3 class="text-2xl font-black font-headline mb-4">Chuẩn hóa nhân sự số</h3>
+<p class="text-on-surface-variant leading-relaxed">Xây dựng quy trình làm việc kết hợp giữa người và máy, tối ưu hóa 70% thời gian xử lý các tác vụ lặp đi lặp lại.</p>
+</div>
+<div class="col-span-12 md:col-span-4 bg-surface-container-lowest p-8 rounded-3xl shadow-[0_20px_40px_rgba(0,83,204,0.06)] flex flex-col items-start transition-all duration-300 hover:-translate-y-2">
+<div class="w-14 h-14 rounded-2xl bg-secondary-container/20 text-secondary flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl">hub</span>
+</div>
+<h3 class="text-2xl font-black font-headline mb-4">Kết nối cộng đồng thực chiến</h3>
+<p class="text-on-surface-variant leading-relaxed">Gia nhập mạng lưới các chuyên gia và nhà quản lý đang trực tiếp triển khai AI trong nhiều lĩnh vực khác nhau.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Speakers Section -->
+<section class="py-24 px-8 max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<div class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full mb-4">
+<span class="material-symbols-outlined text-sm">mic</span>
+<span class="text-xs font-bold uppercase tracking-widest font-headline">DIỄN GIẢ CHƯƠNG TRÌNH</span>
+</div>
+<h2 class="text-4xl font-black font-headline tracking-tight text-on-surface">Chuyên gia thực chiến</h2>
+</div>
+<div class="bg-surface-container-low rounded-[3rem] p-8 lg:p-12 border border-outline-variant/10 shadow-sm overflow-hidden relative">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+<div class="flex flex-col lg:flex-row items-center gap-12 relative z-10">
+<div class="w-full lg:w-2/5 flex justify-center">
+<div class="relative group">
+<div class="absolute -inset-4 bg-gradient-to-tr from-primary to-tertiary rounded-full opacity-20 blur-2xl group-hover:opacity-30 transition-opacity"></div>
+<div class="w-72 h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-8 border-white shadow-xl relative">
+<img alt="Lê Thanh Hải - CEO AIZEN" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKp17o6Lh_2v5vK9f2z-z6Z-yE9y_XJ-5T8S0C5R2D-v1T1y-E-S1z-T1v1T1y-E-S1z-T1v1T1y-E-S1z-T1v1T1y-E-S1z-T1v1T1y-E-S1z-T1v"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+</div>
+</div>
+</div>
+<div class="w-full lg:w-3/5">
+<h3 class="text-4xl lg:text-5xl font-black font-headline mb-2 text-on-surface tracking-tighter">Lê Thanh Hải</h3>
+<p class="text-xl font-bold text-primary font-headline mb-6">CEO AIZEN</p>
+<div class="w-16 h-1.5 bg-gradient-to-r from-primary to-tertiary rounded-full mb-8"></div>
+<p class="text-lg text-on-surface-variant leading-relaxed">
+                        Đại diện công ty cung cấp giải pháp ứng dụng AI vào doanh nghiệp. Với <span class="text-on-surface font-bold">hơn 15 năm kinh nghiệm thực chiến</span> trong ngành Công nghệ thông tin (CNTT), anh sẽ mang đến những góc nhìn thực tế và chiến lược triển khai AI hiệu quả nhất.
+                    </p>
+<div class="mt-8 flex gap-4">
+<div class="w-10 h-10 rounded-full bg-white border border-outline-variant/20 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-xl">share</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-white border border-outline-variant/20 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-xl">mail</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Form & Details Section -->
+<section class="py-24 px-8 max-w-7xl mx-auto">
+<div class="editorial-grid">
+<div class="col-span-12 lg:col-span-5 order-2 lg:order-1">
+<div class="bg-surface-container-lowest p-10 rounded-[2.5rem] shadow-[0_30px_60px_rgba(0,0,0,0.05)] border border-outline-variant/10">
+<h2 class="text-3xl font-black font-headline mb-8 tracking-tight">Đăng ký tham gia</h2>
+<form class="space-y-6">
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant font-headline ml-1">Họ và tên</label>
+<input class="w-full px-5 py-4 bg-surface-container-low border-none rounded-2xl focus:ring-2 focus:ring-primary/40 focus:bg-white transition-all outline-none" placeholder="Nguyễn Văn A" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant font-headline ml-1">Số điện thoại</label>
+<input class="w-full px-5 py-4 bg-surface-container-low border-none rounded-2xl focus:ring-2 focus:ring-primary/40 focus:bg-white transition-all outline-none" placeholder="090 123 4567" type="tel"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-on-surface-variant font-headline ml-1">Email công việc</label>
+<input class="w-full px-5 py-4 bg-surface-container-low border-none rounded-2xl focus:ring-2 focus:ring-primary/40 focus:bg-white transition-all outline-none" placeholder="name@company.com" type="email"/>
+</div>
+<div class="pt-4">
+<button class="w-full bg-primary text-on-primary py-5 rounded-2xl font-headline font-black text-lg hover:bg-primary-dim transition-colors shadow-lg" type="submit">Xác nhận đăng ký</button>
+<p class="text-center text-xs text-on-surface-variant mt-4">Bằng cách đăng ký, bạn đồng ý với các Điều khoản &amp; Chính sách của chúng tôi.</p>
+</div>
+</form>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-7 order-1 lg:order-2 lg:pl-16">
+<div class="sticky top-32">
+<span class="text-primary font-bold tracking-widest text-xs uppercase mb-4 block font-headline">Thông tin chi tiết</span>
+<h2 class="text-5xl font-black font-headline tracking-tighter mb-10 leading-tight">Editorial Intelligence <br/><span class="text-tertiary">AI Solutions Talk</span></h2>
+<div class="space-y-8">
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-xl mb-1">Thời gian tổ chức</h4>
+<p class="text-on-surface-variant">Thứ Bảy, ngày 04 tháng 04 năm 2026. <br/>Đón khách: 08:00 | Khai mạc: 08:30</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 rounded-xl bg-tertiary/10 text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined">map</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-xl mb-1">Địa điểm offline</h4>
+<p class="text-on-surface-variant">Trung tâm Hội nghị Công nghệ cao, Quận 1, TP. Hồ Chí Minh. <br/>(Thông tin chi tiết sẽ được gửi qua Email)</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined">laptop_mac</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-xl mb-1">Yêu cầu chuẩn bị</h4>
+<p class="text-on-surface-variant">Vui lòng mang theo Laptop cá nhân để tham gia phần thực hành cấu hình trực tiếp cùng các chuyên gia.</p>
+</div>
+</div>
+</div>
+<div class="mt-12 p-8 bg-surface-container-low rounded-3xl border border-dashed border-outline-variant">
+<div class="flex items-center justify-between mb-4">
+<span class="font-bold font-headline">Tình trạng chỗ ngồi</span>
+<span class="text-error font-black font-headline">85% Full</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-[85%] rounded-full"></div>
+</div>
+<p class="mt-4 text-sm text-on-surface-variant">Đã có 130/150 người đăng ký thành công.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-100 dark:bg-slate-900 w-full border-t-0 py-12">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-7xl mx-auto gap-6">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="font-manrope font-black text-lg text-slate-800 dark:text-slate-200">Editorial Intelligence AI Talk</span>
+<p class="font-inter text-sm leading-relaxed text-slate-500">© 2024 Editorial Intelligence AI Talk. All rights reserved.</p>
+</div>
+<div class="flex gap-8">
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 transition-colors text-sm font-medium" href="#">Privacy Policy</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 transition-colors text-sm font-medium" href="#">Terms of Service</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 transition-colors text-sm font-medium" href="#">Contact Us</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 transition-colors text-sm font-medium" href="#">Organizers</a>
+</div>
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">share</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">mail</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
