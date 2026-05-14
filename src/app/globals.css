@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-container: #779dff;
+  --color-primary-dim: #0048b3;
+  --color-primary: #0053cc;
+  --color-on-secondary-fixed-variant: #005777;
+  --color-inverse-surface: #0b0f10;
+  --color-on-secondary: #e7f4ff;
+  --color-surface-container-highest: #d9dde0;
+  --color-tertiary-container: #00d2fd;
+  --color-on-error: #ffefee;
+  --color-surface-container-lowest: #ffffff;
+  --color-secondary-container: #9bd9ff;
+  --color-surface-container-high: #dfe3e6;
+  --color-primary-fixed: #779dff;
+  --color-secondary-fixed-dim: #74ceff;
+  --color-tertiary-fixed: #00d2fd;
+  --color-on-primary: #f1f2ff;
+  --color-secondary: #006286;
+  --color-on-primary-container: #001f56;
+  --color-on-error-container: #570008;
+  --color-on-secondary-container: #004d6a;
+  --color-tertiary-fixed-dim: #00c3eb;
+  --color-on-secondary-fixed: #00394f;
+  --color-error: #b31b25;
+  --color-surface-container-low: #eef1f3;
+  --color-on-tertiary: #e1f6ff;
+  --color-on-tertiary-container: #004352;
+  --color-on-tertiary-fixed: #002c37;
+  --color-on-primary-fixed-variant: #00286a;
+  --color-surface-bright: #f5f7f9;
+  --color-on-surface-variant: #595c5e;
+  --color-on-tertiary-fixed-variant: #004c5d;
+  --color-on-surface: #2c2f31;
+  --color-surface-variant: #d9dde0;
+  --color-on-primary-fixed: #000000;
+  --color-error-dim: #9f0519;
+  --color-outline: #747779;
+  --color-tertiary-dim: #00576a;
+  --color-tertiary: #00647a;
+  --color-error-container: #fb5151;
+  --color-surface-dim: #d0d5d8;
+  --color-surface-container: #e5e9eb;
+  --color-secondary-fixed: #9bd9ff;
+  --color-outline-variant: #abadaf;
+  --color-on-background: #2c2f31;
+  --color-background: #f5f7f9;
+  --color-surface: #f5f7f9;
+  --color-secondary-dim: #005676;
+  --color-inverse-primary: #5b8cff;
+  --color-surface-tint: #0053cc;
+  --color-inverse-on-surface: #9a9d9f;
+  --color-primary-fixed-dim: #608fff;
+
+  --font-headline: Manrope, sans-serif;
+  --font-body: Inter, sans-serif;
+  --font-label: Inter, sans-serif;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  font-family: var(--font-body);
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.editorial-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+}
+
+.data-pulse {
+  box-shadow: 0 0 15px rgba(0, 210, 253, 0.4);
+}
