@@ -392,7 +392,7 @@ export default function Home() {
                     delay: 0.8,
                     duration: 0.5
                   }}
-                  className="mt-4 flex items-center gap-3 md:gap-4 px-6 py-4 md:px-12 md:py-5 rounded-2xl md:rounded-[2.5rem] bg-gradient-to-br from-tertiary to-tertiary-dim text-white border-2 border-white/20 shadow-2xl shadow-tertiary/40"
+                  className="mt-4 flex items-center gap-3 md:gap-4 px-6 py-4 md:px-12 md:py-5 rounded-2xl md:rounded-[2.5rem] bg-white border-2 border-red-100 shadow-2xl shadow-red-600/20"
                 >
                   <span className="material-symbols-outlined text-[24px] md:text-[32px] text-red-600">verified</span>
                   <span className="font-headline font-black text-lg md:text-3xl uppercase tracking-widest italic text-red-600">
