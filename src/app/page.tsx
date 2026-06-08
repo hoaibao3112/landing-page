@@ -224,7 +224,7 @@ export default function Home() {
                   <span className="material-symbols-outlined text-2xl">check_circle</span>
                 </div>
                 <h3 className="text-2xl font-black font-headline text-on-surface mb-1">Đăng ký thành công!</h3>
-                <p className="text-slate-500 font-medium text-sm mb-6">Chúng tôi sẽ sớm liên hệ xác nhận với bạn.</p>
+                <p className="text-slate-500 font-medium text-sm mb-6">Chúng tôi sẽ sớm liên hệ xác nhận với bạn....</p>
 
                 <div className="bg-emerald-50 rounded-2xl p-5 md:p-6 border border-emerald-100 relative overflow-hidden">
                   <div className="relative z-10">
