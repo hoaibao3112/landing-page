@@ -28,6 +28,10 @@ jobs:
             # Di chuyển vào thư mục dự án
             cd /opt/landing-page
             
+            # Reset các thay đổi cục bộ (nếu có) trên VPS để tránh xung đột git pull
+            git reset --hard
+            git clean -fd
+            
             # Lấy code mới nhất từ nhánh main
             git pull origin main
             
