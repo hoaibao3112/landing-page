@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useTransform } from 'framer-motion';
@@ -308,7 +308,7 @@ export default function Home() {
     { time: '8:30', title: 'Module 1: Tư duy đúng về AI', description: 'Bộ 3: Mindset – Skillset – Toolset; Cấu trúc Prompt chuẩn', badge: '30 PHÚT' },
     { time: '9:00', title: 'Module 2: Bộ 4 công cụ cốt lõi của Claude', description: 'Skills - não bộ chuyên môn; Projects - bộ nhớ dài hạn', badge: '1 GIỜ' },
     { time: '10:00', title: 'Giải lao & Tea-break', description: '', badge: '20 PHÚT' },
-    { time: '10:20', title: 'Module 3: Bộ 4 công cụ cốt lõi của Claude', description: 'Connectors - cầu nối ra thế giới bên ngoài; Artifacts - xưởng sản xuất đầu ra', badge: '1 GIỜ' },
+    { time: '10:20', title: 'Module 3: Bộ 4 công cụ cốt lõi của Claude', description: 'Connectors - cầu nối ra thế giới bên ngoài\nArtifacts - xưởng sản xuất đầu ra', badge: '1 GIỜ' },
     { time: '11:20', title: 'Module 4: Tạo Landing Page quảng cáo cùng Claude', description: '', badge: '40 PHÚT' },
     { time: '12:00', title: 'Nghỉ trưa & Networking', description: '', badge: '1 GIỜ 20 PHÚT' },
     { time: '13:20', title: 'Warming up', description: '', badge: '10 PHÚT' },
@@ -316,9 +316,11 @@ export default function Home() {
     { time: '14:00', title: 'Module 6: Claude Cowork (phần 1)', description: '', badge: '1 GIỜ 30 PHÚT' },
     { time: '15:30', title: 'Giải lao & Tea-break', description: '', badge: '15 PHÚT' },
     { time: '15:45', title: 'Module 6: Claude Cowork (phần 2)', description: '', badge: '30 PHÚT' },
-    { time: '16:15', title: 'Module 7: Demo - Q&A', description: '', badge: '45 PHÚT' },
+    { time: '16:15', title: 'Demo - Q&A', description: '', badge: '45 PHÚT' },
     { time: '17:00', title: 'Kết thúc', description: '', badge: 'HOÀN THÀNH' }
   ];
+
+  const displayPkg = registeredPkg || modalPkg || selectedPackage;
 
   return (
     <main className="overflow-x-hidden relative min-h-screen" style={{ background: '#0e2434' }}>
@@ -397,7 +399,11 @@ export default function Home() {
                 <div className="bg-blue-50/50 rounded-2xl p-5 md:p-6 border border-blue-100 relative overflow-hidden">
                   <div className="relative z-10">
                     <h4 className="font-headline font-black text-sm md:text-base text-blue-800 mb-4 uppercase tracking-wider leading-tight">
-                      Vui lòng quét QR thanh toán học phí
+                      {displayPkg === 'Nhóm 4 người'
+                        ? 'Nhóm 4 người, phí đầu tư: 1.300.000 x 4 = 5.200.000, giảm còn 3.960.000'
+                        : displayPkg === 'Nhóm 2 người'
+                        ? 'Nhóm 2 người, phí đầu tư: 1.300.000 x 2 = 2.600.000, giảm còn 2.200.000'
+                        : 'Vui lòng quét QR thanh toán học phí'}
                     </h4>
 
                     <div className="relative group mx-auto w-full max-w-[240px] md:max-w-[280px]">
@@ -528,9 +534,12 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex items-center justify-center gap-6 text-sm text-slate-300 font-bold mb-12"
           >
-            <div className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-cyan-400 text-lg shrink-0">calendar_month</span>
-              <span className="text-slate-300">{eventDate}</span>
+            <div className="flex flex-col items-start gap-0.5">
+              <div className="flex items-center gap-1">
+                <span className="material-symbols-outlined text-cyan-400 text-lg shrink-0">calendar_month</span>
+                <span className="text-slate-300">{eventDate}</span>
+              </div>
+              <span className="text-slate-400 text-xs font-normal ml-6">8h30 - 17h</span>
             </div>
 
             <span className="hidden sm:inline-block h-4 border-l border-slate-600" />
@@ -730,7 +739,7 @@ export default function Home() {
               iconColor="text-amber-600"
               iconBg="bg-amber-100"
               title="10 Mẹo tối ưu Token"
-              description="Các kỹ thuật tối ưu hóa chi phí khi sử dụng API Claude mà vẫn giữ nguyên chất lượng."
+              description="Các kỹ thuật tối ưu hóa chi phí khi sử dụng token mà vẫn giữ nguyên chất lượng."
             />
           </div>
         </div>
@@ -807,7 +816,7 @@ export default function Home() {
                         <h3 className={`text-lg font-black font-headline ${isActive ? 'text-[#3b82f6]' : 'text-white'}`}>
                           {item.title}
                         </h3>
-                        <p className="text-white glow-white text-sm font-normal mt-1 leading-relaxed">{item.description}</p>
+                        <p className="text-white glow-white text-sm font-normal mt-1 leading-relaxed whitespace-pre-line">{item.description}</p>
                       </div>
                       <div className="shrink-0 flex items-start">
                         <span className={`px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-wider ${isCompleted
@@ -1005,8 +1014,8 @@ export default function Home() {
               <div className="mb-1">
                 <span className="inline-block px-2 py-0.5 bg-slate-700/60 text-slate-300 text-[10px] font-black rounded-md uppercase tracking-wider">Giảm 24%</span>
               </div>
-              <p className="text-slate-500 line-through text-sm mb-1">1.300.000đ</p>
-              <p className="text-3xl font-black text-white font-headline mb-1">990.000đ</p>
+              <p className="text-slate-500 line-through text-sm mb-1">5.200.000đ</p>
+              <p className="text-3xl font-black text-white font-headline mb-1">3.960.000đ</p>
               <p className="text-slate-400 text-xs mb-6">Tổng nhóm: 3.960.000đ</p>
               <button
                 type="button"
@@ -1137,19 +1146,31 @@ export default function Home() {
               </button>
 
               {regFormState === 'success' ? (
-                /* ── SUCCESS: Show QR image ── */
+                /* ── SUCCESS: Show pricing info + QR ── */
                 <div className="p-8 text-center">
                   <div className="w-14 h-14 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="material-symbols-outlined text-3xl">check_circle</span>
                   </div>
                   <h3 className="text-2xl font-black font-headline text-white mb-1">Đăng ký thành công!</h3>
-                  <p className="text-slate-400 text-sm mb-6">Vui lòng quét mã QR bên dưới để hoàn tất thanh toán học phí.</p>
-                  <div className="bg-white rounded-2xl p-4 mx-auto max-w-[280px] shadow-xl">
+                  <p className="text-slate-400 text-sm mb-4">Chúng tôi sẽ sớm liên hệ xác nhận với bạn....</p>
+
+                  {/* Pricing info */}
+                  <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl px-5 py-4 mb-5 text-left">
+                    <p className="font-black text-blue-300 text-sm leading-snug">
+                      {modalPkg === 'Nhóm 4 người'
+                        ? 'Nhóm 4 người, phí đầu tư: 1.300.000 x 4 = 5.200.000, giảm còn 3.960.000'
+                        : modalPkg === 'Nhóm 2 người'
+                        ? 'Nhóm 2 người, phí đầu tư: 1.300.000 x 2 = 2.600.000, giảm còn 2.200.000'
+                        : 'Vui lòng quét mã QR để thanh toán học phí'}
+                    </p>
+                  </div>
+
+                  <div className="bg-white rounded-2xl p-4 mx-auto max-w-[260px] shadow-xl">
                     <Image
                       src={getQRImage(modalPkg)}
                       alt={`QR thanh toán ${modalPkg}`}
-                      width={280}
-                      height={280}
+                      width={260}
+                      height={260}
                       className="w-full h-auto rounded-xl"
                     />
                   </div>
