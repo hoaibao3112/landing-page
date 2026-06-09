@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useTransform } from 'framer-motion';
@@ -138,7 +138,7 @@ function SkillCard({
         <div className={`w-12 h-12 rounded-xl ${iconBg} ${iconColor} flex items-center justify-center mb-6`}>
           <span className="material-symbols-outlined text-2xl font-bold">{icon}</span>
         </div>
-        <h3 className="text-lg font-black font-headline text-white glow-white mb-3 tracking-tight">{title}</h3>
+        <h3 className="text-lg font-black font-headline text-[#3b82f6] mb-3 tracking-tight">{title}</h3>
         <p className="text-white glow-white text-sm leading-relaxed font-normal">
           {description}
         </p>
@@ -476,7 +476,7 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative bg-[#0f2634] text-white pt-36 pb-20 px-6 overflow-hidden flex flex-col items-center justify-center text-center">
+      <section className="relative bg-[#0f2634] text-white pt-36 pb-6 px-6 overflow-hidden flex flex-col items-center justify-center text-center">
         {/* Atmospheric Orbs */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <motion.div
@@ -528,15 +528,15 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex items-center justify-center gap-6 text-sm text-slate-300 font-bold mb-12"
           >
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-cyan-400 text-lg">calendar_month</span>
+            <div className="flex items-center gap-1">
+              <span className="material-symbols-outlined text-cyan-400 text-lg shrink-0">calendar_month</span>
               <span className="text-slate-300">{eventDate}</span>
             </div>
 
             <span className="hidden sm:inline-block h-4 border-l border-slate-600" />
 
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-pink-500 text-lg">place</span>
+            <div className="flex items-center gap-1">
+              <span className="material-symbols-outlined text-pink-500 text-lg shrink-0">place</span>
               <span className="text-slate-300">{eventAddress}</span>
             </div>
 
@@ -548,13 +548,14 @@ export default function Home() {
             {['01 ngày offline thực hành', '03 ngày online hỗ trợ', 'Học lại trọn đời'].map((t, i) => (
               <div
                 key={i}
-                className="px-4 py-2 rounded-full text-white glow-white font-black text-sm sm:text-base bg-white/5 border border-white/10"
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full text-white glow-white font-black text-sm sm:text-base bg-white/5 border border-white/10"
                 style={{
                   textShadow: '0 0 18px rgba(255,255,255,0.15)',
                   boxShadow: '0 8px 30px rgba(59, 130, 246,0.04)'
                 }}
               >
-                {t}
+                <span className="material-symbols-outlined text-red-500 text-base sm:text-lg shrink-0 font-bold">check</span>
+                <span>{t}</span>
               </div>
             ))}
           </div>
@@ -566,7 +567,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col items-center w-full"
           >
-            <p className="text-[10px] sm:text-xs font-black tracking-widest text-cyan-400 uppercase mb-4">KHAI GIẢNG SAU</p>
+            <p className="text-[10px] sm:text-xs font-black tracking-widest text-[#3b82f6] uppercase mb-4">KHAI GIẢNG SAU</p>
             <div className="flex items-center gap-2 sm:gap-4 select-none">
               {/* Days */}
               <div className="flex flex-col items-center">
@@ -620,7 +621,7 @@ export default function Home() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto mt-16 leading-relaxed font-normal text-center font-headline"
+            className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto mt-16 leading-relaxed font-normal text-justify font-headline"
           >
             Chương trình được thiết kế với các module từ cơ bản đến chuyên sâu giúp bạn làm chủ hoàn toàn <span className="text-white font-bold">CLAUDE AI</span>, từ xây dựng tư duy đúng khi sử dụng AI <span className="text-[#3b82f6] font-semibold">(mindset-skillset-toolset)</span>, sử dụng thành thạo từng module đến áp dụng thực tế vào chính doanh nghiệp của bạn, giúp tối ưu vận hành và chi phí.
           </motion.p>
@@ -628,7 +629,7 @@ export default function Home() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="bg-[#11283c] py-24 px-6 md:px-8 relative overflow-hidden scroll-mt-32">
+      <section id="skills" className="bg-[#11283c] pt-10 pb-12 px-6 md:px-8 relative overflow-hidden scroll-mt-32">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-xs font-black tracking-widest text-[#3b82f6] uppercase">KỸ NĂNG BẠN SẼ CÓ</span>
@@ -654,20 +655,10 @@ export default function Home() {
                 <span className="px-3 py-1 bg-red-500 text-white text-[10px] font-black uppercase rounded-full tracking-wider">ĐẶC BIỆT</span>
               </div>
               <div>
-                <h3 className="text-2xl font-black font-headline mb-3 text-white glow-white">Claude Cowork</h3>
+                <h3 className="text-2xl font-black font-headline mb-3 text-[#3b82f6]">Claude Cowork</h3>
                 <p className="text-blue-100 text-sm leading-relaxed font-medium mb-6">
                   Cowork là cả một phòng ban AI trong lòng bàn tay - mỗi agent đảm nhận một vai trò, tự vận hành, tự phối hợp với nhau, và giao cho bạn kết quả cuối cùng như một đội ngũ thực thụ.
                 </p>
-              </div>
-              <div
-                onClick={() => {
-                  setSelectedPackage('Nhóm 2 người');
-                  document.getElementById('register')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="flex items-center gap-2 text-cyan-300 font-bold text-sm cursor-pointer group-hover:gap-3 transition-all"
-              >
-                <span>Thiết lập nhóm làm việc</span>
-                <span className="material-symbols-outlined text-sm font-bold">arrow_forward</span>
               </div>
             </motion.div>
 
@@ -741,7 +732,7 @@ export default function Home() {
       </section>
 
       {/* Timeline Section */}
-      <section id="timeline" className="bg-[#0e2434] py-24 px-6 md:px-8 relative overflow-hidden scroll-mt-32">
+      <section id="timeline" className="bg-[#0e2434] pt-10 pb-12 px-6 md:px-8 relative overflow-hidden scroll-mt-32">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -834,7 +825,7 @@ export default function Home() {
 
 
       {/* Speakers Section */}
-      <section id="speakers" className="py-24 px-8 max-w-7xl mx-auto scroll-mt-40 bg-[#0e2434]/80 backdrop-blur-sm rounded-[4rem] my-24 border border-white/10">
+      <section id="speakers" className="pt-10 pb-12 px-8 max-w-7xl mx-auto scroll-mt-40 bg-[#0e2434]/80 backdrop-blur-sm rounded-[4rem] mt-6 mb-6 border border-white/10">
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
@@ -874,7 +865,7 @@ export default function Home() {
               <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black font-headline mb-2 text-white tracking-tighter">Lê Thanh Hải</h3>
               <p className="text-lg sm:text-xl font-bold text-[#3b82f6] font-headline mb-6">CEO AIZEN</p>
               <div className="w-16 h-1.5 bg-gradient-to-r from-[#3b82f6] to-[#38bdf8] rounded-full mb-8"></div>
-              <p className="text-lg text-white/80 leading-relaxed">
+              <p className="text-lg text-white/80 leading-relaxed text-justify">
                 Chuyên gia với <span className="text-white font-bold">hơn 15 năm kinh nghiệm thực chiến</span> trong ngành Công nghệ thông tin. Anh trực tiếp dẫn dắt lộ trình đưa AI vào vận hành, giúp doanh nghiệp đóng gói quy trình, tối ưu hiệu suất và bứt phá doanh thu từ những trải nghiệm và ứng dụng thực tế nhất.
               </p>
               <div className="mt-8 flex gap-4">
@@ -891,17 +882,14 @@ export default function Home() {
       </section>
 
       {/* Pricing / Register Section */}
-      <section id="register" className="py-24 px-6 md:px-8 scroll-mt-32">
+      <section id="register" className="pt-10 pb-24 px-6 md:px-8 scroll-mt-32">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-4">
             <span className="text-xs font-black tracking-widest text-[#3b82f6] uppercase">Đăng ký</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black font-headline text-white text-center mb-4">
+          <h2 className="text-3xl sm:text-5xl font-black font-headline text-white text-center mb-12">
             Chọn hình thức đăng ký
           </h2>
-          <p className="text-center text-slate-400 mb-12 text-sm">
-            Mỗi gói đều bao gồm tài liệu PDF · chứng chỉ hoàn thành · group hỗ trợ sau khoá
-          </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
 
@@ -1176,7 +1164,7 @@ export default function Home() {
                     <span className="text-xs font-black tracking-widest text-[#3b82f6] uppercase">Đăng ký tham gia</span>
                     <h3 className="text-2xl font-black font-headline text-white mt-1">{modalPkg}</h3>
                     <p className="text-slate-400 text-sm mt-1">
-                      {getMemberCount(modalPkg) === 1 ? 'Điền thông tin cá nhân của bạn' : `Điền thông tin cho ${getMemberCount(modalPkg)} học viên`}
+                      {getMemberCount(modalPkg) === 1 ? 'Vui lòng điền thông tin sau:' : `Điền thông tin cho ${getMemberCount(modalPkg)} học viên`}
                     </p>
                   </div>
 
@@ -1278,7 +1266,7 @@ export default function Home() {
                       </div>
 
                       <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Biết đến từ đâu? *</label>
+                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Bạn biết đến chương trình từ đâu *</label>
                         <div className="relative">
                           <select
                             name="referral"
