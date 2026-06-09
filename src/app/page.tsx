@@ -132,14 +132,14 @@ function SkillCard({
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
       whileHover={{ y: -5 }}
-      className="group bg-[#13283e] p-8 rounded-3xl shadow-[0_0_40px_rgba(59, 130, 246,0.05)] hover:shadow-[0_0_60px_rgba(59, 130, 246,0.08)] transition-all border border-white/8 hover:border-[#3b82f6]/30 hover:bg-white/6 flex flex-col items-start justify-between min-h-[260px] text-left"
+      className="group bg-[#13283e] p-8 rounded-3xl shadow-[0_0_40px_rgba(59, 130, 246,0.05)] hover:shadow-[0_0_60px_rgba(59, 130, 246,0.08)] transition-all border border-white/8 hover:border-[#3b82f6]/30 hover:bg-white/6 flex flex-col items-center justify-between min-h-[260px] text-center"
     >
-      <div className="flex flex-col items-start">
+      <div className="flex flex-col items-center text-center">
         <div className={`w-12 h-12 rounded-xl ${iconBg} ${iconColor} flex items-center justify-center mb-6`}>
           <span className="material-symbols-outlined text-2xl font-bold">{icon}</span>
         </div>
         <h3 className="text-lg font-black font-headline text-[#3b82f6] mb-3 tracking-tight">{title}</h3>
-        <p className="text-white glow-white text-sm leading-relaxed font-normal text-justify">
+        <p className="text-white glow-white text-sm leading-relaxed font-normal">
           {description}
         </p>
       </div>
@@ -631,9 +631,9 @@ export default function Home() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto mt-16 leading-relaxed font-normal text-justify font-headline"
+            className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto mt-16 leading-relaxed font-normal text-center font-headline"
           >
-            Chương trình được thiết kế với các module từ cơ bản đến chuyên sâu giúp bạn làm chủ hoàn toàn <span className="text-white font-bold">CLAUDE AI</span>, từ xây dựng tư duy đúng khi sử dụng AI <span className="text-[#3b82f6] font-semibold">(mindset-skillset-toolset)</span>, sử dụng thành thạo từng module đến áp dụng thực tế vào chính doanh nghiệp của bạn, giúp tối ưu vận hành và chi phí.
+            Chương trình được thiết kế với các module từ cơ bản đến chuyên sâu giúp bạn làm chủ hoàn toàn <span className="text-white font-bold">CLAUDE AI</span>, từ xây dựng tư duy đúng khi sử dụng AI, sử dụng thành thạo từng module đến áp dụng thực tế vào chính doanh nghiệp của bạn, giúp tối ưu vận hành và chi phí.
           </motion.p>
         </div>
       </section>
@@ -644,7 +644,7 @@ export default function Home() {
           <div className="text-center mb-16">
             <span className="text-xs font-black tracking-widest text-[#3b82f6] uppercase">KỸ NĂNG BẠN SẼ CÓ</span>
             <h2 className="text-3xl sm:text-5xl font-black font-headline text-white glow-white mt-2">
-              Kết thúc khóa học,<br />bạn sở hữu ngay
+              Kết thúc khóa học<br />bạn sở hữu ngay
             </h2>
           </div>
 
@@ -657,21 +657,23 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
               whileHover={{ y: -5 }}
-              className="lg:col-span-2 bg-gradient-to-br from-[#3b82f6]/20 to-[#38bdf8]/10 text-white glow-white p-8 rounded-3xl shadow-xl flex flex-col justify-between border border-[#3b82f6]/30 transition-all relative overflow-hidden group min-h-[260px] text-left"
+              className="lg:col-span-2 bg-gradient-to-br from-[#3b82f6]/20 to-[#38bdf8]/10 text-white glow-white p-8 rounded-3xl shadow-xl flex flex-col items-center justify-between border border-[#3b82f6]/30 transition-all relative overflow-hidden group min-h-[260px] text-center"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl group-hover:scale-110 transition-transform"></div>
-              <div className="flex justify-between items-start mb-6">
-                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-white glow-white text-2xl font-bold">groups</span>
+
+              <div className="flex flex-col items-center text-center w-full">
+                <div className="flex flex-col items-center mb-6 w-full gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-white glow-white text-2xl font-bold">groups</span>
+                  </div>
+                  <span className="px-3 py-1 bg-red-500 text-white text-[10px] font-black uppercase rounded-full tracking-wider">ĐẶC BIỆT</span>
                 </div>
-                <span className="px-3 py-1 bg-red-500 text-white text-[10px] font-black uppercase rounded-full tracking-wider">ĐẶC BIỆT</span>
-              </div>
-              <div>
                 <h3 className="text-2xl font-black font-headline mb-3 text-[#3b82f6]">Claude Cowork</h3>
-                <p className="text-blue-100 text-sm leading-relaxed font-medium mb-6 text-justify">
+                <p className="text-blue-100 text-sm leading-relaxed font-normal">
                   Cowork là cả một phòng ban AI trong lòng bàn tay - mỗi agent đảm nhận một vai trò, tự vận hành, tự phối hợp với nhau, và giao cho bạn kết quả cuối cùng như một đội ngũ thực thụ.
                 </p>
               </div>
+              <div className="h-4"></div>
             </motion.div>
 
             {/* Card 2: Claude Skills */}
@@ -754,7 +756,7 @@ export default function Home() {
             className="text-center mb-16"
           >
             <span className="text-xs font-black tracking-widest text-[#3b82f6] uppercase">Nội dung chương trình</span>
-            <h2 className="text-3xl sm:text-5xl font-black font-headline text-white glow-white mt-2">1 ngày - 7 module thực chiến</h2>
+            <h2 className="text-3xl sm:text-5xl font-black font-headline text-white glow-white mt-2">1 ngày - 6 module thực chiến</h2>
           </motion.div>
 
           <div className="relative border-l-2 border-[#3b82f6]/20 ml-4 md:ml-32 pl-8 space-y-12 py-4">
@@ -1245,7 +1247,7 @@ export default function Home() {
                         </div>
 
                         {/* Bạn là? + Nguồn tin - 2 cột trên desktop */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:items-end">
                           <div className="space-y-1">
                             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Bạn là? *</label>
                             <div className="relative">
