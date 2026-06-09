@@ -139,7 +139,7 @@ function SkillCard({
           <span className="material-symbols-outlined text-2xl font-bold">{icon}</span>
         </div>
         <h3 className="text-lg font-black font-headline text-[#3b82f6] mb-3 tracking-tight">{title}</h3>
-        <p className="text-white glow-white text-sm leading-relaxed font-normal">
+        <p className="text-white glow-white text-sm leading-relaxed font-normal text-justify">
           {description}
         </p>
       </div>
@@ -505,7 +505,7 @@ export default function Home() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl sm:text-6xl md:text-7xl font-black font-headline tracking-tight leading-none mb-6"
+            className="text-5xl sm:text-7xl md:text-8xl font-black font-headline tracking-tight leading-none mb-6"
           >
             Làm chủ <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3b82f6] to-[#38bdf8]">Claude AI</span>
           </motion.h1>
@@ -516,7 +516,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-lg sm:text-2xl text-slate-300 font-medium font-headline tracking-wide max-w-2xl mb-8 leading-relaxed italic"
           >
-            Xây dựng trợ lý phòng ban tự động làm việc
+            Xây dựng trợ lý phòng ban<br />tự động làm việc
           </motion.p>
 
 
@@ -535,9 +535,19 @@ export default function Home() {
 
             <span className="hidden sm:inline-block h-4 border-l border-slate-600" />
 
-            <div className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-pink-500 text-lg shrink-0">place</span>
-              <span className="text-slate-300">{eventAddress}</span>
+            <div className="flex items-start gap-1">
+              <span className="material-symbols-outlined text-pink-500 text-lg shrink-0 mt-0.5">place</span>
+              <span className="text-slate-300 text-left">
+                {eventAddress.includes('(') ? (
+                  <>
+                    {eventAddress.split('(')[0].trim()}
+                    <br />
+                    <span className="text-slate-400 text-xs font-normal">({eventAddress.split('(')[1]}</span>
+                  </>
+                ) : (
+                  eventAddress
+                )}
+              </span>
             </div>
 
 
@@ -633,7 +643,9 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <span className="text-xs font-black tracking-widest text-[#3b82f6] uppercase">KỸ NĂNG BẠN SẼ CÓ</span>
-            <h2 className="text-3xl sm:text-5xl font-black font-headline text-white glow-white mt-2">Kết thúc khóa học, bạn sở hữu ngay</h2>
+            <h2 className="text-3xl sm:text-5xl font-black font-headline text-white glow-white mt-2">
+              Kết thúc khóa học,<br />bạn sở hữu ngay
+            </h2>
           </div>
 
           {/* Top Grid: 3 cards (Cowork spans 2) */}
@@ -656,7 +668,7 @@ export default function Home() {
               </div>
               <div>
                 <h3 className="text-2xl font-black font-headline mb-3 text-[#3b82f6]">Claude Cowork</h3>
-                <p className="text-blue-100 text-sm leading-relaxed font-medium mb-6">
+                <p className="text-blue-100 text-sm leading-relaxed font-medium mb-6 text-justify">
                   Cowork là cả một phòng ban AI trong lòng bàn tay - mỗi agent đảm nhận một vai trò, tự vận hành, tự phối hợp với nhau, và giao cho bạn kết quả cuối cùng như một đội ngũ thực thụ.
                 </p>
               </div>
@@ -1209,81 +1221,76 @@ export default function Home() {
                           </div>
                         </div>
 
-                        {/* Chỉ person đầu tiên cần thêm thông tin */}
-                        {i === 0 && (
-                          <>
-                            {/* Email + Công ty - 2 cột */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                              <div className="space-y-1">
-                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Email *</label>
-                                <input
-                                  type="email"
-                                  name="email_1"
-                                  required
-                                  placeholder="email@example.com"
-                                  className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#3b82f6]/60 focus:outline-none focus:bg-white/8 transition-all"
-                                />
-                              </div>
-                              <div className="space-y-1">
-                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tên công ty</label>
-                                <input
-                                  type="text"
-                                  name="company"
-                                  placeholder="Công ty của bạn"
-                                  className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#3b82f6]/60 focus:outline-none focus:bg-white/8 transition-all"
-                                />
-                              </div>
+                        {/* Email + Tên công ty - 2 cột trên desktop */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div className="space-y-1">
+                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Email *</label>
+                            <input
+                              type="email"
+                              name={`email_${i + 1}`}
+                              required
+                              placeholder="email@example.com"
+                              className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#3b82f6]/60 focus:outline-none focus:bg-white/8 transition-all"
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tên công ty</label>
+                            <input
+                              type="text"
+                              name={`company_${i + 1}`}
+                              placeholder="Công ty của bạn"
+                              className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#3b82f6]/60 focus:outline-none focus:bg-white/8 transition-all"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Bạn là? + Nguồn tin - 2 cột trên desktop */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div className="space-y-1">
+                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Bạn là? *</label>
+                            <div className="relative">
+                              <select
+                                name={`role_${i + 1}`}
+                                required
+                                className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white text-sm focus:border-[#3b82f6]/60 focus:outline-none transition-all appearance-none pr-8"
+                                defaultValue=""
+                              >
+                                <option value="" disabled className="bg-[#0c1a2e] text-slate-400">Chọn vị trí...</option>
+                                <option value="Chủ doanh nghiệp" className="bg-[#0c1a2e]">Chủ doanh nghiệp</option>
+                                <option value="Quản lý phòng ban" className="bg-[#0c1a2e]">Quản lý phòng ban</option>
+                                <option value="Nhân viên" className="bg-[#0c1a2e]">Nhân viên</option>
+                                <option value="Sinh viên" className="bg-[#0c1a2e]">Sinh viên</option>
+                                <option value="Khác" className="bg-[#0c1a2e]">Khác</option>
+                              </select>
+                              <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">expand_more</span>
                             </div>
-                          </>
-                        )}
+                          </div>
+
+                          <div className="space-y-1">
+                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Bạn biết đến chương trình từ đâu *</label>
+                            <div className="relative">
+                              <select
+                                name={`referral_${i + 1}`}
+                                required
+                                className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white text-sm focus:border-[#3b82f6]/60 focus:outline-none transition-all appearance-none pr-8"
+                                defaultValue=""
+                              >
+                                <option value="" disabled className="bg-[#0c1a2e] text-slate-400">Chọn nguồn...</option>
+                                <option value="Cộng Đồng AI ỨNG DỤNG SALE & MARKETING" className="bg-[#0c1a2e]">Cộng Đồng AI ỨNG DỤNG SALE &amp; MARKETING</option>
+                                <option value="Khách hàng AIZEN" className="bg-[#0c1a2e]">Khách hàng AIZEN</option>
+                                <option value="Người quen giới thiệu" className="bg-[#0c1a2e]">Người quen giới thiệu</option>
+                                <option value="Khác" className="bg-[#0c1a2e]">Khác</option>
+                              </select>
+                              <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">expand_more</span>
+                            </div>
+                          </div>
+                        </div>
 
                         {getMemberCount(modalPkg) > 1 && i < getMemberCount(modalPkg) - 1 && (
-                          <div className="border-b border-white/8 pt-3" />
+                          <div className="border-b border-white/8 pt-3 pb-3" />
                         )}
                       </div>
                     ))}
-
-                    {/* Bạn là? + Nguồn tin - 2 cột trên desktop */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Bạn là? *</label>
-                        <div className="relative">
-                          <select
-                            name="role"
-                            required
-                            className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white text-sm focus:border-[#3b82f6]/60 focus:outline-none transition-all appearance-none pr-8"
-                            defaultValue=""
-                          >
-                            <option value="" disabled className="bg-[#0c1a2e] text-slate-400">Chọn vị trí...</option>
-                            <option value="Chủ doanh nghiệp" className="bg-[#0c1a2e]">Chủ doanh nghiệp</option>
-                            <option value="Quản lý phòng ban" className="bg-[#0c1a2e]">Quản lý phòng ban</option>
-                            <option value="Nhân viên" className="bg-[#0c1a2e]">Nhân viên</option>
-                            <option value="Sinh viên" className="bg-[#0c1a2e]">Sinh viên</option>
-                            <option value="Khác" className="bg-[#0c1a2e]">Khác</option>
-                          </select>
-                          <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">expand_more</span>
-                        </div>
-                      </div>
-
-                      <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Bạn biết đến chương trình từ đâu *</label>
-                        <div className="relative">
-                          <select
-                            name="referral"
-                            required
-                            className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white text-sm focus:border-[#3b82f6]/60 focus:outline-none transition-all appearance-none pr-8"
-                            defaultValue=""
-                          >
-                            <option value="" disabled className="bg-[#0c1a2e] text-slate-400">Chọn nguồn...</option>
-                            <option value="Cộng Đồng AI ỨNG DỤNG SALE & MARKETING" className="bg-[#0c1a2e]">Cộng Đồng AI ỨNG DỤNG SALE &amp; MARKETING</option>
-                            <option value="Khách hàng AIZEN" className="bg-[#0c1a2e]">Khách hàng AIZEN</option>
-                            <option value="Người quen giới thiệu" className="bg-[#0c1a2e]">Người quen giới thiệu</option>
-                            <option value="Khác" className="bg-[#0c1a2e]">Khác</option>
-                          </select>
-                          <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">expand_more</span>
-                        </div>
-                      </div>
-                    </div>
 
                     {/* Error */}
                     {regFormState === 'error' && (

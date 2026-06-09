@@ -169,7 +169,7 @@ export async function submitGroupRegistration(formData: FormData): Promise<
     const primaryFullname = formData.get('fullname_1')?.toString().trim() || '';
     const primaryPhone = formData.get('phone_1')?.toString().trim() || '';
     const primaryEmail = formData.get('email_1')?.toString().trim() || '';
-    const referral = formData.get('referral')?.toString().trim() || 'Website';
+    const referral = formData.get('referral_1')?.toString().trim() || 'Website';
 
     if (!primaryFullname || !primaryPhone) {
       return { success: false, error: 'Vui lòng điền đầy đủ thông tin người đăng ký.' };
@@ -184,15 +184,34 @@ export async function submitGroupRegistration(formData: FormData): Promise<
     const insertStmt = db.prepare(
       `INSERT INTO registrations 
        (fullname, phone, email, referral, role, company, payment_status, payment_content, amount, created_at, members, package_type) 
-       VALUES (?, ?, ?, ?, 'Học viên', '', 'UNPAID', ?, ?, ?, ?, ?)`
+       VALUES (?, ?, ?, ?, ?, ?, 'UNPAID', ?, ?, ?, ?, ?)`
     );
 
     for (let i = 1; i <= memberCount; i++) {
       const fn = formData.get(`fullname_${i}`)?.toString().trim() || '';
       const ph = formData.get(`phone_${i}`)?.toString().trim() || '';
       const em = formData.get(`email_${i}`)?.toString().trim() || '';
-      if (!fn || !ph) return { success: false, error: `Vui lòng điền đầy đủ thông tin người ${i}.` };
-      insertStmt.run(fn, ph, em, referral, paymentContent, amountPerPerson, vietnamTime, memberCount, packageType);
+      const comp = formData.get(`company_${i}`)?.toString().trim() || '';
+      const rl = formData.get(`role_${i}`)?.toString().trim() || 'Học viên';
+      const ref = formData.get(`referral_${i}`)?.toString().trim() || referral;
+
+      if (!fn || !ph || !em || !rl || !ref) {
+        return { success: false, error: `Vui lòng điền đầy đủ thông tin người ${i}.` };
+      }
+
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(em)) {
+        return { success: false, error: `Email của người ${i} không hợp lệ.` };
+      }
+
+      // Phone validation
+      const phoneRegex = /^(0|84)(3|5|7|8|9|1[2689])([0-9]{8})$/;
+      if (!phoneRegex.test(ph.replace(/\s/g, ''))) {
+        return { success: false, error: `Số điện thoại của người ${i} không hợp lệ.` };
+      }
+
+      insertStmt.run(fn, ph, em, ref, rl, comp, paymentContent, amountPerPerson, vietnamTime, memberCount, packageType);
     }
 
     try {
