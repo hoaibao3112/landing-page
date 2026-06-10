@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   allowedDevOrigins: ['103.200.23.54', 'checkin.aizenworld.com'],
   images: {
     unoptimized: true,

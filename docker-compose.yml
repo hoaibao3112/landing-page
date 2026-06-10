@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  landing-page:
+    image: ghcr.io/aizenworld69/landing-page:latest
+    container_name: landing-page
+    restart: always
+    ports:
+      - "20000:20000"
+    volumes:
+      - /opt/landing-page/registrations.db:/app/registrations.db
