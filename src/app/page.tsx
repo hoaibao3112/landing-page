@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import Image from 'next/image';
 import { eventDate, eventAddress, eventPrice } from '../lib/siteConfig';
-import { submitRegistration, submitGroupRegistration } from './actions';
+import { submitRegistration, submitGroupRegistration, validateVoucherAction } from './actions';
 import { SpotlightEffects } from './SpotlightEffects';
 
 function CustomSelect({
@@ -168,6 +168,44 @@ export default function Home() {
   const [regFormState, setRegFormState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [regError, setRegError] = useState('');
 
+  // Voucher states
+  const [voucherCodeInput, setVoucherCodeInput] = useState('');
+  const [voucherError, setVoucherError] = useState('');
+  const [voucherDiscount, setVoucherDiscount] = useState(0);
+  const [isValidatingVoucher, setIsValidatingVoucher] = useState(false);
+  const [appliedVoucher, setAppliedVoucher] = useState('');
+
+  const resetPaymentAmount = (pkg: string) => {
+    if (pkg === 'Nhóm 2 người') setPaymentAmount(2200000);
+    else if (pkg === 'Nhóm 4 người') setPaymentAmount(3960000);
+    else if (pkg === 'Early Bird') setPaymentAmount(950000);
+    else if (pkg === '1 người') setPaymentAmount(1300000);
+  };
+
+  const handleApplyVoucher = async (code: string) => {
+    if (!code) {
+      setVoucherError('Vui lòng nhập mã giảm giá.');
+      setVoucherDiscount(0);
+      setAppliedVoucher('');
+      resetPaymentAmount(modalPkg);
+      return;
+    }
+    setIsValidatingVoucher(true);
+    setVoucherError('');
+    const res = await validateVoucherAction(code, modalPkg);
+    setIsValidatingVoucher(false);
+    if (res.success) {
+      setVoucherDiscount(res.discountAmount);
+      setAppliedVoucher(code.trim().toUpperCase());
+      setPaymentAmount(res.finalAmount);
+    } else {
+      setVoucherError(res.error);
+      setVoucherDiscount(0);
+      setAppliedVoucher('');
+      resetPaymentAmount(modalPkg);
+    }
+  };
+
   // Countdown target: 2026-06-27T08:00:00+07:00
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [mounted, setMounted] = useState(false);
@@ -255,6 +293,11 @@ export default function Home() {
     setModalPkg(pkg);
     setRegFormState('idle');
     setRegError('');
+    setVoucherCodeInput('');
+    setVoucherError('');
+    setVoucherDiscount(0);
+    setAppliedVoucher('');
+    resetPaymentAmount(pkg);
     setShowRegModal(true);
   };
 
@@ -264,6 +307,12 @@ export default function Home() {
     const formData = new FormData(e.currentTarget);
     const result = await submitGroupRegistration(formData);
     if (result.success) {
+      if ('amount' in result && result.amount) {
+        setPaymentAmount(result.amount);
+      }
+      if ('paymentContent' in result && result.paymentContent) {
+        setPaymentContent(result.paymentContent);
+      }
       setRegFormState('success');
     } else {
       setRegFormState('error');
@@ -271,9 +320,10 @@ export default function Home() {
     }
   };
 
-  const getQRImage = (pkg: string) => {
+  const getQRImage = (pkg: string, hasVoucher?: boolean) => {
     if (pkg === 'Nhóm 2 người') return '/2nguoi.jpg';
     if (pkg === 'Nhóm 4 người') return '/4nguoi.jpg';
+    if (pkg === '1 người' && hasVoucher) return '/1nguoigiamgia.jpg';
     return '/1nguoi.jpg'; // Early Bird + 1 người
   };
 
@@ -521,7 +571,7 @@ export default function Home() {
 
             <div className="flex items-start gap-1">
               <span className="material-symbols-outlined text-blue-500 text-lg shrink-0 mt-0.5">place</span>
-              <a 
+              <a
                 href="https://www.google.com/maps/place/Trung+t%C3%A2m+%C4%90%C3%A0o+T%E1%BA%A1o+B%C6%B0u+ch%C3%ADnh+Vi%E1%BB%85n+th%C3%B4ng/@10.7896789,106.7006799,779m/data=!3m1!1e3!4m6!3m5!1s0x317528b54fb5699d:0xa19aa146dff27e08!8m2!3d10.7893722!4d106.7007822!16s%2Fg%2F11b5phr1rt?entry=ttu&g_ep=EgoyMDI2MDYwMy4xIKXMDSoASAFQAw%3D%3D"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -1149,29 +1199,40 @@ export default function Home() {
                   <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl px-5 py-4 mb-5 text-left">
                     <p className="font-black text-blue-300 text-sm leading-snug">
                       {modalPkg === 'Nhóm 4 người'
-                        ? 'Nhóm 4 người, phí đầu tư: 1.300.000 x 4 = 5.200.000, giảm còn 3.960.000'
+                        ? 'Nhóm 4 người, phí đầu tư: 1.300.000 x 4 = 5.200.000, giảm còn 3.960.000đ'
                         : modalPkg === 'Nhóm 2 người'
-                          ? 'Nhóm 2 người, phí đầu tư: 1.300.000 x 2 = 2.600.000, giảm còn 2.200.000'
-                          : 'Vui lòng quét mã QR để thanh toán học phí'}
+                          ? 'Nhóm 2 người, phí đầu tư: 1.300.000 x 2 = 2.600.000, giảm còn 2.200.000đ'
+                          : appliedVoucher
+                            ? `Áp dụng mã ${appliedVoucher}: Học phí 1.300.000đ giảm 20% còn 1.040.000đ`
+                            : 'Vui lòng quét mã QR để thanh toán học phí'}
                     </p>
                   </div>
 
                   <div className="bg-white rounded-2xl p-4 mx-auto max-w-[260px] shadow-xl">
                     <Image
-                      src={getQRImage(modalPkg)}
+                      src={getQRImage(modalPkg, !!appliedVoucher)}
                       alt={`QR thanh toán ${modalPkg}`}
                       width={260}
                       height={260}
                       className="w-full h-auto rounded-xl"
                     />
                   </div>
-                  <p className="text-slate-400 text-xs mt-4 mb-6">Gói: <span className="text-white font-bold">{modalPkg}</span></p>
-                  <button
-                    onClick={() => { setShowRegModal(false); setRegFormState('idle'); }}
-                    className="px-8 py-3 bg-gradient-to-r from-[#3b82f6] to-[#38bdf8] text-[#0e2434] font-black rounded-2xl hover:opacity-90 transition-opacity"
-                  >
-                    Đã hiểu
-                  </button>
+                  <div className="mt-5 space-y-2">
+                    <p className="text-slate-400 text-xs">Gói: <span className="text-white font-bold">{modalPkg}</span></p>
+                    <p className="text-slate-400 text-xs">Học phí: <span className="text-cyan-400 font-bold">{paymentAmount.toLocaleString('vi-VN')} VND</span></p>
+                    <div className="bg-white/95 backdrop-blur py-2.5 px-4 rounded-xl border border-dashed border-blue-200 inline-block text-center w-full max-w-[240px]">
+                      <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-0.5">Nội dung chuyển khoản</p>
+                      <p className="text-sm font-black text-[#0e2434] tracking-tight">{paymentContent}</p>
+                    </div>
+                  </div>
+                  <div className="mt-6">
+                    <button
+                      onClick={() => { setShowRegModal(false); setRegFormState('idle'); }}
+                      className="px-8 py-3 bg-gradient-to-r from-[#3b82f6] to-[#38bdf8] text-[#0e2434] font-black rounded-2xl hover:opacity-90 transition-opacity cursor-pointer"
+                    >
+                      Đã hiểu
+                    </button>
+                  </div>
                 </div>
               ) : (
                 /* ── FORM ── */
@@ -1187,6 +1248,7 @@ export default function Home() {
 
                   <form onSubmit={handleGroupSubmit} className="space-y-6">
                     <input type="hidden" name="package_type" value={modalPkg} />
+                    <input type="hidden" name="voucher_code" value={appliedVoucher} />
                     {/* Honeypot */}
                     <div className="hidden" aria-hidden="true">
                       <input type="text" name="website" tabIndex={-1} autoComplete="off" />
@@ -1297,6 +1359,86 @@ export default function Home() {
                       </div>
                     ))}
 
+                    {/* Voucher Input - Chỉ hiển thị cho gói 1 người */}
+                    {modalPkg === '1 người' && (
+                      <div className="space-y-2 bg-white/5 p-4 rounded-2xl border border-white/8 text-left">
+                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Mã giảm giá (Voucher)</label>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            placeholder="Nhập mã Vouther"
+                            value={voucherCodeInput}
+                            onChange={(e) => {
+                              setVoucherCodeInput(e.target.value);
+                              if (voucherError) setVoucherError('');
+                            }}
+                            className="flex-1 px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#3b82f6]/60 focus:outline-none focus:bg-white/8 transition-all uppercase"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleApplyVoucher(voucherCodeInput)}
+                            disabled={isValidatingVoucher || !voucherCodeInput}
+                            className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all disabled:opacity-50 flex items-center gap-1 shrink-0 cursor-pointer"
+                          >
+                            {isValidatingVoucher ? (
+                              <span className="material-symbols-outlined animate-spin text-xs">progress_activity</span>
+                            ) : 'Áp dụng'}
+                          </button>
+                        </div>
+
+                        {appliedVoucher && (
+                          <div className="text-xs text-green-400 flex items-center gap-1 font-semibold mt-1">
+                            <span className="material-symbols-outlined text-sm">check_circle</span>
+                            Áp dụng mã {appliedVoucher} thành công: Giảm 20% (-{voucherDiscount.toLocaleString('vi-VN')}đ)
+                          </div>
+                        )}
+                        {voucherError && (
+                          <div className="text-xs text-red-400 flex items-center gap-1 font-semibold mt-1">
+                            <span className="material-symbols-outlined text-sm">error</span>
+                            {voucherError}
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Tóm tắt chi phí thanh toán */}
+                    <div className="bg-white/5 p-4 rounded-2xl border border-white/8 space-y-1.5 text-sm text-left">
+                      <div className="flex justify-between text-slate-400">
+                        <span>Giá gốc:</span>
+                        <span className={appliedVoucher || modalPkg.includes('Nhóm') ? 'line-through text-slate-500' : ''}>
+                          {modalPkg === 'Nhóm 4 người'
+                            ? '5.200.000đ'
+                            : modalPkg === 'Nhóm 2 người'
+                              ? '2.600.000đ'
+                              : '1.300.000đ'}
+                        </span>
+                      </div>
+
+                      {modalPkg === 'Nhóm 2 người' && (
+                        <div className="flex justify-between text-green-400 font-semibold">
+                          <span>Giảm giá (Nhóm 2 người):</span>
+                          <span>-400.000đ</span>
+                        </div>
+                      )}
+                      {modalPkg === 'Nhóm 4 người' && (
+                        <div className="flex justify-between text-green-400 font-semibold">
+                          <span>Giảm giá (Nhóm 4 người):</span>
+                          <span>-1.240.000đ</span>
+                        </div>
+                      )}
+                      {appliedVoucher && (
+                        <div className="flex justify-between text-green-400 font-semibold">
+                          <span>Giảm giá (Voucher):</span>
+                          <span>-{voucherDiscount.toLocaleString('vi-VN')}đ</span>
+                        </div>
+                      )}
+
+                      <div className="border-t border-white/8 my-2 pt-2 flex justify-between font-headline font-black text-white text-base">
+                        <span>Tổng thanh toán:</span>
+                        <span className="text-[#3b82f6]">{paymentAmount.toLocaleString('vi-VN')}đ</span>
+                      </div>
+                    </div>
+
                     {/* Error */}
                     {regFormState === 'error' && (
                       <div className="flex items-center gap-2 px-4 py-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm">
@@ -1309,7 +1451,7 @@ export default function Home() {
                     <button
                       type="submit"
                       disabled={regFormState === 'loading'}
-                      className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#3b82f6] to-[#38bdf8] text-[#0e2434] font-black text-base hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/20 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#3b82f6] to-[#38bdf8] text-[#0e2434] font-black text-base hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/20 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
                     >
                       {regFormState === 'loading' ? (
                         <>

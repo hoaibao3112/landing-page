@@ -11,6 +11,7 @@ export default function SidebarNav() {
     { icon: 'grid_view', label: 'Overview', href: '/admin' },
     { icon: 'group', label: 'Registrations', href: '/admin' },
     { icon: 'school', label: 'Courses', href: '/admin/courses' },
+    { icon: 'sell', label: 'Vouchers', href: '/admin/vouchers' },
     { icon: 'bar_chart', label: 'Reports', href: '/admin/reports' },
   ];
 

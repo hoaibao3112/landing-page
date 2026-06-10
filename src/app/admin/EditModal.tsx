@@ -17,6 +17,7 @@ type Registration = {
   payment_status: 'PAID' | 'UNPAID';
   course?: string;
   cohort_month?: string;
+  voucher_code?: string;
 };
 
 interface CourseOption {
@@ -386,6 +387,21 @@ export default function EditModal({ registration: reg, coursesList = [] }: EditM
                       className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 disabled:opacity-60 transition-all font-medium cursor-pointer"
                     />
                   </div>
+                </div>
+
+                {/* MÀ VOUCHER */}
+                <div>
+                  <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1.5">
+                    Mã giảm giá (Voucher)
+                  </label>
+                  <input
+                    name="voucher_code"
+                    type="text"
+                    defaultValue={reg.voucher_code || ''}
+                    disabled={isPending}
+                    placeholder="Không sử dụng voucher"
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 disabled:opacity-60 transition-all font-bold uppercase"
+                  />
                 </div>
               </div>
 
