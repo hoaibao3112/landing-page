@@ -6,41 +6,74 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Execute deployment commands via SSH
+      # Cache node_modules dựa theo package-lock.json
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: npm-cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Chỉ install nếu cache miss
+      - name: Install dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      # Build trên runner (nhanh ~5-10 giây, không tốn RAM VPS)
+      - name: Build Next.js
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      # Copy toàn bộ thư mục .next đã build sang VPS
+      - name: Copy build to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          source: ".next"
+          target: "/opt/landing-page"
+          rm: true
+
+      # SSH vào VPS: chỉ pull source + restart PM2 (không cần build nữa!)
+      - name: Restart app on VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
-          debug: true
           script: |
-            # Tải cấu hình NVM/Node.js nếu có
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            
-            # Di chuyển vào thư mục dự án
+
             cd /opt/landing-page
-            
-            # Reset các thay đổi cục bộ (nếu có) trên VPS để tránh xung đột git pull
+
+            # Reset và pull code mới nhất
             git reset --hard
             git clean -fd
-            
-            # Lấy code mới nhất từ nhánh main
             git pull origin main
-            
-            # Cài đặt dependencies
-            npm install
-            
-            # Build dự án
-            EXPERIMENTAL_CPUS=1 npm run build
-            
-            # Khởi động lại ứng dụng qua PM2
+
+            # Cài dependencies (chạy nhanh vì node_modules đã có sẵn, chỉ update delta)
+            npm install --prefer-offline
+
+            # Khởi động lại app (KHÔNG cần build vì .next đã được copy từ runner)
             pm2 reload landing-page || pm2 restart landing-page
+
+            echo "✅ Deploy thành công!"
