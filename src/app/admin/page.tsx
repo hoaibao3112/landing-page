@@ -32,6 +32,7 @@ type Registration = {
   created_at: string;
   members: number;
   package_type: string;
+  voucher_code?: string;
 };
 
 type GroupMember = {
@@ -381,6 +382,11 @@ export default async function AdminPage(props: {
                                     : 'bg-teal-50 text-teal-700 border border-teal-100'
                                 }`}>
                                   {reg.package_type}
+                                </span>
+                              )}
+                              {reg.voucher_code && (
+                                <span className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-green-50 text-green-700 border border-green-100">
+                                  Voucher: {reg.voucher_code}
                                 </span>
                               )}
                             </div>
