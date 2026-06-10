@@ -39,8 +39,35 @@ jobs:
         env:
           NODE_ENV: production
 
-      # Copy toàn bộ thư mục .next đã build sang VPS
-      - name: Copy build to VPS
+      # BƯỚC 1: SSH vào VPS để sync source code TRƯỚC khi copy build
+      - name: Sync source code on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+            # Tự động clone lại nếu git repo bị mất
+            if [ ! -d "/opt/landing-page/.git" ]; then
+              echo "⚠️ Git repo không tìm thấy, đang clone lại..."
+              rm -rf /opt/landing-page
+              git clone https://github.com/Aizenworld69/landing-page.git /opt/landing-page
+            fi
+
+            cd /opt/landing-page
+            git reset --hard
+            git clean -fd
+            git pull origin main
+            npm install --prefer-offline
+            echo "✅ Source code đã được cập nhật"
+
+      # BƯỚC 2: Copy thư mục .next đã build từ runner sang VPS
+      # rm: false để KHÔNG xóa toàn bộ thư mục dự án!
+      - name: Copy .next build to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -49,10 +76,10 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: ".next"
           target: "/opt/landing-page"
-          rm: true
+          rm: false
 
-      # SSH vào VPS: chỉ pull source + restart PM2 (không cần build nữa!)
-      - name: Restart app on VPS
+      # BƯỚC 3: Restart PM2
+      - name: Restart app via PM2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -64,16 +91,5 @@ jobs:
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
             cd /opt/landing-page
-
-            # Reset và pull code mới nhất
-            git reset --hard
-            git clean -fd
-            git pull origin main
-
-            # Cài dependencies (chạy nhanh vì node_modules đã có sẵn, chỉ update delta)
-            npm install --prefer-offline
-
-            # Khởi động lại app (KHÔNG cần build vì .next đã được copy từ runner)
             pm2 reload landing-page || pm2 restart landing-page
-
             echo "✅ Deploy thành công!"
