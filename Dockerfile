@@ -26,9 +26,6 @@ ENV NODE_ENV=production
 ENV PORT=20000
 ENV HOSTNAME="0.0.0.0"
 
-# Install runtime dependencies required for better-sqlite3 (libc, etc.)
-RUN apk add --no-cache python3 make g++ gcc libc-dev
-
 # Copy the standalone output and assets
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
