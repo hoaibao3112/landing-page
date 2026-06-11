@@ -136,7 +136,7 @@ function SkillCard({
       className="group bg-[#13283e] p-8 rounded-3xl shadow-[0_0_40px_rgba(59, 130, 246,0.05)] hover:shadow-[0_0_60px_rgba(59, 130, 246,0.08)] transition-all border border-white/8 hover:border-[#3b82f6]/30 hover:bg-white/6 flex flex-col items-center justify-between min-h-[260px] text-center"
     >
       <div className="flex flex-col items-center text-center">
-        <div className={`w-12 h-12 rounded-xl ${iconBg} ${iconColor} flex items-center justify-center mb-6`}>
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#1a4cd2] to-[#3b82f6] text-white flex items-center justify-center mb-6 shadow-md shadow-blue-500/10">
           <span className="material-symbols-outlined text-2xl font-bold">{icon}</span>
         </div>
         <h3 className="text-lg font-black font-headline text-[#3b82f6] mb-3 tracking-tight">{title}</h3>
@@ -593,30 +593,45 @@ export default function Home() {
           </motion.div>
 
           {/* Prominent badges: 01 ngày offline / 03 ngày online / Học lại trọn đời (moved below meta) */}
-          <div className="flex items-center justify-center gap-4 mb-6">
-            {[
-              { text: '01 ngày offline thực hành', icon: '/icon1.png' },
-              { text: '03 ngày online hỗ trợ', icon: '/icon2.png' },
-              { text: 'Học lại trọn đời', icon: '/icon3.png' }
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-2.5 px-4 py-2 rounded-full text-white glow-white font-black text-sm sm:text-base bg-white/5 border border-white/10"
-                style={{
-                  textShadow: '0 0 18px rgba(255,255,255,0.15)',
-                  boxShadow: '0 8px 30px rgba(59, 130, 246,0.04)'
-                }}
-              >
-                <Image
-                  src={item.icon}
-                  alt="icon"
-                  width={32}
-                  height={32}
-                  className="w-7 h-7 sm:w-8 sm:h-8 object-contain shrink-0"
-                />
-                <span>{item.text}</span>
+          <div className="grid grid-cols-3 gap-0 max-w-4xl w-full my-8 md:my-12 relative z-10 py-4 md:py-6 border-y border-white/10 px-1 md:px-4">
+            {/* Column 1 */}
+            <div className="flex flex-col items-center text-center px-1 md:px-6 border-r border-white/10">
+              <div className="w-12 h-12 md:w-20 md:h-20 rounded-full bg-gradient-to-tr from-[#1a4cd2] to-[#3b82f6] border-2 md:border-[3px] border-white flex items-center justify-center shadow-lg shadow-blue-500/20 mb-3 md:mb-5 hover:scale-105 transition-transform duration-300 shrink-0">
+                <span className="material-symbols-outlined text-white text-xl md:text-3xl font-black">groups</span>
               </div>
-            ))}
+              <h3 className="text-xs md:text-3xl font-black font-headline text-white tracking-wide md:tracking-wider uppercase mb-0.5 md:mb-1 leading-tight">
+                01 Ngày
+              </h3>
+              <p className="text-[8px] md:text-sm font-bold text-slate-300 tracking-normal md:tracking-widest uppercase leading-snug">
+                Offline thực hành
+              </p>
+            </div>
+
+            {/* Column 2 */}
+            <div className="flex flex-col items-center text-center px-1 md:px-6 border-r border-white/10">
+              <div className="w-12 h-12 md:w-20 md:h-20 rounded-full bg-gradient-to-tr from-[#1a4cd2] to-[#3b82f6] border-2 md:border-[3px] border-white flex items-center justify-center shadow-lg shadow-blue-500/20 mb-3 md:mb-5 hover:scale-105 transition-transform duration-300 shrink-0">
+                <span className="material-symbols-outlined text-white text-xl md:text-3xl font-black">headset_mic</span>
+              </div>
+              <h3 className="text-xs md:text-3xl font-black font-headline text-white tracking-wide md:tracking-wider uppercase mb-0.5 md:mb-1 leading-tight">
+                03 Ngày
+              </h3>
+              <p className="text-[8px] md:text-sm font-bold text-slate-300 tracking-normal md:tracking-widest uppercase leading-snug">
+                Online hỗ trợ
+              </p>
+            </div>
+
+            {/* Column 3 */}
+            <div className="flex flex-col items-center text-center px-1 md:px-6">
+              <div className="w-12 h-12 md:w-20 md:h-20 rounded-full bg-gradient-to-tr from-[#1a4cd2] to-[#3b82f6] border-2 md:border-[3px] border-white flex items-center justify-center shadow-lg shadow-blue-500/20 mb-3 md:mb-5 hover:scale-105 transition-transform duration-300 shrink-0">
+                <span className="material-symbols-outlined text-white text-xl md:text-3xl font-black">all_inclusive</span>
+              </div>
+              <h3 className="text-xs md:text-3xl font-black font-headline text-white tracking-wide md:tracking-wider uppercase mb-0.5 md:mb-1 leading-tight">
+                Học lại
+              </h3>
+              <p className="text-[8px] md:text-sm font-bold text-slate-300 tracking-normal md:tracking-widest uppercase leading-snug">
+                Trọn đời
+              </p>
+            </div>
           </div>
 
 
@@ -713,7 +728,7 @@ export default function Home() {
 
               <div className="flex flex-col items-center text-center w-full">
                 <div className="flex flex-col items-center mb-6 w-full gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#1a4cd2] to-[#3b82f6] text-white flex items-center justify-center shadow-md shadow-blue-500/10">
                     <span className="material-symbols-outlined text-white glow-white text-2xl font-bold">groups</span>
                   </div>
                   <span className="px-3 py-1 bg-red-500 text-white text-[10px] font-black uppercase rounded-full tracking-wider">ĐẶC BIỆT</span>
@@ -787,7 +802,7 @@ export default function Home() {
       </section>
 
       {/* Timeline Section */}
-      <section id="timeline" className="bg-[#0e2434] pt-10 pb-12 px-6 md:px-8 relative overflow-hidden scroll-mt-32">
+      <section id="timeline" className="bg-[#0e2434] pt-10 pb-6 px-6 md:px-8 relative overflow-hidden scroll-mt-32">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -816,7 +831,7 @@ export default function Home() {
                 >
                   {/* Time indicator for medium screens */}
                   <div className="hidden md:block absolute -left-40 top-1.5 w-24 text-right pr-4">
-                    <span className={`text-base font-black font-headline ${isActive ? 'text-[#1a7a5e]' : 'text-slate-400'}`}>
+                    <span className="text-base font-black font-headline text-white">
                       {item.time}
                     </span>
                   </div>
@@ -824,12 +839,12 @@ export default function Home() {
                   {/* Circle marker on the line */}
                   <div className="absolute -left-[41px] top-1.5 flex items-center justify-center">
                     {isActive ? (
-                      <div className="w-6 h-6 rounded-full bg-[#1a7a5e] border-4 border-white flex items-center justify-center shadow-lg">
-                        <span className="material-symbols-outlined text-white glow-white text-[12px] font-black">add</span>
+                      <div className="w-6 h-6 rounded-full bg-white border-4 border-[#3b82f6] flex items-center justify-center shadow-lg">
+                        <span className="material-symbols-outlined text-[#3b82f6] text-[12px] font-black">add</span>
                       </div>
                     ) : isCompleted ? (
-                      <div className="w-6 h-6 rounded-full bg-[#1a7a5e] border-4 border-white flex items-center justify-center shadow-lg">
-                        <span className="material-symbols-outlined text-white glow-white text-[12px] font-black">check</span>
+                      <div className="w-6 h-6 rounded-full bg-white border-4 border-[#3b82f6] flex items-center justify-center shadow-lg">
+                        <span className="material-symbols-outlined text-[#3b82f6] text-[12px] font-black">check</span>
                       </div>
                     ) : (
                       <div className="w-6 h-6 rounded-full bg-[#13283e] border-4 border-white/8 flex items-center justify-center shadow-sm">
@@ -839,35 +854,25 @@ export default function Home() {
                   </div>
 
                   {/* Card */}
-                  <div className={`p-6 rounded-2xl border transition-all ${isActive
-                    ? 'bg-[#3b82f6]/10 border-[#3b82f6]/40 shadow-md shadow-[#3b82f6]/6'
+                  <div className={`p-6 rounded-2xl border border-white transition-all ${isActive
+                    ? 'bg-white/5 shadow-md shadow-white/5'
                     : isCompleted
-                      ? 'bg-white/4 border-[#3b82f6]/15'
-                      : 'bg-[#13283e] border-white/8 hover:shadow-md'
+                      ? 'bg-white/4'
+                      : 'bg-[#13283e] hover:shadow-md'
                     }`}>
                     {/* Mobile Time */}
                     <div className="md:hidden mb-2">
-                      <span className={`text-sm font-black font-headline ${isActive ? 'text-[#1a7a5e]' : 'text-slate-500'}`}>
+                      <span className="text-sm font-black font-headline text-white">
                         {item.time}
                       </span>
                     </div>
 
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div>
-                        <h3 className={`text-lg font-black font-headline ${isActive ? 'text-[#3b82f6]' : 'text-white'}`}>
+                        <h3 className="text-lg font-black font-headline text-white">
                           {item.title}
                         </h3>
                         <p className="text-white glow-white text-sm font-normal mt-1 leading-relaxed whitespace-pre-line">{item.description}</p>
-                      </div>
-                      <div className="shrink-0 flex items-start">
-                        <span className={`px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-wider ${isCompleted
-                          ? 'bg-blue-100 text-blue-700'
-                          : isActive
-                            ? 'bg-[#1a7a5e] text-white'
-                            : 'bg-slate-100 text-slate-500'
-                          }`}>
-                          {item.badge}
-                        </span>
                       </div>
                     </div>
                   </div>
@@ -880,12 +885,12 @@ export default function Home() {
 
 
       {/* Speakers Section */}
-      <section id="speakers" className="pt-10 pb-12 px-8 max-w-7xl mx-auto scroll-mt-40 bg-[#0e2434]/80 backdrop-blur-sm rounded-[4rem] mt-6 mb-6 border border-white/10">
+      <section id="speakers" className="pt-6 pb-6 px-4 md:px-8 max-w-7xl mx-auto scroll-mt-40 bg-[#0e2434]/80 backdrop-blur-sm rounded-[3rem] md:rounded-[4rem] mt-2 mb-2 border border-white/10">
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true, margin: "-100px" }}
-          className="text-center mb-16"
+          className="text-center mb-6"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#3b82f6]/10 text-[#3b82f6] rounded-full mb-4">
             <span className="material-symbols-outlined text-sm">mic</span>
@@ -937,7 +942,7 @@ export default function Home() {
       </section>
 
       {/* Pricing / Register Section */}
-      <section id="register" className="pt-10 pb-24 px-6 md:px-8 scroll-mt-32">
+      <section id="register" className="pt-4 pb-16 px-6 md:px-8 scroll-mt-32">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-4">
             <span className="text-xs font-black tracking-widest text-[#3b82f6] uppercase">Đăng ký</span>
@@ -987,7 +992,7 @@ export default function Home() {
               transition={{ delay: 0.08 }}
               className="relative flex flex-col bg-[#13283e] border border-white/10 rounded-3xl p-6 shadow-lg hover:shadow-blue-400/10 hover:-translate-y-1 transition-all"
             >
-              <div className="w-12 h-12 rounded-2xl bg-[#3b82f6]/15 text-[#3b82f6] flex items-center justify-center mb-4 mt-2">
+              <div className="w-12 h-12 rounded-2xl bg-[#3b82f6] text-white flex items-center justify-center mb-4 mt-2">
                 <span className="material-symbols-outlined text-2xl">person</span>
               </div>
               <p className="font-black text-white text-lg font-headline">1 người</p>
@@ -1016,13 +1021,26 @@ export default function Home() {
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                 <span className="px-3 py-1 bg-gradient-to-r from-[#3b82f6] to-[#38bdf8] text-[#0e2434] text-[10px] font-black uppercase tracking-wider rounded-full shadow">Hot nhất</span>
               </div>
-              <div className="w-12 h-12 rounded-2xl bg-[#3b82f6]/15 text-[#3b82f6] flex items-center justify-center mb-4 mt-2">
+              <div className="w-12 h-12 rounded-2xl bg-[#3b82f6] text-white flex items-center justify-center mb-4 mt-2">
                 <span className="material-symbols-outlined text-2xl">group</span>
               </div>
               <p className="font-black text-white text-lg font-headline">Nhóm 2 người</p>
               <p className="text-slate-400 text-xs mb-4">Đăng ký cùng 1 người</p>
               <div className="mb-1">
-                <span className="inline-block px-2 py-0.5 bg-[#3b82f6]/15 text-[#38bdf8] text-[10px] font-black rounded-md uppercase tracking-wider">Giảm 15%</span>
+                <motion.span
+                  animate={{
+                    scale: [1, 1.06, 1],
+                    boxShadow: [
+                      "0 0 4px rgba(239, 68, 68, 0.2)",
+                      "0 0 16px rgba(239, 68, 68, 0.6)",
+                      "0 0 4px rgba(239, 68, 68, 0.2)"
+                    ]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="inline-block px-3 py-1 bg-gradient-to-r from-red-500 to-orange-500 text-white text-[11px] font-black rounded-full uppercase tracking-wider"
+                >
+                  Giảm 15%
+                </motion.span>
               </div>
               <p className="text-slate-500 line-through text-sm mb-1">1.300.000đ</p>
               <p className="text-3xl font-black text-white font-headline mb-1">1.100.000đ</p>
@@ -1047,13 +1065,26 @@ export default function Home() {
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                 <span className="px-3 py-1 bg-white/10 text-slate-300 text-[10px] font-black uppercase tracking-wider rounded-full border border-white/15">Tiết kiệm</span>
               </div>
-              <div className="w-12 h-12 rounded-2xl bg-slate-700/60 text-slate-300 flex items-center justify-center mb-4 mt-2">
+              <div className="w-12 h-12 rounded-2xl bg-[#3b82f6] text-white flex items-center justify-center mb-4 mt-2">
                 <span className="material-symbols-outlined text-2xl">groups</span>
               </div>
               <p className="font-black text-white text-lg font-headline">Nhóm 4 người</p>
               <p className="text-slate-400 text-xs mb-4">Đăng ký cùng 4 người</p>
               <div className="mb-1">
-                <span className="inline-block px-2 py-0.5 bg-slate-700/60 text-slate-300 text-[10px] font-black rounded-md uppercase tracking-wider">Giảm 24%</span>
+                <motion.span
+                  animate={{
+                    scale: [1, 1.06, 1],
+                    boxShadow: [
+                      "0 0 4px rgba(239, 68, 68, 0.2)",
+                      "0 0 16px rgba(239, 68, 68, 0.6)",
+                      "0 0 4px rgba(239, 68, 68, 0.2)"
+                    ]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                  className="inline-block px-3 py-1 bg-gradient-to-r from-red-500 to-orange-500 text-white text-[11px] font-black rounded-full uppercase tracking-wider"
+                >
+                  Giảm 24%
+                </motion.span>
               </div>
               <p className="text-slate-500 line-through text-sm mb-1">5.200.000đ</p>
               <p className="text-3xl font-black text-white font-headline mb-1">990.000đ</p>

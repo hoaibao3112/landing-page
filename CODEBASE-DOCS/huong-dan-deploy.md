@@ -1,76 +1,97 @@
-# Hướng Dẫn Quy Trình Deploy (CI/CD) Landing Page
+# Hướng Dẫn Quy Trình Deploy Chuẩn Bằng Docker (Tránh Lỗi 502 / Tràn RAM VPS)
 
-Tài liệu này hướng dẫn chi tiết các bước để đẩy code và triển khai (deploy) ứng dụng lên máy chủ VPS thông qua hệ thống tự động hóa GitHub Actions.
+Tài liệu này hướng dẫn chi tiết các bước code, kiểm tra và đẩy code triển khai (deploy) ứng dụng tự động bằng Docker thông qua GitHub Actions nhằm phòng tránh tuyệt đối lỗi **502 Bad Gateway** và lỗi **Tràn RAM (Out of Memory - OOM)** trên máy chủ VPS.
 
 ---
 
-## 1. Quy Trình Đẩy Code & Deploy Chuẩn (Git Workflow)
+## 1. Giới thiệu hệ thống Deploy mới bằng Docker
 
-Để đảm bảo an toàn và tính bảo mật (không bị lộ thông tin VPS), quy trình deploy được thực hiện qua các bước sau:
+*   **Tại sao trước đây bị lỗi 502?**
+    Trước đây, việc biên dịch code (`npm run build` hoặc `pnpm build`) được thực hiện trực tiếp trên VPS. Khi dự án cài thêm các thư viện nặng, quá trình build ngốn sạch RAM của VPS, khiến hệ điều hành tự động tắt (kill) tiến trình NodeJS để bảo vệ máy chủ -> Nginx mất kết nối đến NodeJS và trả về lỗi **502 Bad Gateway**.
+*   **Hệ thống mới giải quyết thế nào?**
+    1.  **Biên dịch trên Cloud**: Quá trình biên dịch mã nguồn và đóng gói được chuyển hoàn toàn sang máy ảo của GitHub Actions (cấu hình RAM/CPU mạnh mẽ).
+    2.  **VPS chạy tải nhẹ**: VPS chỉ làm nhiệm vụ tải gói Docker Image đã build sẵn về và chạy. Lượng RAM tiêu thụ cực kỳ ít và ổn định, **loại bỏ 100% lỗi treo/sập VPS (502) khi deploy**.
 
-```mermaid
-graph TD
-    A[1. Code & Test ở máy cá nhân] --> B[2. Push code lên Github cá nhân - fork]
-    B --> C[3. Tạo Pull Request sang repo gốc Aizenworld69/landing-page]
-    C --> D[4. Duyệt & Merge Pull Request trên repo gốc]
-    D --> E[5. GitHub Actions tự động build & deploy lên VPS]
-    E --> F[6. Xóa cache trình duyệt và kiểm tra trang web]
+---
+
+## 2. Quy trình kiểm tra dưới local (Local Testing)
+
+Trước khi đẩy code lên server, hãy kiểm tra ở máy local theo các bước sau:
+
+### Bước 1: Code và chạy thử chế độ Development
+Chạy dự án trực tiếp bằng Node.js máy local để có tốc độ hot-reload nhanh nhất:
+```bash
+npm run dev
 ```
+Kiểm tra tính năng tại địa chỉ: `http://localhost:20000`.
 
-### Chi tiết các bước thực hiện:
-
-#### **Bước 1: Code và kiểm tra ở local**
-*   Chạy dự án ở local bằng lệnh: `npm run dev`
-*   Truy cập `http://localhost:20000` để kiểm tra các tính năng hoạt động ổn định.
-
-#### **Bước 2: Commit và Push lên Github cá nhân (Repo Fork)**
-*   Mở terminal tại thư mục dự án và chạy các lệnh:
+### Bước 2: Build và chạy thử Docker local (Nếu muốn kiểm tra container)
+Đảm bảo phần mềm **Docker Desktop** đã được mở, sau đó chạy các lệnh:
+1.  **Build Image Docker nội bộ**:
     ```bash
-    git add .
-    git commit -m "feat: mô tả tính năng vừa làm"
-    git push fork main
+    docker build -t landing-page:local .
+    ```
+    *(Nhờ có file `.dockerignore`, dung lượng truyền file chỉ khoảng 13MB nên bước này sẽ chạy rất nhanh).*
+2.  **Khởi chạy Container thử nghiệm**:
+    ```bash
+    docker run -d -p 20001:20000 --name landing-page-test -v d:/TrangWebCongTy/landing-page/registrations.db:/app/registrations.db landing-page:local
+    ```
+    *   Truy cập **`http://localhost:20001`** trên trình duyệt để kiểm tra web chạy trong Docker.
+3.  **Dọn dẹp sau khi kiểm tra xong**:
+    ```bash
+    docker stop landing-page-test
+    docker rm landing-page-test
     ```
 
-#### **Bước 3: Tạo Pull Request (PR) sang Repository gốc**
-*   Truy cập vào trang so sánh và tạo PR trực tiếp bằng link sau:
+---
+
+## 3. Quy trình Đẩy Code & Deploy Lên VPS
+
+Tùy thuộc vào tài khoản GitHub bạn đang sử dụng, hãy chọn 1 trong 2 cách dưới đây:
+
+### Cách 1: Quy trình nhanh dành cho tài khoản Admin (`Aizenworld69`)
+Nếu bạn đang sử dụng tài khoản Admin của dự án, bạn có thể đẩy code trực tiếp lên repository gốc:
+```bash
+git add .
+git commit -m "feat: mô tả tính năng mới"
+git push origin main
+```
+*Ngay sau khi lệnh push thành công, hệ thống GitHub Actions sẽ tự động kích hoạt tiến trình đóng gói và deploy lên VPS.*
+
+### Cách 2: Quy trình chuẩn qua Pull Request (Dành cho tài khoản cộng tác viên / fork)
+Nếu sử dụng tài khoản cá nhân, hãy thực hiện qua các bước sau để đảm bảo an toàn:
+1.  **Push code lên GitHub cá nhân (fork)**:
+    ```bash
+    git add .
+    git commit -m "feat: mô tả tính năng mới"
+    git push fork main
+    ```
+2.  **Tạo Pull Request (PR)**:
+    Truy cập liên kết so sánh và nhấn nút xanh lá `Create pull request`:
     👉 **[Tạo Pull Request sang Repo gốc](https://github.com/Aizenworld69/landing-page/compare/main...hoaibao3112:landing-page:main)**
-*   Nhấn nút màu xanh **`Create pull request`** để gửi yêu cầu gộp code.
-
-#### **Bước 4: Duyệt và Merge Pull Request**
-*   Sử dụng tài khoản quản trị (`Aizenworld69`) để truy cập vào Pull Request vừa tạo.
-*   Nhấn nút màu xanh lá **`Merge pull request`** -> **`Confirm merge`**.
-*   *Lưu ý: Ngay sau khi Merge thành công, hệ thống GitHub Actions của repo gốc sẽ tự động kích hoạt tiến trình deploy.*
+3.  **Merge Pull Request**:
+    Sử dụng tài khoản Admin duyệt và bấm `Merge pull request` -> `Confirm merge` trên GitHub để tiến trình deploy tự động bắt đầu.
 
 ---
 
-## 2. Cách Kiểm Tra Trạng Thái Deploy
+## 4. Cách giám sát tiến trình Deploy và kiểm tra trang web
 
-### Bước 1: Xem tiến trình chạy trên GitHub
-*   Truy cập vào mục Actions của repo gốc: **[GitHub Actions](https://github.com/Aizenworld69/landing-page/actions)**
-*   Theo dõi tiến trình chạy mới nhất:
-    *   🟡 **Màu vàng xoay**: Đang chạy build và deploy (thường mất khoảng 1 phút).
+1.  **Giám sát trên GitHub**:
+    Truy cập mục **[GitHub Actions](https://github.com/Aizenworld69/landing-page/actions)** của repo gốc để xem tiến trình:
+    *   🟡 **Màu vàng xoay**: Đang build Docker và deploy (thường mất khoảng 1 - 2 phút).
     *   ✅ **Màu xanh lá (Success)**: Đã deploy thành công lên VPS.
-    *   ❌ **Màu đỏ (Failed)**: Deploy thất bại (click vào để xem chi tiết lỗi).
-
-### Bước 2: Kiểm tra thực tế trên trang web
-*   Do trình duyệt lưu cache (bộ nhớ đệm) trang chủ Next.js rất mạnh, sau khi deploy thành công, bạn cần:
-    *   Nhấn tổ hợp phím **`Ctrl + F5`** (hoặc `Ctrl + Shift + R`) để ép trình duyệt xóa cache và tải lại trang mới.
-    *   Hoặc mở **Cửa sổ ẩn danh (Incognito Window)** để truy cập trang web.
-*   Địa chỉ trang web chính thức: **[http://checkin.aizenworld.com](http://checkin.aizenworld.com)**
-*   Địa chỉ trang quản trị Admin: **[http://checkin.aizenworld.com/admin/login](http://checkin.aizenworld.com/admin/login)**
+    *   ❌ **Màu đỏ (Failed)**: Deploy thất bại (nhấn vào để xem chi tiết lỗi).
+2.  **Xóa cache khi kiểm tra trang web**:
+    Sau khi deploy thành công, do trình duyệt lưu cache trang Next.js rất mạnh, bạn cần nhấn tổ hợp phím **`Ctrl + F5`** (hoặc `Ctrl + Shift + R`) hoặc mở cửa sổ ẩn danh để kiểm tra giao diện mới.
+    *   Địa chỉ chính thức: **[http://checkin.aizenworld.com](http://checkin.aizenworld.com)**
+    *   Trang quản trị: **[http://checkin.aizenworld.com/admin](http://checkin.aizenworld.com/admin)**
 
 ---
 
-## 3. Các Lỗi Thường Gặp & Cách Xử Lý
+## 5. Nguyên tắc vàng phòng tránh lỗi 502 trong tương lai
 
-### 🔴 Lỗi 1: `Error: missing server host`
-*   **Nguyên nhân**: Bạn push code trực tiếp lên repo cá nhân (fork) và kích hoạt GitHub Actions tại đây. Repo cá nhân không được cấu hình các biến bảo mật (IP VPS, mật khẩu SSH) nên hệ thống không kết nối được đến máy chủ.
-*   **Cách khắc phục**: Luôn thực hiện việc deploy thông qua **Pull Request** và **Merge** vào repository gốc (`Aizenworld69/landing-page`), không chạy Actions trên repo cá nhân.
+Để giữ cho hệ thống luôn chạy mượt mà và không bao giờ gặp lại lỗi 502:
 
-### 🔴 Lỗi 2: `Your local changes to the following files would be overwritten by merge... Aborting`
-*   **Nguyên nhân**: Trên máy chủ VPS có một số file tự sinh hoặc bị chỉnh sửa thủ công trực tiếp (ví dụ: `next-env.d.ts`), làm cho lệnh `git pull` bị xung đột và tự động huỷ bỏ.
-*   **Cách khắc phục**: Hiện tại hệ thống CI/CD đã được cấu hình tự động chạy lệnh `git reset --hard` và `git clean -fd` trước khi kéo code. Lệnh này sẽ tự động xóa sạch các thay đổi thừa trên VPS để việc cập nhật code luôn trơn tru. Bạn không cần làm gì thêm cho lỗi này.
-
-### 🔴 Lỗi 3: Đã báo Deploy Success nhưng tải trang vẫn hiện giao diện cũ hoặc báo lỗi 404
-*   **Nguyên nhân**: Trình duyệt hoặc hệ thống CDN đang lưu cache phiên bản cũ của trang web.
-*   **Cách khắc phục**: Nhấn **`Ctrl + F5`** để xóa cache trình duyệt, hoặc test bằng chế độ ẩn danh.
+*   **Không bao giờ chạy build trực tiếp trên VPS**: Tuyệt đối không SSH vào VPS rồi gõ các lệnh `npm run build`, `pnpm build` hay `npm install`. Điều này sẽ vắt kiệt RAM của VPS và làm sập trang web ngay lập tức. Mọi tác vụ build hãy để Docker và GitHub Actions tự động thực hiện trên Cloud.
+*   **Bảo vệ file `.dockerignore`**: File [.dockerignore](file:///d:/TrangWebCongTy/landing-page/.dockerignore) ở thư mục gốc có vai trò cực kỳ quan trọng trong việc chặn các thư mục nặng như `node_modules` và `.next` nạp vào Docker. Không được xóa hoặc chỉnh sửa sai file này để đảm bảo tốc độ build luôn nhanh nhất.
+*   **Quản lý thư viện chặt chẽ**: Hạn chế cài đặt các thư viện quá nặng. Khi bắt buộc sử dụng thư viện nặng (như `exceljs`), hãy sử dụng kỹ thuật **Dynamic Import** để tránh làm phình to dung lượng tải trang. Tham khảo chi tiết tại: [Tài liệu Tối ưu hóa Dependencies](file:///d:/TrangWebCongTy/landing-page/CODEBASE-DOCS/toi-uu-dependencies.md).

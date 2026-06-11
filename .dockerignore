@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.github
+*.db
+*.db-shm
+*.db-wal
+*.log
+.env*
+npm-debug.log*
+README.md
+CODEBASE-DOCS
+diff.txt
+commit_9ddf0ee.txt
