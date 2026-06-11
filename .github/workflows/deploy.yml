@@ -66,6 +66,9 @@ jobs:
             # Đảm bảo file database tồn tại trước khi mount (tránh Docker tạo nhầm thư mục)
             touch /opt/landing-page/registrations.db
 
+            # Đăng xuất ghcr.io để tránh token cũ/hết hạn trên VPS làm chặn tải public image
+            docker logout ghcr.io || true
+
             # Kéo Docker Image mới và cập nhật Container
             docker compose pull
             docker compose up -d --remove-orphans
