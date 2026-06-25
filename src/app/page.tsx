@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
@@ -35,7 +35,7 @@ function CustomSelect({
 
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className={`relative group cursor-pointer w-full pl-12 pr-12 py-4 bg-white/8 border-2 rounded-2xl transition-all duration-300 flex items-center ${isOpen ? 'border-[#3b82f6] bg-white/8 ring-4 ring-[#3b82f6]/10 shadow-lg' : 'border-transparent hover:bg-white/8'
+        className={`relative group cursor-pointer w-full pl-12 pr-12 py-4 bg-white/8 border-2 rounded-2xl transition-all duration-300 flex items-center ${isOpen ? 'border-[#ea580c] bg-white/8 ring-4 ring-[#ea580c]/10 shadow-lg' : 'border-transparent hover:bg-white/8'
           }`}
       >
         <span className={`material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 transition-colors duration-300 ${isOpen || selected ? 'text-primary' : 'text-slate-200'
@@ -47,7 +47,7 @@ function CustomSelect({
           {selected || placeholder}
         </span>
 
-        <span className={`material-symbols-outlined absolute right-5 top-1/2 -translate-y-1/2 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#3b82f6]' : 'text-slate-200'
+        <span className={`material-symbols-outlined absolute right-5 top-1/2 -translate-y-1/2 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#ea580c]' : 'text-slate-200'
           }`}>
           expand_more
         </span>
@@ -104,7 +104,7 @@ function CustomSelect({
               value={otherValue}
               onChange={(e) => setOtherValue(e.target.value)}
               required={required}
-              className="w-full mt-2 px-5 py-3 bg-white/8 border-2 border-[#3b82f6]/20 rounded-xl focus:border-[#3b82f6] focus:bg-white/10 transition-all outline-none text-white glow-white text-sm font-medium"
+              className="w-full mt-2 px-5 py-3 bg-white/8 border-2 border-[#ea580c]/20 rounded-xl focus:border-[#ea580c] focus:bg-white/10 transition-all outline-none text-white glow-white text-sm font-medium"
             />
           </motion.div>
         )}
@@ -133,13 +133,13 @@ function SkillCard({
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
       whileHover={{ y: -5 }}
-      className="group bg-[#13283e] p-8 rounded-3xl shadow-[0_0_40px_rgba(59, 130, 246,0.05)] hover:shadow-[0_0_60px_rgba(59, 130, 246,0.08)] transition-all border border-white/8 hover:border-[#3b82f6]/30 hover:bg-white/6 flex flex-col items-center justify-between min-h-[260px] text-center"
+      className="group bg-[#13283e] p-8 rounded-3xl shadow-[0_0_40px_rgba(59, 130, 246,0.05)] hover:shadow-[0_0_60px_rgba(59, 130, 246,0.08)] transition-all border border-white/8 hover:border-[#ea580c]/30 hover:bg-white/6 flex flex-col items-center justify-between min-h-[260px] text-center"
     >
       <div className="flex flex-col items-center text-center">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#1a4cd2] to-[#3b82f6] text-white flex items-center justify-center mb-6 shadow-md shadow-blue-500/10">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#c2410c] to-[#ea580c] text-white flex items-center justify-center mb-6 shadow-md shadow-orange-500/10">
           <span className="material-symbols-outlined text-2xl font-bold">{icon}</span>
         </div>
-        <h3 className="text-lg font-black font-headline text-[#3b82f6] mb-3 tracking-tight">{title}</h3>
+        <h3 className="text-lg font-black font-headline text-[#ea580c] mb-3 tracking-tight">{title}</h3>
         <p className="text-white glow-white text-sm leading-relaxed font-normal">
           {description}
         </p>
@@ -154,7 +154,7 @@ export default function Home() {
   const [message, setMessage] = useState('');
   const [activeSection, setActiveSection] = useState('');
   const [paymentContent, setPaymentContent] = useState('HỌ TÊN - SĐT');
-  const [paymentAmount, setPaymentAmount] = useState(2200000);
+  const [paymentAmount, setPaymentAmount] = useState(2700000);
   const [registeredPkg, setRegisteredPkg] = useState('Nhóm 2 người');
   const [selectedPackage, setSelectedPackage] = useState('Nhóm 2 người');
   const [formStep, setFormStep] = useState<number>(1);
@@ -176,10 +176,10 @@ export default function Home() {
   const [appliedVoucher, setAppliedVoucher] = useState('');
 
   const resetPaymentAmount = (pkg: string) => {
-    if (pkg === 'Nhóm 2 người') setPaymentAmount(2200000);
-    else if (pkg === 'Nhóm 4 người') setPaymentAmount(3960000);
-    else if (pkg === 'Early Bird') setPaymentAmount(950000);
-    else if (pkg === '1 người') setPaymentAmount(1300000);
+    if (pkg === 'Nhóm 2 người') setPaymentAmount(2700000);
+    else if (pkg === 'Nhóm 4 người') setPaymentAmount(4760000);
+    else if (pkg === 'Early Bird') setPaymentAmount(1190000);
+    else if (pkg === '1 người') setPaymentAmount(1590000);
   };
 
   const handleApplyVoucher = async (code: string) => {
@@ -206,7 +206,7 @@ export default function Home() {
     }
   };
 
-  // Countdown target: 2026-06-27T08:00:00+07:00
+  // Countdown target: 2026-07-25T08:00:00+07:00
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [mounted, setMounted] = useState(false);
 
@@ -216,7 +216,7 @@ export default function Home() {
 
   useEffect(() => {
     const rafId = requestAnimationFrame(() => setMounted(true));
-    const target = new Date('2026-06-27T08:00:00+07:00').getTime();
+    const target = new Date('2026-07-25T08:00:00+07:00').getTime();
 
     const updateTime = () => {
       const now = new Date().getTime();
@@ -353,11 +353,11 @@ export default function Home() {
   const displayPkg = registeredPkg || modalPkg || selectedPackage;
 
   return (
-    <main className="overflow-x-hidden relative min-h-screen" style={{ background: '#0e2434' }}>
+    <main className="overflow-x-hidden relative min-h-screen" style={{ backgroundImage: 'url(/backgoundTrangkhoahoc.jpg)', backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
       <SpotlightEffects />      {/* Scroll Progress Bar */}
       <motion.div
         style={{ scaleX }}
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#3b82f6] via-[#38bdf8] to-blue-400 origin-left z-[200] shadow-lg shadow-[0_0_20px_rgba(59, 130, 246,0.12)]"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#ea580c] via-[#f97316] to-orange-400 origin-left z-[200] shadow-lg shadow-[0_0_20px_rgba(59, 130, 246,0.12)]"
       />
 
       {/* Toast for Errors */}
@@ -400,20 +400,22 @@ export default function Home() {
               </div>
 
               <div className="p-6 md:p-8 text-center">
-                <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="material-symbols-outlined text-2xl">check_circle</span>
                 </div>
                 <h3 className="text-2xl font-black font-headline text-[#2c2f31] mb-1">Đăng ký thành công!</h3>
                 <p className="text-slate-500 font-medium text-sm mb-6">Chúng tôi sẽ sớm liên hệ xác nhận với bạn....</p>
 
-                <div className="bg-blue-50/50 rounded-2xl p-5 md:p-6 border border-blue-100 relative overflow-hidden">
+                <div className="bg-orange-50/50 rounded-2xl p-5 md:p-6 border border-orange-100 relative overflow-hidden">
                   <div className="relative z-10">
-                    <h4 className="font-headline font-black text-sm md:text-base text-blue-800 mb-4 uppercase tracking-wider leading-tight">
+                    <h4 className="font-headline font-black text-sm md:text-base text-orange-800 mb-4 uppercase tracking-wider leading-tight">
                       {displayPkg === 'Nhóm 4 người'
-                        ? 'Nhóm 4 người, phí đầu tư: 1.300.000 x 4 = 5.200.000, giảm còn 3.960.000'
+                        ? 'Nhóm 4 người · 1.190.000đ/người · Tổng: 4.760.000đ'
                         : displayPkg === 'Nhóm 2 người'
-                          ? 'Nhóm 2 người, phí đầu tư: 1.300.000 x 2 = 2.600.000, giảm còn 2.200.000'
-                          : 'Vui lòng quét QR thanh toán học phí'}
+                          ? 'Nhóm 2 người · 1.350.000đ/người · Tổng: 2.700.000đ'
+                          : displayPkg === 'Early Bird'
+                            ? 'Early Bird (đến 5/7) · Tổng: 1.190.000đ'
+                            : 'Vui lòng quét QR thanh toán học phí'}
                     </h4>
 
                     <div className="relative group mx-auto w-full max-w-[240px] md:max-w-[280px]">
@@ -425,8 +427,8 @@ export default function Home() {
                           {submittedPhone && <p className="text-sm text-slate-300">{submittedPhone}</p>}
                         </div>
                       )}
-                      <div className="absolute -inset-1.5 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-500"></div>
-                      <div className="relative bg-white p-2.5 rounded-2xl border border-blue-100 shadow-lg">
+                      <div className="absolute -inset-1.5 bg-gradient-to-r from-orange-400 to-orange-400 rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-500"></div>
+                      <div className="relative bg-white p-2.5 rounded-2xl border border-orange-100 shadow-lg">
                         <Image
                           src={`https://img.vietqr.io/image/TPB-00005895437-compact2.png?amount=${paymentAmount}&addInfo=${encodeURIComponent(paymentContent)}&accountName=${encodeURIComponent(submittedName || 'NGUYEN HOANG MINH')}`}
                           alt="QR Thanh toán"
@@ -438,10 +440,10 @@ export default function Home() {
                     </div>
 
                     <div className="mt-5 space-y-3">
-                      <p className="font-black text-blue-700 text-sm">Gói đăng ký: {registeredPkg}</p>
-                      <p className="font-black text-blue-700 text-sm">Học phí: {paymentAmount.toLocaleString('vi-VN')} VND</p>
-                      <div className="bg-white/90 backdrop-blur py-2.5 px-4 rounded-xl border border-dashed border-blue-200 inline-block text-center w-full max-w-[240px]">
-                        <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-0.5">Nội dung chuyển khoản</p>
+                      <p className="font-black text-orange-700 text-sm">Gói đăng ký: {registeredPkg}</p>
+                      <p className="font-black text-orange-700 text-sm">Học phí: {paymentAmount.toLocaleString('vi-VN')} VND</p>
+                      <div className="bg-white/90 backdrop-blur py-2.5 px-4 rounded-xl border border-dashed border-orange-200 inline-block text-center w-full max-w-[240px]">
+                        <p className="text-[10px] font-black text-orange-600 uppercase tracking-widest mb-0.5">Nội dung chuyển khoản</p>
                         <p className="text-sm font-black text-primary tracking-tight">{paymentContent}</p>
                       </div>
                     </div>
@@ -478,13 +480,13 @@ export default function Home() {
             />
           </div>
           <div className="hidden lg:flex items-center gap-10">
-            <a className={`pb-1 font-headline text-sm transition-all ${activeSection === 'skills' ? 'text-[#3b82f6] font-bold border-b-[3px] border-[#3b82f6]' : 'text-slate-300 font-semibold hover:text-white border-b-[3px] border-transparent'}`} href="#skills">Kỹ năng</a>
-            <a className={`pb-1 font-headline text-sm transition-all ${activeSection === 'timeline' ? 'text-[#3b82f6] font-bold border-b-[3px] border-[#3b82f6]' : 'text-slate-300 font-semibold hover:text-white border-b-[3px] border-transparent'}`} href="#timeline">Lộ trình</a>
-            <a className={`pb-1 font-headline text-sm transition-all ${activeSection === 'speakers' ? 'text-[#3b82f6] font-bold border-b-[3px] border-[#3b82f6]' : 'text-slate-300 font-semibold hover:text-white border-b-[3px] border-transparent'}`} href="#speakers">Diễn giả</a>
+            <a className={`pb-1 font-headline text-sm transition-all ${activeSection === 'skills' ? 'text-[#ea580c] font-bold border-b-[3px] border-[#ea580c]' : 'text-slate-300 font-semibold hover:text-white border-b-[3px] border-transparent'}`} href="#skills">Kỹ năng</a>
+            <a className={`pb-1 font-headline text-sm transition-all ${activeSection === 'timeline' ? 'text-[#ea580c] font-bold border-b-[3px] border-[#ea580c]' : 'text-slate-300 font-semibold hover:text-white border-b-[3px] border-transparent'}`} href="#timeline">Lộ trình</a>
+            <a className={`pb-1 font-headline text-sm transition-all ${activeSection === 'speakers' ? 'text-[#ea580c] font-bold border-b-[3px] border-[#ea580c]' : 'text-slate-300 font-semibold hover:text-white border-b-[3px] border-transparent'}`} href="#speakers">Diễn giả</a>
           </div>
           <a
             href="#register"
-            className="px-4 sm:px-8 py-2 sm:py-2.5 rounded-full font-headline font-bold text-[10px] sm:text-sm shadow-lg hover:scale-105 transition-all active:scale-95 uppercase tracking-wider bg-gradient-to-r from-[#3b82f6] to-[#38bdf8] text-[#0e2434]"
+            className="px-4 sm:px-8 py-2 sm:py-2.5 rounded-full font-headline font-bold text-[10px] sm:text-sm shadow-lg hover:scale-105 transition-all active:scale-95 uppercase tracking-wider bg-gradient-to-r from-[#1a4cd2] to-[#3b82f6] text-white"
           >
             Đăng ký Ngay
           </a>
@@ -492,18 +494,18 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative bg-[#0f2634] text-white pt-36 pb-6 px-6 overflow-hidden flex flex-col items-center justify-center text-center">
+      <section className="relative text-white pt-36 pb-6 px-6 overflow-hidden flex flex-col items-center justify-center text-center">
         {/* Atmospheric Orbs */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <motion.div
             animate={{ y: [0, -20, 0], scale: [1, 1.05, 1] }}
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute -top-40 -left-40 w-96 h-96 bg-[#3b82f6]/15 rounded-full blur-[120px]"
+            className="absolute -top-40 -left-40 w-96 h-96 bg-[#ea580c]/15 rounded-full blur-[120px]"
           />
           <motion.div
             animate={{ y: [0, 20, 0], scale: [1, 1.05, 1] }}
             transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-            className="absolute -bottom-40 -right-40 w-96 h-96 bg-[#38bdf8]/10 rounded-full blur-[120px]"
+            className="absolute -bottom-40 -right-40 w-96 h-96 bg-[#f97316]/10 rounded-full blur-[120px]"
           />
         </div>
 
@@ -528,7 +530,7 @@ export default function Home() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="text-xs sm:text-sm font-black tracking-widest text-[#3b82f6] uppercase mb-4"
+            className="text-sm sm:text-base font-black tracking-widest text-white uppercase mb-4"
           >
             Khóa học từ cơ bản đến chuyên sâu
           </motion.div>
@@ -539,7 +541,7 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-5xl sm:text-7xl md:text-8xl font-black font-headline tracking-tight leading-none mb-6"
           >
-            Làm chủ <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3b82f6] to-[#38bdf8]">Claude AI</span>
+            Làm chủ <span className="block sm:inline whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r from-[#ea580c] to-[#f97316]">Claude AI</span>
           </motion.h1>
 
           <motion.p
@@ -557,31 +559,37 @@ export default function Home() {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex items-center justify-center gap-6 text-sm text-slate-300 font-bold mb-12"
+            className="flex items-center justify-center gap-6 text-base sm:text-lg text-slate-300 font-bold mb-12"
           >
             <div className="flex flex-col items-start gap-0.5">
               <div className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-cyan-400 text-lg shrink-0">calendar_month</span>
-                <span className="text-slate-300">{eventDate}</span>
+                <span className="material-symbols-outlined text-orange-400 text-xl sm:text-2xl shrink-0">calendar_month</span>
+                <span className="text-white">{eventDate}</span>
               </div>
-              <span className="text-slate-400 text-xs font-normal ml-6">8h30 - 17h</span>
+              <span className="text-slate-400 text-xs sm:text-sm font-normal ml-6 sm:ml-8">8h30 - 17h</span>
             </div>
 
-            <span className="hidden sm:inline-block h-4 border-l border-slate-600" />
+            <span className="hidden sm:inline-block h-6 border-l border-slate-600" />
 
             <div className="flex items-start gap-1">
-              <span className="material-symbols-outlined text-blue-500 text-lg shrink-0 mt-0.5">place</span>
+              <span className="material-symbols-outlined text-orange-500 text-xl sm:text-2xl shrink-0 mt-0.5">place</span>
               <a
                 href="https://www.google.com/maps/place/Trung+t%C3%A2m+%C4%90%C3%A0o+T%E1%BA%A1o+B%C6%B0u+ch%C3%ADnh+Vi%E1%BB%85n+th%C3%B4ng/@10.7896789,106.7006799,779m/data=!3m1!1e3!4m6!3m5!1s0x317528b54fb5699d:0xa19aa146dff27e08!8m2!3d10.7893722!4d106.7007822!16s%2Fg%2F11b5phr1rt?entry=ttu&g_ep=EgoyMDI2MDYwMy4xIKXMDSoASAFQAw%3D%3D"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-slate-300 text-left hover:text-blue-400 transition-colors cursor-pointer"
+                className="text-white text-left hover:text-orange-400 transition-colors cursor-pointer"
               >
-                {eventAddress.includes('(') ? (
+                {eventAddress.includes('\n') ? (
+                  eventAddress.split('\n').map((line, i) => (
+                    <span key={i} className="block">
+                      {line}
+                    </span>
+                  ))
+                ) : eventAddress.includes('(') ? (
                   <>
                     {eventAddress.split('(')[0].trim()}
                     <br />
-                    <span className="text-slate-400 text-xs font-normal">({eventAddress.split('(')[1]}</span>
+                    <span className="text-white/90 text-xs font-normal">({eventAddress.split('(')[1]}</span>
                   </>
                 ) : (
                   eventAddress
@@ -592,11 +600,11 @@ export default function Home() {
 
           </motion.div>
 
-          {/* Prominent badges: 01 ngày offline / 03 ngày online / Học lại trọn đời (moved below meta) */}
-          <div className="grid grid-cols-3 gap-0 max-w-4xl w-full my-8 md:my-12 relative z-10 py-4 md:py-6 border-y border-white/10 px-1 md:px-4">
+          {/* Prominent badges: 01 ngày offline / 03 ngày online */}
+          <div className="grid grid-cols-2 gap-0 max-w-2xl w-full my-8 md:my-12 relative z-10 py-4 md:py-6 border-y border-white/10 px-1 md:px-4">
             {/* Column 1 */}
             <div className="flex flex-col items-center text-center px-1 md:px-6 border-r border-white/10">
-              <div className="w-12 h-12 md:w-20 md:h-20 rounded-full bg-gradient-to-tr from-[#1a4cd2] to-[#3b82f6] border-2 md:border-[3px] border-white flex items-center justify-center shadow-lg shadow-blue-500/20 mb-3 md:mb-5 hover:scale-105 transition-transform duration-300 shrink-0">
+              <div className="w-12 h-12 md:w-20 md:h-20 rounded-full bg-gradient-to-tr from-[#c2410c] to-[#ea580c] border-2 md:border-[3px] border-white flex items-center justify-center shadow-lg shadow-orange-500/20 mb-3 md:mb-5 hover:scale-105 transition-transform duration-300 shrink-0">
                 <span className="material-symbols-outlined text-white text-xl md:text-3xl font-black">groups</span>
               </div>
               <h3 className="text-xs md:text-3xl font-black font-headline text-white tracking-wide md:tracking-wider uppercase mb-0.5 md:mb-1 leading-tight">
@@ -608,8 +616,8 @@ export default function Home() {
             </div>
 
             {/* Column 2 */}
-            <div className="flex flex-col items-center text-center px-1 md:px-6 border-r border-white/10">
-              <div className="w-12 h-12 md:w-20 md:h-20 rounded-full bg-gradient-to-tr from-[#1a4cd2] to-[#3b82f6] border-2 md:border-[3px] border-white flex items-center justify-center shadow-lg shadow-blue-500/20 mb-3 md:mb-5 hover:scale-105 transition-transform duration-300 shrink-0">
+            <div className="flex flex-col items-center text-center px-1 md:px-6">
+              <div className="w-12 h-12 md:w-20 md:h-20 rounded-full bg-gradient-to-tr from-[#c2410c] to-[#ea580c] border-2 md:border-[3px] border-white flex items-center justify-center shadow-lg shadow-orange-500/20 mb-3 md:mb-5 hover:scale-105 transition-transform duration-300 shrink-0">
                 <span className="material-symbols-outlined text-white text-xl md:text-3xl font-black">headset_mic</span>
               </div>
               <h3 className="text-xs md:text-3xl font-black font-headline text-white tracking-wide md:tracking-wider uppercase mb-0.5 md:mb-1 leading-tight">
@@ -617,19 +625,6 @@ export default function Home() {
               </h3>
               <p className="text-[8px] md:text-sm font-bold text-slate-300 tracking-normal md:tracking-widest uppercase leading-snug">
                 Online hỗ trợ
-              </p>
-            </div>
-
-            {/* Column 3 */}
-            <div className="flex flex-col items-center text-center px-1 md:px-6">
-              <div className="w-12 h-12 md:w-20 md:h-20 rounded-full bg-gradient-to-tr from-[#1a4cd2] to-[#3b82f6] border-2 md:border-[3px] border-white flex items-center justify-center shadow-lg shadow-blue-500/20 mb-3 md:mb-5 hover:scale-105 transition-transform duration-300 shrink-0">
-                <span className="material-symbols-outlined text-white text-xl md:text-3xl font-black">all_inclusive</span>
-              </div>
-              <h3 className="text-xs md:text-3xl font-black font-headline text-white tracking-wide md:tracking-wider uppercase mb-0.5 md:mb-1 leading-tight">
-                Học lại
-              </h3>
-              <p className="text-[8px] md:text-sm font-bold text-slate-300 tracking-normal md:tracking-widest uppercase leading-snug">
-                Trọn đời
               </p>
             </div>
           </div>
@@ -642,7 +637,7 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col items-center w-full"
           >
-            <p className="text-[10px] sm:text-xs font-black tracking-widest text-[#3b82f6] uppercase mb-4">KHAI GIẢNG SAU</p>
+            <p className="text-xs sm:text-sm font-black tracking-widest text-white uppercase mb-4">KHAI GIẢNG SAU</p>
             <div className="flex items-center gap-2 sm:gap-4 select-none">
               {/* Days */}
               <div className="flex flex-col items-center">
@@ -683,7 +678,7 @@ export default function Home() {
               {/* Seconds */}
               <div className="flex flex-col items-center">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-slate-900/60 border border-slate-700/50 rounded-2xl flex items-center justify-center shadow-xl">
-                  <span className="text-2xl sm:text-4xl font-black text-white glow-white font-headline text-cyan-400">
+                  <span className="text-2xl sm:text-4xl font-black text-white glow-white font-headline text-orange-400">
                     {mounted ? String(timeLeft.seconds).padStart(2, '0') : '00'}
                   </span>
                 </div>
@@ -692,22 +687,15 @@ export default function Home() {
             </div>
           </motion.div>
 
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto mt-16 leading-relaxed font-normal text-center font-headline"
-          >
-            Chương trình được thiết kế với các module từ cơ bản đến chuyên sâu giúp bạn làm chủ hoàn toàn <span className="text-white font-bold">CLAUDE AI</span>, từ xây dựng tư duy đúng khi sử dụng AI, sử dụng thành thạo từng module đến áp dụng thực tế vào chính doanh nghiệp của bạn, giúp tối ưu vận hành và chi phí.
-          </motion.p>
+
         </div>
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="bg-[#11283c] pt-10 pb-12 px-6 md:px-8 relative overflow-hidden scroll-mt-32">
+      <section id="skills" className="bg-black/30 backdrop-blur-sm pt-10 pb-12 px-6 md:px-8 relative overflow-hidden scroll-mt-32">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-xs font-black tracking-widest text-[#3b82f6] uppercase">KỸ NĂNG BẠN SẼ CÓ</span>
+
             <h2 className="text-3xl sm:text-5xl font-black font-headline text-white glow-white mt-2">
               Kết thúc khóa học<br />bạn sở hữu ngay
             </h2>
@@ -722,19 +710,19 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
               whileHover={{ y: -5 }}
-              className="lg:col-span-2 bg-gradient-to-br from-[#3b82f6]/20 to-[#38bdf8]/10 text-white glow-white p-8 rounded-3xl shadow-xl flex flex-col items-center justify-between border border-[#3b82f6]/30 transition-all relative overflow-hidden group min-h-[260px] text-center"
+              className="lg:col-span-2 bg-gradient-to-br from-[#ea580c]/20 to-[#f97316]/10 text-white glow-white p-8 rounded-3xl shadow-xl flex flex-col items-center justify-between border border-[#ea580c]/30 transition-all relative overflow-hidden group min-h-[260px] text-center"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl group-hover:scale-110 transition-transform"></div>
 
               <div className="flex flex-col items-center text-center w-full">
                 <div className="flex flex-col items-center mb-6 w-full gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#1a4cd2] to-[#3b82f6] text-white flex items-center justify-center shadow-md shadow-blue-500/10">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#c2410c] to-[#ea580c] text-white flex items-center justify-center shadow-md shadow-orange-500/10">
                     <span className="material-symbols-outlined text-white glow-white text-2xl font-bold">groups</span>
                   </div>
                   <span className="px-3 py-1 bg-red-500 text-white text-[10px] font-black uppercase rounded-full tracking-wider">ĐẶC BIỆT</span>
                 </div>
-                <h3 className="text-2xl font-black font-headline mb-3 text-[#3b82f6]">Claude Cowork</h3>
-                <p className="text-blue-100 text-sm leading-relaxed font-normal">
+                <h3 className="text-2xl font-black font-headline mb-3 text-[#ea580c]">Claude Cowork</h3>
+                <p className="text-orange-100 text-sm leading-relaxed font-normal">
                   Cowork là cả một phòng ban AI trong lòng bàn tay - mỗi agent đảm nhận một vai trò, tự vận hành, tự phối hợp với nhau, và giao cho bạn kết quả cuối cùng như một đội ngũ thực thụ.
                 </p>
               </div>
@@ -744,8 +732,8 @@ export default function Home() {
             {/* Card 2: Claude Skills */}
             <SkillCard
               icon="psychology"
-              iconColor="text-indigo-600"
-              iconBg="bg-indigo-100"
+              iconColor="text-orange-600"
+              iconBg="bg-orange-100"
               title="Claude Skills"
               description="Biến mỗi nhân sự hoặc quy trình công ty thành Skill cố định - gọi một lúc nhiều Skills, Claude tự xử lý đa nhiệm mà không cần ra lệnh lại."
             />
@@ -753,8 +741,8 @@ export default function Home() {
             {/* Card 3: Claude Projects */}
             <SkillCard
               icon="folder_open"
-              iconColor="text-blue-600"
-              iconBg="bg-blue-100"
+              iconColor="text-orange-600"
+              iconBg="bg-orange-100"
               title="Claude Projects"
               description="Giao việc cho đúng người, giúp bạn tạo ra những 'chuyên gia ảo' theo từng lĩnh vực, luôn hiểu đúng context và làm việc theo chuẩn của bạn."
             />
@@ -765,8 +753,8 @@ export default function Home() {
             {/* Card 4: Claude Connectors */}
             <SkillCard
               icon="hub"
-              iconColor="text-blue-600"
-              iconBg="bg-blue-100"
+              iconColor="text-orange-600"
+              iconBg="bg-orange-100"
               title="Claude Connectors"
               description="Chìa khóa để Claude kết nối với hệ thống công việc như Gmail, Google Drive, Calendar... để xây dựng các trợ lý tự động."
             />
@@ -794,15 +782,15 @@ export default function Home() {
               icon="token"
               iconColor="text-amber-600"
               iconBg="bg-amber-100"
-              title="10 Mẹo tối ưu Token"
-              description="Các kỹ thuật tối ưu hóa chi phí khi sử dụng token mà vẫn giữ nguyên chất lượng."
+              title="Liên tục cập nhật "
+              description="Liên tục cập nhật hàng loạt tính năng Claude mới nhất để nâng cấp hiệu suất công việc của bạn"
             />
           </div>
         </div>
       </section>
 
       {/* Timeline Section */}
-      <section id="timeline" className="bg-[#0e2434] pt-10 pb-6 px-6 md:px-8 relative overflow-hidden scroll-mt-32">
+      <section id="timeline" className="bg-black/20 backdrop-blur-sm pt-10 pb-6 px-6 md:px-8 relative overflow-hidden scroll-mt-32">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -811,11 +799,11 @@ export default function Home() {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <span className="text-xs font-black tracking-widest text-[#3b82f6] uppercase">Nội dung chương trình</span>
-            <h2 className="text-3xl sm:text-5xl font-black font-headline text-white glow-white mt-2">1 ngày - 6 module thực chiến</h2>
+            <span className="text-sm sm:text-base font-black tracking-widest text-white uppercase">Nội dung chương trình</span>
+            <h2 className="text-3xl sm:text-5xl font-black font-headline text-[#ea580c] mt-2">1 ngày - 6 module thực chiến</h2>
           </motion.div>
 
-          <div className="relative border-l-2 border-[#3b82f6]/20 ml-4 md:ml-32 pl-8 space-y-12 py-4">
+          <div className="relative border-l-2 border-[#ea580c]/20 ml-4 md:ml-32 pl-8 space-y-12 py-4">
             {timelineData.map((item, index) => {
               const isActive = index === 0;
               const isCompleted = index === timelineData.length - 1;
@@ -839,12 +827,12 @@ export default function Home() {
                   {/* Circle marker on the line */}
                   <div className="absolute -left-[41px] top-1.5 flex items-center justify-center">
                     {isActive ? (
-                      <div className="w-6 h-6 rounded-full bg-white border-4 border-[#3b82f6] flex items-center justify-center shadow-lg">
-                        <span className="material-symbols-outlined text-[#3b82f6] text-[12px] font-black">add</span>
+                      <div className="w-6 h-6 rounded-full bg-white border-4 border-[#ea580c] flex items-center justify-center shadow-lg">
+                        <span className="material-symbols-outlined text-[#ea580c] text-[12px] font-black">add</span>
                       </div>
                     ) : isCompleted ? (
-                      <div className="w-6 h-6 rounded-full bg-white border-4 border-[#3b82f6] flex items-center justify-center shadow-lg">
-                        <span className="material-symbols-outlined text-[#3b82f6] text-[12px] font-black">check</span>
+                      <div className="w-6 h-6 rounded-full bg-white border-4 border-[#ea580c] flex items-center justify-center shadow-lg">
+                        <span className="material-symbols-outlined text-[#ea580c] text-[12px] font-black">check</span>
                       </div>
                     ) : (
                       <div className="w-6 h-6 rounded-full bg-[#13283e] border-4 border-white/8 flex items-center justify-center shadow-sm">
@@ -885,14 +873,14 @@ export default function Home() {
 
 
       {/* Speakers Section */}
-      <section id="speakers" className="pt-6 pb-6 px-4 md:px-8 max-w-7xl mx-auto scroll-mt-40 bg-[#0e2434]/80 backdrop-blur-sm rounded-[3rem] md:rounded-[4rem] mt-2 mb-2 border border-white/10">
+      <section id="speakers" className="pt-6 pb-6 px-4 md:px-8 max-w-7xl mx-auto scroll-mt-40 bg-black/30 backdrop-blur-sm rounded-[3rem] md:rounded-[4rem] mt-2 mb-2 border border-white/10">
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true, margin: "-100px" }}
           className="text-center mb-6"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#3b82f6]/10 text-[#3b82f6] rounded-full mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#ea580c]/10 text-[#ea580c] rounded-full mb-4">
             <span className="material-symbols-outlined text-sm">mic</span>
             <span className="text-xs font-bold uppercase tracking-widest font-headline">DIỄN GIẢ CHƯƠNG TRÌNH</span>
           </div>
@@ -904,7 +892,7 @@ export default function Home() {
           viewport={{ once: true, margin: "-100px" }}
           className="bg-[#11283c] rounded-[3rem] p-8 lg:p-12 border border-white/10 shadow-sm overflow-hidden relative"
         >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#3b82f6]/8 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#ea580c]/8 blur-[80px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
           <div className="flex flex-col lg:flex-row items-center gap-12 relative z-10">
             <div className="w-full lg:w-2/5 flex justify-center">
               <div className="relative group">
@@ -923,16 +911,16 @@ export default function Home() {
             </div>
             <div className="w-full lg:w-3/5 text-left">
               <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black font-headline mb-2 text-white tracking-tighter">Lê Thanh Hải</h3>
-              <p className="text-lg sm:text-xl font-bold text-[#3b82f6] font-headline mb-6">CEO AIZEN</p>
-              <div className="w-16 h-1.5 bg-gradient-to-r from-[#3b82f6] to-[#38bdf8] rounded-full mb-8"></div>
+              <p className="text-lg sm:text-xl font-bold text-[#ea580c] font-headline mb-6">CEO AIZEN</p>
+              <div className="w-16 h-1.5 bg-gradient-to-r from-[#ea580c] to-[#f97316] rounded-full mb-8"></div>
               <p className="text-lg text-white/80 leading-relaxed text-justify">
                 Chuyên gia với <span className="text-white font-bold">hơn 15 năm kinh nghiệm thực chiến</span> trong ngành Công nghệ thông tin. Anh trực tiếp dẫn dắt lộ trình đưa AI vào vận hành, giúp doanh nghiệp đóng gói quy trình, tối ưu hiệu suất và bứt phá doanh thu từ những trải nghiệm và ứng dụng thực tế nhất.
               </p>
               <div className="mt-8 flex gap-4">
-                <div className="w-10 h-10 rounded-full bg-white/8 border border-white/15 flex items-center justify-center text-slate-300 hover:text-[#3b82f6] transition-colors cursor-pointer">
+                <div className="w-10 h-10 rounded-full bg-white/8 border border-white/15 flex items-center justify-center text-slate-300 hover:text-[#ea580c] transition-colors cursor-pointer">
                   <span className="material-symbols-outlined text-xl">share</span>
                 </div>
-                <div className="w-10 h-10 rounded-full bg-white/8 border border-white/15 flex items-center justify-center text-slate-300 hover:text-[#3b82f6] transition-colors cursor-pointer">
+                <div className="w-10 h-10 rounded-full bg-white/8 border border-white/15 flex items-center justify-center text-slate-300 hover:text-[#ea580c] transition-colors cursor-pointer">
                   <span className="material-symbols-outlined text-xl">mail</span>
                 </div>
               </div>
@@ -944,9 +932,6 @@ export default function Home() {
       {/* Pricing / Register Section */}
       <section id="register" className="pt-4 pb-16 px-6 md:px-8 scroll-mt-32">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-4">
-            <span className="text-xs font-black tracking-widest text-[#3b82f6] uppercase">Đăng ký</span>
-          </div>
           <h2 className="text-3xl sm:text-5xl font-black font-headline text-white text-center mb-12">
             Chọn hình thức đăng ký
           </h2>
@@ -959,52 +944,66 @@ export default function Home() {
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0 }}
-              className="relative flex flex-col bg-[#13283e]/40 border border-slate-800 rounded-3xl p-6 shadow-lg opacity-50 grayscale transition-all select-none"
+              className="relative flex flex-col border border-white/10 rounded-3xl p-6 shadow-lg hover:shadow-orange-400/10 hover:-translate-y-1 transition-all"
+              style={{
+                backgroundImage: 'url(/backgoundTrangkhoahoc.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
             >
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="px-3 py-1 bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-wider rounded-full shadow border border-slate-700">Đã hết hạn</span>
+              <motion.div
+                animate={{ y: [0, -3, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10"
+              >
+                <span className="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-yellow-400 text-[#0e2434] text-xs font-black uppercase tracking-wider rounded-full shadow-lg shadow-yellow-500/20 border border-yellow-300 whitespace-nowrap">
+                  Đến 5/7
+                </span>
+              </motion.div>
+              <p className="font-black text-white text-lg font-headline mt-4">Early Bird</p>
+              <p className="text-slate-400 text-xs mb-4">1 người · Ưu đãi sớm</p>
+              <div className="mb-1 h-6 flex items-center">
+                <span className="px-2.5 py-0.5 bg-red-500 text-white text-[10px] font-black uppercase rounded-full tracking-wider">
+                  Giảm 25%
+                </span>
               </div>
-              <div className="w-12 h-12 rounded-2xl bg-slate-800 text-slate-500 flex items-center justify-center mb-4 mt-2">
-                <span className="material-symbols-outlined text-2xl">bolt</span>
-              </div>
-              <p className="font-black text-slate-400 text-lg font-headline">Early Bird</p>
-              <p className="text-slate-400 text-xs mb-4">1 người · Đã kết thúc - Ngày 7/6/2026</p>
-              <div className="mb-1">
-                <span className="inline-block px-2 py-0.5 bg-slate-800 text-slate-400 text-[10px] font-black rounded-md uppercase tracking-wider">Hết hạn</span>
-              </div>
-              <p className="text-slate-500 line-through text-sm mb-1">1.200.000đ</p>
-              <p className="text-3xl font-black text-slate-400 font-headline mb-1">950.000đ</p>
-              <p className="text-slate-500 text-xs mb-6">Tổng: 950.000đ</p>
+              <p className="text-slate-500 line-through text-sm mb-1">1.590.000đ</p>
+              <p className="text-3xl font-black text-white font-headline mb-1">1.190.000đ</p>
+              <p className="text-slate-400 text-xs mb-6">Tổng: 1.190.000đ</p>
               <button
                 type="button"
-                disabled
-                className="mt-auto w-full py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-slate-500 font-bold text-sm text-center cursor-not-allowed"
+                onClick={() => openRegModal('Early Bird')}
+                className="mt-auto w-full py-3 rounded-2xl bg-gradient-to-r from-[#ea580c] to-[#f97316] text-[#0e2434] font-black text-sm text-center hover:opacity-90 transition-opacity shadow-lg shadow-orange-500/20 cursor-pointer"
               >
-                Đã hết hạn đăng ký
+                Đăng ký ngay →
               </button>
             </motion.div>
 
-            {/* Card 2: 1 người thường - MỚI */}
+            {/* Card 2: 1 người thường */}
             <motion.div
               initial={{ y: 30, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.08 }}
-              className="relative flex flex-col bg-[#13283e] border border-white/10 rounded-3xl p-6 shadow-lg hover:shadow-blue-400/10 hover:-translate-y-1 transition-all"
+              className="relative flex flex-col border border-white/10 rounded-3xl p-6 shadow-lg hover:shadow-orange-400/10 hover:-translate-y-1 transition-all"
+              style={{
+                backgroundImage: 'url(/backgoundTrangkhoahoc.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
             >
-              <div className="w-12 h-12 rounded-2xl bg-[#3b82f6] text-white flex items-center justify-center mb-4 mt-2">
-                <span className="material-symbols-outlined text-2xl">person</span>
-              </div>
-              <p className="font-black text-white text-lg font-headline">1 người</p>
+              <p className="font-black text-white text-lg font-headline mt-4">1 người</p>
               <p className="text-slate-400 text-xs mb-4">Đăng ký cá nhân</p>
-              <div className="mb-1 h-6" />
+              <div className="mb-1 h-6 flex items-center">
+                {/* No discount badge to maintain vertical alignment */}
+              </div>
               <p className="text-slate-500 text-sm mb-1 invisible">–</p>
-              <p className="text-3xl font-black text-white font-headline mb-1">1.300.000đ</p>
-              <p className="text-slate-400 text-xs mb-6">Tổng: 1.300.000đ</p>
+              <p className="text-3xl font-black text-white font-headline mb-1">1.590.000đ</p>
+              <p className="text-slate-400 text-xs mb-6">Tổng: 1.590.000đ</p>
               <button
                 type="button"
                 onClick={() => openRegModal('1 người')}
-                className="mt-auto w-full py-3 rounded-2xl bg-gradient-to-r from-[#3b82f6] to-[#38bdf8] text-[#0e2434] font-black text-sm text-center hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/20 cursor-pointer"
+                className="mt-auto w-full py-3 rounded-2xl bg-gradient-to-r from-[#ea580c] to-[#f97316] text-[#0e2434] font-black text-sm text-center hover:opacity-90 transition-opacity shadow-lg shadow-orange-500/20 cursor-pointer"
               >
                 Đăng ký ngay →
               </button>
@@ -1016,39 +1015,36 @@ export default function Home() {
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.16 }}
-              className="relative flex flex-col bg-[#0c1e33] border-2 border-[#3b82f6]/60 rounded-3xl p-6 shadow-xl shadow-blue-500/10 hover:-translate-y-1 transition-all"
+              className="relative flex flex-col border-2 border-[#ea580c]/60 rounded-3xl p-6 shadow-xl shadow-orange-500/10 hover:-translate-y-1 transition-all"
+              style={{
+                backgroundImage: 'url(/backgoundTrangkhoahoc.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
             >
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="px-3 py-1 bg-gradient-to-r from-[#3b82f6] to-[#38bdf8] text-[#0e2434] text-[10px] font-black uppercase tracking-wider rounded-full shadow">Hot nhất</span>
-              </div>
-              <div className="w-12 h-12 rounded-2xl bg-[#3b82f6] text-white flex items-center justify-center mb-4 mt-2">
-                <span className="material-symbols-outlined text-2xl">group</span>
-              </div>
-              <p className="font-black text-white text-lg font-headline">Nhóm 2 người</p>
+              <motion.div
+                animate={{ scale: [1, 1.08, 1] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+                className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10"
+              >
+                <span className="px-4 py-1.5 bg-gradient-to-r from-red-600 to-[#ea580c] text-white text-xs font-black uppercase tracking-wider rounded-full shadow-lg shadow-red-500/30 border border-red-400 whitespace-nowrap">
+                  Hot nhất
+                </span>
+              </motion.div>
+              <p className="font-black text-white text-lg font-headline mt-4">Nhóm 2 người</p>
               <p className="text-slate-400 text-xs mb-4">Đăng ký cùng 1 người</p>
-              <div className="mb-1">
-                <motion.span
-                  animate={{
-                    scale: [1, 1.06, 1],
-                    boxShadow: [
-                      "0 0 4px rgba(239, 68, 68, 0.2)",
-                      "0 0 16px rgba(239, 68, 68, 0.6)",
-                      "0 0 4px rgba(239, 68, 68, 0.2)"
-                    ]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  className="inline-block px-3 py-1 bg-gradient-to-r from-red-500 to-orange-500 text-white text-[11px] font-black rounded-full uppercase tracking-wider"
-                >
+              <div className="mb-1 h-6 flex items-center">
+                <span className="px-2.5 py-0.5 bg-red-500 text-white text-[10px] font-black uppercase rounded-full tracking-wider">
                   Giảm 15%
-                </motion.span>
+                </span>
               </div>
-              <p className="text-slate-500 line-through text-sm mb-1">1.300.000đ</p>
-              <p className="text-3xl font-black text-white font-headline mb-1">1.100.000đ</p>
-              <p className="text-slate-400 text-xs mb-6">Tổng nhóm: 2.200.000đ</p>
+              <p className="text-slate-500 line-through text-sm mb-1">1.590.000đ/người</p>
+              <p className="text-3xl font-black text-white font-headline mb-1">1.350.000đ</p>
+              <p className="text-slate-400 text-xs mb-6">Tổng nhóm: 2.700.000đ</p>
               <button
                 type="button"
                 onClick={() => openRegModal('Nhóm 2 người')}
-                className="mt-auto w-full py-3 rounded-2xl bg-gradient-to-r from-[#3b82f6] to-[#38bdf8] text-[#0e2434] font-black text-sm text-center hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/20 cursor-pointer"
+                className="mt-auto w-full py-3 rounded-2xl bg-gradient-to-r from-[#ea580c] to-[#f97316] text-[#0e2434] font-black text-sm text-center hover:opacity-90 transition-opacity shadow-lg shadow-orange-500/20 cursor-pointer"
               >
                 Đăng ký ngay →
               </button>
@@ -1060,41 +1056,38 @@ export default function Home() {
               whileInView={{ y: 0, opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.24 }}
-              className="relative flex flex-col bg-[#13283e] border border-white/10 rounded-3xl p-6 shadow-lg hover:shadow-blue-400/10 hover:-translate-y-1 transition-all"
+              className="relative flex flex-col border border-white/10 rounded-3xl p-6 shadow-lg hover:shadow-orange-400/10 hover:-translate-y-1 transition-all"
+              style={{
+                backgroundImage: 'url(/backgoundTrangkhoahoc.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
             >
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="px-3 py-1 bg-white/10 text-slate-300 text-[10px] font-black uppercase tracking-wider rounded-full border border-white/15">Tiết kiệm</span>
+              <motion.div
+                animate={{ y: [0, -3, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10"
+              >
+                <span className="px-4 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs font-black uppercase tracking-wider rounded-full shadow-lg shadow-emerald-500/20 border border-emerald-400 whitespace-nowrap">
+                  Tiết kiệm nhất
+                </span>
+              </motion.div>
+              <p className="font-black text-white text-lg font-headline mt-4">Nhóm 4 người</p>
+              <p className="text-slate-400 text-xs mb-4">Đăng ký cùng 3 người</p>
+              <div className="mb-1 h-6 flex items-center">
+                <span className="px-2.5 py-0.5 bg-red-500 text-white text-[10px] font-black uppercase rounded-full tracking-wider">
+                  Giảm 25%
+                </span>
               </div>
-              <div className="w-12 h-12 rounded-2xl bg-[#3b82f6] text-white flex items-center justify-center mb-4 mt-2">
-                <span className="material-symbols-outlined text-2xl">groups</span>
-              </div>
-              <p className="font-black text-white text-lg font-headline">Nhóm 4 người</p>
-              <p className="text-slate-400 text-xs mb-4">Đăng ký cùng 4 người</p>
-              <div className="mb-1">
-                <motion.span
-                  animate={{
-                    scale: [1, 1.06, 1],
-                    boxShadow: [
-                      "0 0 4px rgba(239, 68, 68, 0.2)",
-                      "0 0 16px rgba(239, 68, 68, 0.6)",
-                      "0 0 4px rgba(239, 68, 68, 0.2)"
-                    ]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-                  className="inline-block px-3 py-1 bg-gradient-to-r from-red-500 to-orange-500 text-white text-[11px] font-black rounded-full uppercase tracking-wider"
-                >
-                  Giảm 24%
-                </motion.span>
-              </div>
-              <p className="text-slate-500 line-through text-sm mb-1">5.200.000đ</p>
-              <p className="text-3xl font-black text-white font-headline mb-1">990.000đ</p>
-              <p className="text-slate-400 text-xs mb-6">Tổng nhóm: 3.960.000đ</p>
+              <p className="text-slate-500 line-through text-sm mb-1">1.590.000đ/người</p>
+              <p className="text-3xl font-black text-white font-headline mb-1">1.190.000đ</p>
+              <p className="text-slate-400 text-xs mb-6">Tổng nhóm: 4.760.000đ</p>
               <button
                 type="button"
                 onClick={() => openRegModal('Nhóm 4 người')}
-                className="mt-auto w-full py-3 rounded-2xl bg-white/8 border border-white/15 text-slate-200 font-bold text-sm text-center hover:bg-white/12 transition-colors cursor-pointer"
+                className="mt-auto w-full py-3 rounded-2xl bg-gradient-to-r from-[#ea580c] to-[#f97316] text-[#0e2434] font-black text-sm text-center hover:opacity-90 transition-opacity shadow-lg shadow-orange-500/20 cursor-pointer"
               >
-                Đăng ký nhóm →
+                Đăng ký ngay →
               </button>
             </motion.div>
 
@@ -1104,7 +1097,7 @@ export default function Home() {
 
       {/* Footer */}
 
-      <footer id="partners" className="bg-[#070e1a] text-slate-400 w-full py-12 border-t border-white/8">
+      <footer id="partners" className="bg-black/60 backdrop-blur-md text-slate-400 w-full py-12 border-t border-white/8">
         <div className="max-w-7xl mx-auto px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start py-6">
             {/* Cột 1: Logo & Giới thiệu */}
@@ -1133,15 +1126,15 @@ export default function Home() {
               <h4 className="text-white font-black text-sm uppercase tracking-wider mb-6">THÔNG TIN LIÊN HỆ</h4>
               <ul className="space-y-4 text-left inline-block">
                 <li className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-[#3b82f6]">location_on</span>
+                  <span className="material-symbols-outlined text-[#ea580c]">location_on</span>
                   <div className="text-sm text-slate-300">112 Lý Phục Man, Phường Tân Thuận, TP. Hồ Chí Minh</div>
                 </li>
                 <li className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-[#3b82f6]">phone</span>
+                  <span className="material-symbols-outlined text-[#ea580c]">phone</span>
                   <a href="tel:0362077399" className="text-sm text-slate-400 font-semibold">0362 077 399</a>
                 </li>
                 <li className="flex items-center gap-3">
-                  <span className="material-symbols-outlined text-[#3b82f6]">mail</span>
+                  <span className="material-symbols-outlined text-[#ea580c]">mail</span>
                   <a href="mailto:info@aizenworld.com" className="text-sm text-slate-400">info@aizenworld.com</a>
                 </li>
               </ul>
@@ -1174,11 +1167,11 @@ export default function Home() {
         href="https://zalo.me/0362077399"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-8 right-8 z-[60] flex items-center gap-2 bg-[#0068ff] text-white px-5 py-3 rounded-full shadow-2xl hover:scale-105 transition-all active:scale-95 group cursor-pointer"
+        className="fixed bottom-8 right-8 z-[60] flex items-center gap-2 bg-gradient-to-r from-[#1a4cd2] to-[#3b82f6] text-white px-5 py-3 rounded-full shadow-2xl hover:scale-105 transition-all active:scale-95 group cursor-pointer"
       >
         <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12.01 2c-5.523 0-10 3.731-10 8.333 0 2.404 1.206 4.562 3.125 6.075-.24 1.157-1.125 3.328-1.125 3.328a.5.5 0 00.741.528c.026-.016 3.14-1.996 4.316-2.775.92.179 1.9.274 2.91.274 5.522 0 10-3.731 10-8.333S17.532 2 12.01 2z" fill="#0068ff" />
+            <path d="M12.01 2c-5.523 0-10 3.731-10 8.333 0 2.404 1.206 4.562 3.125 6.075-.24 1.157-1.125 3.328-1.125 3.328a.5.5 0 00.741.528c.026-.016 3.14-1.996 4.316-2.775.92.179 1.9.274 2.91.274 5.522 0 10-3.731 10-8.333S17.532 2 12.01 2z" fill="#3b82f6" />
           </svg>
         </div>
         <span className="font-headline font-bold text-sm tracking-tight">Hỗ trợ Zalo</span>
@@ -1207,7 +1200,12 @@ export default function Home() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.92, opacity: 0, y: 20 }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="relative w-full max-w-lg bg-[#0c1a2e] rounded-[2rem] border border-white/10 shadow-2xl overflow-hidden overflow-y-auto max-h-[90vh]"
+              className="relative w-full max-w-lg rounded-[2rem] border border-white/10 shadow-2xl overflow-hidden overflow-y-auto max-h-[90vh]"
+              style={{
+                backgroundImage: 'url(/backgoundTrangkhoahoc.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
             >
               {/* Close button */}
               <button
@@ -1220,22 +1218,24 @@ export default function Home() {
               {regFormState === 'success' ? (
                 /* ── SUCCESS: Show pricing info + QR ── */
                 <div className="p-8 text-center">
-                  <div className="w-14 h-14 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-14 h-14 bg-orange-500/20 text-orange-400 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="material-symbols-outlined text-3xl">check_circle</span>
                   </div>
                   <h3 className="text-2xl font-black font-headline text-white mb-1">Đăng ký thành công!</h3>
                   <p className="text-slate-400 text-sm mb-4">Chúng tôi sẽ sớm liên hệ xác nhận với bạn....</p>
 
                   {/* Pricing info */}
-                  <div className="bg-blue-500/10 border border-blue-500/30 rounded-2xl px-5 py-4 mb-5 text-left">
+                  <div className="bg-orange-500/10 border border-orange-500/30 rounded-2xl px-5 py-4 mb-5 text-left">
                     <p className="font-black text-blue-300 text-sm leading-snug">
                       {modalPkg === 'Nhóm 4 người'
-                        ? 'Nhóm 4 người, phí đầu tư: 1.300.000 x 4 = 5.200.000, giảm còn 3.960.000đ'
+                        ? 'Nhóm 4 người · 1.190.000đ/người · Tổng: 4.760.000đ'
                         : modalPkg === 'Nhóm 2 người'
-                          ? 'Nhóm 2 người, phí đầu tư: 1.300.000 x 2 = 2.600.000, giảm còn 2.200.000đ'
-                          : appliedVoucher
-                            ? `Áp dụng mã ${appliedVoucher}: Học phí 1.300.000đ giảm 20% còn 1.040.000đ`
-                            : 'Vui lòng quét mã QR để thanh toán học phí'}
+                          ? 'Nhóm 2 người · 1.350.000đ/người · Tổng: 2.700.000đ'
+                          : modalPkg === 'Early Bird'
+                            ? 'Early Bird (đến 5/7) · Tổng: 1.190.000đ'
+                            : appliedVoucher
+                              ? `Áp dụng mã ${appliedVoucher}: Học phí 1.590.000đ giảm 10% còn 1.431.000đ`
+                              : 'Vui lòng quét mã QR để thanh toán học phí'}
                     </p>
                   </div>
 
@@ -1250,16 +1250,16 @@ export default function Home() {
                   </div>
                   <div className="mt-5 space-y-2">
                     <p className="text-slate-400 text-xs">Gói: <span className="text-white font-bold">{modalPkg}</span></p>
-                    <p className="text-slate-400 text-xs">Học phí: <span className="text-cyan-400 font-bold">{paymentAmount.toLocaleString('vi-VN')} VND</span></p>
-                    <div className="bg-white/95 backdrop-blur py-2.5 px-4 rounded-xl border border-dashed border-blue-200 inline-block text-center w-full max-w-[240px]">
-                      <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-0.5">Nội dung chuyển khoản</p>
+                    <p className="text-slate-400 text-xs">Học phí: <span className="text-orange-400 font-bold">{paymentAmount.toLocaleString('vi-VN')} VND</span></p>
+                    <div className="bg-white/95 backdrop-blur py-2.5 px-4 rounded-xl border border-dashed border-orange-200 inline-block text-center w-full max-w-[240px]">
+                      <p className="text-[10px] font-black text-orange-600 uppercase tracking-widest mb-0.5">Nội dung chuyển khoản</p>
                       <p className="text-sm font-black text-[#0e2434] tracking-tight">{paymentContent}</p>
                     </div>
                   </div>
                   <div className="mt-6">
                     <button
                       onClick={() => { setShowRegModal(false); setRegFormState('idle'); }}
-                      className="px-8 py-3 bg-gradient-to-r from-[#3b82f6] to-[#38bdf8] text-[#0e2434] font-black rounded-2xl hover:opacity-90 transition-opacity cursor-pointer"
+                      className="px-8 py-3 bg-gradient-to-r from-[#ea580c] to-[#f97316] text-[#0e2434] font-black rounded-2xl hover:opacity-90 transition-opacity cursor-pointer"
                     >
                       Đã hiểu
                     </button>
@@ -1270,7 +1270,7 @@ export default function Home() {
                 <div className="p-6 sm:p-8">
                   {/* Header */}
                   <div className="mb-6">
-                    <span className="text-xs font-black tracking-widest text-[#3b82f6] uppercase">Đăng ký tham gia</span>
+                    <span className="text-xs font-black tracking-widest text-[#ea580c] uppercase">Đăng ký tham gia</span>
                     <h3 className="text-2xl font-black font-headline text-white mt-1">{modalPkg}</h3>
                     <p className="text-slate-400 text-sm mt-1">
                       {getMemberCount(modalPkg) === 1 ? 'Vui lòng điền thông tin sau:' : `Điền thông tin cho ${getMemberCount(modalPkg)} học viên`}
@@ -1290,7 +1290,7 @@ export default function Home() {
                       <div key={i} className="space-y-3">
                         {getMemberCount(modalPkg) > 1 && (
                           <div className="flex items-center gap-2 mb-3">
-                            <div className="w-7 h-7 rounded-full bg-[#3b82f6]/20 text-[#3b82f6] flex items-center justify-center text-xs font-black shrink-0">{i + 1}</div>
+                            <div className="w-7 h-7 rounded-full bg-[#ea580c]/20 text-[#ea580c] flex items-center justify-center text-xs font-black shrink-0">{i + 1}</div>
                             <span className="text-sm font-bold text-white">Người {i + 1}{i === 0 ? <span className="text-slate-400 font-normal"> · Liên hệ chính</span> : ''}</span>
                           </div>
                         )}
@@ -1304,7 +1304,7 @@ export default function Home() {
                               name={`fullname_${i + 1}`}
                               required
                               placeholder="Nguyễn Văn A"
-                              className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#3b82f6]/60 focus:outline-none focus:bg-white/8 transition-all"
+                              className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#ea580c]/60 focus:outline-none focus:bg-white/8 transition-all"
                             />
                           </div>
                           <div className="space-y-1">
@@ -1314,7 +1314,7 @@ export default function Home() {
                               name={`phone_${i + 1}`}
                               required
                               placeholder="09xx xxx xxx"
-                              className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#3b82f6]/60 focus:outline-none focus:bg-white/8 transition-all"
+                              className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#ea580c]/60 focus:outline-none focus:bg-white/8 transition-all"
                             />
                           </div>
                         </div>
@@ -1328,7 +1328,7 @@ export default function Home() {
                               name={`email_${i + 1}`}
                               required
                               placeholder="email@example.com"
-                              className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#3b82f6]/60 focus:outline-none focus:bg-white/8 transition-all"
+                              className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#ea580c]/60 focus:outline-none focus:bg-white/8 transition-all"
                             />
                           </div>
                           <div className="space-y-1">
@@ -1337,7 +1337,7 @@ export default function Home() {
                               type="text"
                               name={`company_${i + 1}`}
                               placeholder="Công ty của bạn"
-                              className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#3b82f6]/60 focus:outline-none focus:bg-white/8 transition-all"
+                              className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#ea580c]/60 focus:outline-none focus:bg-white/8 transition-all"
                             />
                           </div>
                         </div>
@@ -1350,7 +1350,7 @@ export default function Home() {
                               <select
                                 name={`role_${i + 1}`}
                                 required
-                                className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white text-sm focus:border-[#3b82f6]/60 focus:outline-none transition-all appearance-none pr-8"
+                                className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white text-sm focus:border-[#ea580c]/60 focus:outline-none transition-all appearance-none pr-8"
                                 defaultValue=""
                               >
                                 <option value="" disabled className="bg-[#0c1a2e] text-slate-400">Chọn vị trí...</option>
@@ -1370,7 +1370,7 @@ export default function Home() {
                               <select
                                 name={`referral_${i + 1}`}
                                 required
-                                className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white text-sm focus:border-[#3b82f6]/60 focus:outline-none transition-all appearance-none pr-8"
+                                className="w-full px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white text-sm focus:border-[#ea580c]/60 focus:outline-none transition-all appearance-none pr-8"
                                 defaultValue=""
                               >
                                 <option value="" disabled className="bg-[#0c1a2e] text-slate-400">Chọn nguồn...</option>
@@ -1403,7 +1403,7 @@ export default function Home() {
                               setVoucherCodeInput(e.target.value);
                               if (voucherError) setVoucherError('');
                             }}
-                            className="flex-1 px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#3b82f6]/60 focus:outline-none focus:bg-white/8 transition-all uppercase"
+                            className="flex-1 px-4 py-2.5 bg-white/6 border border-white/10 rounded-xl text-white placeholder-slate-500 text-sm focus:border-[#ea580c]/60 focus:outline-none focus:bg-white/8 transition-all uppercase"
                           />
                           <button
                             type="button"
@@ -1436,37 +1436,43 @@ export default function Home() {
                     <div className="bg-white/5 p-4 rounded-2xl border border-white/8 space-y-1.5 text-sm text-left">
                       <div className="flex justify-between text-slate-400">
                         <span>Giá gốc:</span>
-                        <span className={appliedVoucher || modalPkg.includes('Nhóm') ? 'line-through text-slate-500' : ''}>
+                        <span className={appliedVoucher || modalPkg.includes('Nhóm') || modalPkg === 'Early Bird' ? 'line-through text-slate-500' : ''}>
                           {modalPkg === 'Nhóm 4 người'
-                            ? '5.200.000đ'
+                            ? '6.360.000đ'
                             : modalPkg === 'Nhóm 2 người'
-                              ? '2.600.000đ'
-                              : '1.300.000đ'}
+                              ? '3.180.000đ'
+                              : '1.590.000đ'}
                         </span>
                       </div>
 
+                      {modalPkg === 'Early Bird' && (
+                        <div className="flex justify-between text-green-400 font-semibold">
+                          <span>Ưu đãi Early Bird:</span>
+                          <span>-400.000đ</span>
+                        </div>
+                      )}
                       {modalPkg === 'Nhóm 2 người' && (
                         <div className="flex justify-between text-green-400 font-semibold">
                           <span>Giảm giá (Nhóm 2 người):</span>
-                          <span>-400.000đ</span>
+                          <span>-480.000đ</span>
                         </div>
                       )}
                       {modalPkg === 'Nhóm 4 người' && (
                         <div className="flex justify-between text-green-400 font-semibold">
                           <span>Giảm giá (Nhóm 4 người):</span>
-                          <span>-1.240.000đ</span>
+                          <span>-1.600.000đ</span>
                         </div>
                       )}
                       {appliedVoucher && (
                         <div className="flex justify-between text-green-400 font-semibold">
-                          <span>Giảm giá (Voucher):</span>
+                          <span>Giảm giá (Voucher 10%):</span>
                           <span>-{voucherDiscount.toLocaleString('vi-VN')}đ</span>
                         </div>
                       )}
 
                       <div className="border-t border-white/8 my-2 pt-2 flex justify-between font-headline font-black text-white text-base">
                         <span>Tổng thanh toán:</span>
-                        <span className="text-[#3b82f6]">{paymentAmount.toLocaleString('vi-VN')}đ</span>
+                        <span className="text-[#ea580c]">{paymentAmount.toLocaleString('vi-VN')}đ</span>
                       </div>
                     </div>
 
@@ -1482,7 +1488,7 @@ export default function Home() {
                     <button
                       type="submit"
                       disabled={regFormState === 'loading'}
-                      className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#3b82f6] to-[#38bdf8] text-[#0e2434] font-black text-base hover:opacity-90 transition-opacity shadow-lg shadow-blue-500/20 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#ea580c] to-[#f97316] text-[#0e2434] font-black text-base hover:opacity-90 transition-opacity shadow-lg shadow-orange-500/20 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
                     >
                       {regFormState === 'loading' ? (
                         <>
