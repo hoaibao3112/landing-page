@@ -48,7 +48,7 @@ export function SpotlightEffects() {
         style={{
           width: 700,
           height: 700,
-          background: 'radial-gradient(circle, rgba(59, 130, 246,0.15) 0%, rgba(56,189,248,0.09) 35%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(234, 88, 12,0.15) 0%, rgba(249,115,22,0.09) 35%, transparent 70%)',
           filter: 'blur(25px)',
           x: glowX,
           y: glowY,

@@ -1,5 +1,5 @@
-export const eventDate = 'Thứ bảy, 27/06';
-export const eventAddress = '11 Nguyễn Đình Chiểu, P. Sài Gòn, TPHCM (Trung tâm Đào tạo Bưu chính Viễn thông - PTTC)';
-export const eventPrice = '1.300.000đ học phí';
-export const eventDateEN = 'Thu 7, 27/6/2026 - 8h-17h';
+export const eventDate = 'Thứ Bảy, 25/07';
+export const eventAddress = 'Trung tâm TPHCM';
+export const eventPrice = '1.590.000đ học phí';
+export const eventDateEN = 'Thu 7, 25/7/2026 - 8h-17h';
 
