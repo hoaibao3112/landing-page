@@ -214,6 +214,9 @@ export default function Home() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupTimeLeft, setPopupTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
+  // Check if Early Bird is expired (past 2026-07-05T23:59:59+07:00)
+  const isEarlyBirdExpired = mounted ? (new Date().getTime() >= new Date('2026-07-05T23:59:59+07:00').getTime()) : false;
+
   // Early Bird slots
   const [earlyBirdRemaining, setEarlyBirdRemaining] = useState<number | null>(null);
 
@@ -222,9 +225,14 @@ export default function Home() {
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
+    const isExpired = new Date().getTime() >= new Date('2026-07-05T23:59:59+07:00').getTime();
     const rafId = requestAnimationFrame(() => {
       setMounted(true);
-      setShowPopup(true);
+      if (!isExpired) {
+        setShowPopup(true);
+      } else {
+        setShowPopup(false);
+      }
     });
     const target = new Date('2026-07-25T08:00:00+07:00').getTime();
     const popupTarget = new Date('2026-07-05T23:59:59+07:00').getTime();
@@ -247,6 +255,7 @@ export default function Home() {
       const popupDiff = popupTarget - now;
       if (popupDiff <= 0) {
         setPopupTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        setShowPopup(false);
       } else {
         setPopupTimeLeft({
           days: Math.floor(popupDiff / (1000 * 60 * 60 * 24)),
@@ -361,11 +370,11 @@ export default function Home() {
   };
 
   const getQRImage = (pkg: string, hasVoucher?: boolean) => {
-    if (pkg === 'Nhóm 2 người') return '/2nguoi.jpg';
-    if (pkg === 'Nhóm 4 người') return '/4nguoi.jpg';
+    if (pkg === 'Nhóm 2 người') return '/img/nhom2nguoi.jpg';
+    if (pkg === 'Nhóm 4 người') return '/img/nhom4nguoi.jpg';
     if (pkg === 'Early Bird') return '/img/Ma_EarlyBird.jpg';
     if (pkg === '1 người' && hasVoucher) return '/1nguoigiamgia.jpg';
-    return '/1nguoi.jpg'; // 1 người thường
+    return '/img/Nhom1nguoi.jpg'; // 1 người thường
   };
 
   const getMemberCount = (pkg: string) => {
@@ -520,7 +529,7 @@ export default function Home() {
 
       {/* Popup Banner - hiện khi load trang */}
       <AnimatePresence>
-        {showPopup && (
+        {!isEarlyBirdExpired && showPopup && (
           <div className="fixed inset-0 z-[150] flex items-center justify-center p-4">
             {/* Backdrop */}
             <motion.div
@@ -1203,9 +1212,14 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => openRegModal('Early Bird')}
-                className="mt-auto w-full py-3 rounded-2xl bg-gradient-to-r from-[#ea580c] to-[#f97316] text-[#0e2434] font-black text-sm text-center hover:opacity-90 transition-opacity shadow-lg shadow-orange-500/20 cursor-pointer"
+                disabled={isEarlyBirdExpired}
+                className={`mt-auto w-full py-3 rounded-2xl font-black text-sm text-center transition-all ${
+                  isEarlyBirdExpired 
+                    ? 'bg-slate-800/80 text-slate-500 border border-white/5 cursor-not-allowed shadow-none opacity-60' 
+                    : 'bg-gradient-to-r from-[#ea580c] to-[#f97316] text-[#0e2434] hover:opacity-90 shadow-lg shadow-orange-500/20 cursor-pointer'
+                }`}
               >
-                Đăng ký ngay →
+                {isEarlyBirdExpired ? 'Đã hết hạn ưu đãi' : 'Đăng ký ngay →'}
               </button>
             </motion.div>
 

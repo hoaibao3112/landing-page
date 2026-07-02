@@ -102,6 +102,10 @@ export async function submitRegistration(formData: FormData): Promise<
       members = 4;
       amount = 4760000; // Nhóm 4 người: 1.190.000đ/người -> 4.760.000đ
     } else if (packageType === 'Early Bird') {
+      const isExpired = new Date().getTime() >= new Date('2026-07-05T23:59:59+07:00').getTime();
+      if (isExpired) {
+        return { success: false, error: 'Gói ưu đãi Early Bird đã hết hạn đăng ký.' };
+      }
       members = 1;
       amount = 1190000; // Early Bird: 1.190.000đ
     } else if (packageType === '1 người') {
@@ -267,7 +271,14 @@ export async function submitGroupRegistration(formData: FormData): Promise<
     let amountPerPerson = 1590000;
     if (packageType === 'Nhóm 2 người') { memberCount = 2; amountPerPerson = 1350000; }
     else if (packageType === 'Nhóm 4 người') { memberCount = 4; amountPerPerson = 1190000; }
-    else if (packageType === 'Early Bird') { memberCount = 1; amountPerPerson = 1190000; }
+    else if (packageType === 'Early Bird') {
+      const isExpired = new Date().getTime() >= new Date('2026-07-05T23:59:59+07:00').getTime();
+      if (isExpired) {
+        return { success: false, error: 'Gói ưu đãi Early Bird đã hết hạn đăng ký.' };
+      }
+      memberCount = 1;
+      amountPerPerson = 1190000;
+    }
     else if (packageType === '1 người') { memberCount = 1; amountPerPerson = 1590000; }
 
     // Xử lý mã giảm giá (nếu có)
