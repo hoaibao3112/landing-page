@@ -359,11 +359,21 @@ export async function submitGroupRegistration(formData: FormData): Promise<
     }
 
     try {
-      const names = Array.from({ length: memberCount }, (_, i) =>
-        formData.get(`fullname_${i + 1}`)?.toString().trim() || ''
-      ).join(', ');
+      const memberDetails = Array.from({ length: memberCount }, (_, i) => {
+        const idx = i + 1;
+        const fn = formData.get(`fullname_${idx}`)?.toString().trim() || '';
+        const ph = formData.get(`phone_${idx}`)?.toString().trim() || '';
+        const em = formData.get(`email_${idx}`)?.toString().trim() || '';
+        const comp = formData.get(`company_${idx}`)?.toString().trim() || '';
+        const rl = formData.get(`role_${idx}`)?.toString().trim() || '';
+        const ref = formData.get(`referral_${idx}`)?.toString().trim() || '';
+        const compLine = comp ? `\n   Công ty: ${comp}` : '';
+        const roleLine = rl ? `\n   Vai trò: ${rl}` : '';
+        const refLine = ref ? `\n   Nguồn: ${ref}` : '';
+        return `👤 Người ${idx}: ${fn}\n   Điện thoại: ${ph}\n   Email: ${em}${compLine}${roleLine}${refLine}`;
+      }).join('\n');
       const voucherLarkMsg = voucherCode ? `\nMã giảm giá: ${voucherCode} (Giảm ${discountPercent}%)` : '';
-      const messageText = `🆕 Đăng ký nhóm mới!${voucherLarkMsg}\nGói: ${packageType} (${memberCount} người)\nHọ tên: ${names}\nĐiện thoại: ${primaryPhone}\nEmail: ${primaryEmail}\nNguồn: ${referral}\nSố tiền: ${(amountPerPerson * memberCount).toLocaleString('vi-VN')}đ\nMã CK: ${paymentContent}\nThời gian: ${vietnamTime}`;
+      const messageText = `🆕 Đăng ký nhóm mới!${voucherLarkMsg}\nGói: ${packageType} (${memberCount} người)\nSố tiền: ${(amountPerPerson * memberCount).toLocaleString('vi-VN')}đ\nMã CK: ${paymentContent}\nThời gian: ${vietnamTime}\n\n${memberDetails}`;
       await fetch(
         'https://open-sg.larksuite.com/anycross/trigger/callback/MDczOWJlNzg4NTc0MzliZjlhMDZhNDhiOWYyNGM5YzE4',
         { method: 'POST', headers: { 'Content-Type': 'text/plain; charset=utf-8' }, body: messageText }

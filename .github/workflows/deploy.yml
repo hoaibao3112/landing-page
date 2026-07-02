@@ -51,29 +51,51 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           command_timeout: 30m
           script: |
-            # Tự động clone lại nếu git repo bị mất hoặc chưa tồn tại
+            # ── BƯỚC 0: Backup DB NGAY ĐẦU TIÊN trước mọi thao tác ──────────────
+            # Backup cả 3 file SQLite (WAL mode) để không mất data đang trong transaction
+            echo "==> Đang sao lưu database..."
+            for ext in "" "-wal" "-shm"; do
+              src="/opt/landing-page/registrations.db${ext}"
+              dst="/opt/registrations_backup.db${ext}"
+              if [ -f "$src" ]; then
+                cp "$src" "$dst"
+                echo "    Đã backup: $src"
+              fi
+            done
+
+            # ── BƯỚC 1: Đảm bảo git repo tồn tại ────────────────────────────────
             if [ ! -d "/opt/landing-page/.git" ]; then
-              echo "Git repo không tìm thấy, đang clone lại..."
+              echo "==> Git repo không tìm thấy, đang clone lại..."
               rm -rf /opt/landing-page
               git clone https://github.com/Aizenworld69/landing-page.git /opt/landing-page
             fi
 
+            # ── BƯỚC 2: Cập nhật code mới nhất ──────────────────────────────────
+            echo "==> Đang cập nhật code..."
             cd /opt/landing-page
             git reset --hard
             git clean -fd
             git pull origin main
 
-            # Đảm bảo file database tồn tại trước khi mount (tránh Docker tạo nhầm thư mục)
+            # ── BƯỚC 3: Khôi phục database từ backup ─────────────────────────────
+            echo "==> Đang khôi phục database..."
+            for ext in "" "-wal" "-shm"; do
+              src="/opt/registrations_backup.db${ext}"
+              dst="/opt/landing-page/registrations.db${ext}"
+              if [ -f "$src" ]; then
+                cp "$src" "$dst"
+                echo "    Đã khôi phục: $dst"
+              fi
+            done
+
+            # Đảm bảo file .db tồn tại (tránh Docker mount nhầm thành thư mục)
             touch /opt/landing-page/registrations.db
 
-            # Đăng xuất ghcr.io để tránh token cũ/hết hạn trên VPS làm chặn tải public image
+            # ── BƯỚC 4: Deploy container mới ─────────────────────────────────────
+            echo "==> Đang deploy container..."
             docker logout ghcr.io || true
-
-            # Kéo Docker Image mới và cập nhật Container
             docker compose pull
             docker compose up -d --remove-orphans
-
-            # Dọn dẹp các image cũ để tiết kiệm dung lượng ổ đĩa
             docker image prune -f
 
-            echo "Deploy successful!"
+            echo "==> Deploy successful!"
