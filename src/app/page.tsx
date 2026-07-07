@@ -1154,6 +1154,18 @@ export default function Home() {
             Chọn hình thức đăng ký
           </h2>
 
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="flex justify-center mb-12 animate-pulse"
+          >
+            <div className="bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-400 text-slate-950 px-8 py-4 sm:px-12 sm:py-5 rounded-2xl shadow-[0_0_30px_rgba(250,204,21,0.4)] font-headline font-black text-2xl sm:text-4xl uppercase tracking-wider border-4 border-yellow-300 flex items-baseline justify-center gap-1.5 select-none w-full max-w-lg">
+              Chỉ Còn <span className="text-5xl sm:text-7xl font-headline font-black text-slate-950 mx-1">{isAfterSlotsThreshold ? '10' : '15'}</span> Suất
+            </div>
+          </motion.div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
 
             {/* Card 1: Early Bird */}
@@ -1169,18 +1181,6 @@ export default function Home() {
                 backgroundPosition: 'center'
               }}
             >
-              <motion.div
-                animate={{ y: [0, -3, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5"
-              >
-                <span className="flex items-center gap-1 px-2.5 py-1.5 bg-gradient-to-r from-red-600 to-orange-500 text-white text-xs font-black uppercase tracking-wider rounded-full shadow-lg shadow-red-500/40 border border-red-400 whitespace-nowrap animate-pulse">
-                  ⚡ HOT
-                </span>
-                <span className="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-yellow-400 text-[#0e2434] text-xs font-black uppercase tracking-wider rounded-full shadow-lg shadow-yellow-500/20 border border-yellow-300 whitespace-nowrap">
-                  Đến 5/7/2026
-                </span>
-              </motion.div>
               <p className="font-black text-white text-lg font-headline mt-4">Early Bird</p>
               <p className="text-slate-400 text-xs mb-3">1 người · Ưu đãi sớm</p>
 
