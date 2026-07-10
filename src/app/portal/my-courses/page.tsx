@@ -1,36 +1,49 @@
 import type { Metadata } from 'next';
-import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 import { Navbar } from '@/components/portal/common/Navbar';
 import { Footer } from '@/components/portal/common/Footer';
 import { UpcomingCourseCard } from '@/components/portal/sections/my-courses/UpcomingCourseCard';
 import { CompletedCourseCard } from '@/components/portal/sections/my-courses/CompletedCourseCard';
 import type { Enrollment } from '@aizen/types';
+import { supabaseAdmin } from '@/lib/portal/supabase-server';
 
 export const metadata: Metadata = {
   title: 'Khóa học của tôi',
 };
 
-async function getMyEnrollments(token: string): Promise<Enrollment[]> {
+async function getMyEnrollments(): Promise<Enrollment[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-courses`, {
-      headers: { Authorization: `Bearer ${token}` },
-      cache: 'no-store',
-    });
-    if (res.status === 401) return [];
-    if (!res.ok) throw new Error('fetch failed');
-    const json = (await res.json()) as { data: Enrollment[] };
-    return json.data;
+    // Lấy access token từ cookie Supabase
+    const cookieStore = await cookies();
+    const supabaseCookie = cookieStore.getAll().find(
+      (c) => c.name.startsWith('sb-') && c.name.endsWith('-auth-token'),
+    );
+    const accessToken = cookieStore.get('access_token')?.value;
+    const token = accessToken || (supabaseCookie ? JSON.parse(supabaseCookie.value)?.access_token : null);
+
+    if (!token) return [];
+
+    // Xác thực user qua Supabase
+    const { data: { user }, error: authErr } = await supabaseAdmin.auth.getUser(token);
+    if (authErr || !user) return [];
+
+    // Query trực tiếp Supabase — không cần HTTP
+    const { data, error } = await supabaseAdmin
+      .from('enrollments')
+      .select('id, user_id, course_id, status, completed_at, created_at, courses(id, title, slug, thumbnail_url, status, start_date, category)')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) return [];
+    return (data ?? []) as Enrollment[];
   } catch {
     return [];
   }
 }
 
-// NOTE: Trang này cần middleware.ts để protect. Dùng cookie-based session với Supabase.
-// Trong demo, redirect nếu không có cookie auth (middleware xử lý thực tế).
+// NOTE: Protected by middleware.ts — chỉ user đã đăng nhập mới vào được.
 export default async function MyCoursesPage() {
-  // Auth check được xử lý bởi middleware.ts
-  // Đây là Server Component — trong thực tế đọc token từ cookies()
-  const enrollments: Enrollment[] = []; // sẽ được inject qua server-side session
+  const enrollments = await getMyEnrollments();
 
   const upcoming = enrollments.filter((e) => e.status === 'upcoming');
   const completed = enrollments.filter((e) => e.status === 'completed');

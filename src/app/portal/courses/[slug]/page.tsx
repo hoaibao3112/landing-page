@@ -8,20 +8,10 @@ import { CourseCurriculum } from '@/components/portal/sections/course-detail/Cou
 import { InstructorCard } from '@/components/portal/sections/course-detail/InstructorCard';
 import { CoursePlanSection } from '@/components/portal/sections/course-detail/CoursePlanSection';
 import type { CourseWithDetails } from '@aizen/types';
+import { fetchCourseBySlugServer } from '@/lib/portal/server-data';
 
 async function getCourse(slug: string): Promise<CourseWithDetails | null> {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/courses/${slug}`,
-      { next: { revalidate: 60 } },
-    );
-    if (res.status === 404) return null;
-    if (!res.ok) throw new Error('fetch failed');
-    const json = (await res.json()) as { data: CourseWithDetails };
-    return json.data;
-  } catch {
-    return null;
-  }
+  return fetchCourseBySlugServer(slug) as Promise<CourseWithDetails | null>;
 }
 
 export async function generateMetadata({

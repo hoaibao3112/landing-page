@@ -5,6 +5,7 @@ import { InstructorGrid } from '@/components/portal/sections/instructors/Instruc
 import { ToolsSection } from '@/components/portal/sections/instructors/ToolsSection';
 import { ReviewsSection } from '@/components/portal/sections/instructors/ReviewsSection';
 import type { Instructor } from '@aizen/types';
+import { fetchInstructorsServer } from '@/lib/portal/server-data';
 
 export const metadata: Metadata = {
   title: 'Giảng viên',
@@ -12,17 +13,7 @@ export const metadata: Metadata = {
 };
 
 async function getInstructors(): Promise<Instructor[]> {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/instructors`,
-      { next: { revalidate: 60 } },
-    );
-    if (!res.ok) return [];
-    const json = (await res.json()) as { data: Instructor[] };
-    return json.data ?? [];
-  } catch {
-    return [];
-  }
+  return fetchInstructorsServer();
 }
 
 export default async function InstructorsPage() {

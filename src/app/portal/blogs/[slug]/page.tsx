@@ -9,20 +9,10 @@ import { RelatedArticles } from '@/components/portal/sections/blog-detail/Relate
 import { formatDateBlog } from '@/lib/portal/utils/format';
 import { extractToc } from '@/lib/portal/utils/toc';
 import type { BlogWithRelated } from '@aizen/types';
+import { fetchBlogBySlugServer } from '@/lib/portal/server-data';
 
 async function getBlog(slug: string): Promise<BlogWithRelated | null> {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/blogs/${slug}`,
-      { next: { revalidate: 300 } },
-    );
-    if (res.status === 404) return null;
-    if (!res.ok) throw new Error('fetch failed');
-    const json = (await res.json()) as { data: BlogWithRelated };
-    return json.data;
-  } catch {
-    return null;
-  }
+  return fetchBlogBySlugServer(slug) as Promise<BlogWithRelated | null>;
 }
 
 export async function generateMetadata({

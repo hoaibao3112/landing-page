@@ -7,6 +7,7 @@ import { CourseFilters } from '@/components/portal/sections/courses/CourseFilter
 import { Pagination } from '@/components/portal/ui/Pagination';
 import type { Course, PaginatedResponse } from '@aizen/types';
 import type { Metadata } from 'next';
+import { fetchCoursesServer } from '@/lib/portal/server-data';
 
 export const metadata: Metadata = {
   title: 'Thu vien khoa hoc',
@@ -22,24 +23,14 @@ interface SearchParams {
 }
 
 async function fetchCourses(params: SearchParams): Promise<PaginatedResponse<Course>> {
-  const query = new URLSearchParams();
-  if (params.status) query.set('status', params.status);
-  if (params.category) query.set('category', params.category);
-  if (params.year) query.set('year', params.year);
-  if (params.page) query.set('page', params.page);
-  query.set('limit', '9');
-
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/courses?${query.toString()}`,
-      { next: { revalidate: 60 } },
-    );
-    if (!res.ok) throw new Error('Fetch failed');
-    const json = (await res.json()) as { data: PaginatedResponse<Course> };
-    return json.data ?? [];
-  } catch {
-    return { items: [], pagination: { total: 0, page: 1, limit: 9, totalPages: 0 } };
-  }
+  return fetchCoursesServer({
+    status: params.status,
+    category: params.category,
+    year: params.year,
+    page: params.page ? Number(params.page) : 1,
+    limit: 9,
+    search: params.q,
+  });
 }
 
 export default async function CoursesPage({

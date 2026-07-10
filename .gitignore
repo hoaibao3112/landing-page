@@ -49,3 +49,7 @@ next-env.d.ts
 *.db-shm
 *.db-wal
 *.sql
+
+# legacy NestJS backend (đã gộp vào Next.js)
+backend/
+backend_backup/
