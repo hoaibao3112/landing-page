@@ -56,15 +56,28 @@ jobs:
 
             # ── BƯỚC 0: Checkpoint WAL và dừng container an toàn ────────────────
             echo "==> Đang checkpoint WAL trước khi dừng container..."
-            # Chạy checkpoint trong container nếu đang chạy
+            # Chạy checkpoint trong container nếu đang chạy (hỗ trợ cả đường dẫn cũ và mới)
             docker exec landing-page sh -c \
               "sqlite3 /app/data/registrations.db 'PRAGMA wal_checkpoint(TRUNCATE);'" \
+              2>/dev/null || true
+            docker exec landing-page sh -c \
+              "sqlite3 /app/registrations.db 'PRAGMA wal_checkpoint(TRUNCATE);'" \
               2>/dev/null || true
 
             echo "==> Đang dừng container..."
             docker stop landing-page 2>/dev/null || true
             # Đợi container dừng hẳn
             docker wait landing-page 2>/dev/null || true
+
+            # ── BƯỚC MIGRATION: Di chuyển DB cũ sang thư mục data mới (nếu có) ──
+            if [ -f "/opt/landing-page/registrations.db" ] && [ ! -f "$DATA_DIR/registrations.db" ]; then
+              echo "==> Phát hiện DB cũ ở thư mục gốc VPS, đang di chuyển vào $DATA_DIR..."
+              mkdir -p "$DATA_DIR"
+              mv "/opt/landing-page/registrations.db" "$DATA_DIR/registrations.db"
+              [ -f "/opt/landing-page/registrations.db-wal" ] && mv "/opt/landing-page/registrations.db-wal" "$DATA_DIR/registrations.db-wal"
+              [ -f "/opt/landing-page/registrations.db-shm" ] && mv "/opt/landing-page/registrations.db-shm" "$DATA_DIR/registrations.db-shm"
+              echo "    Đã hoàn tất di chuyển DB cũ!"
+            fi
 
             # ── BƯỚC 1: Backup toàn bộ thư mục data ─────────────────────────────
             echo "==> Đang sao lưu database..."
