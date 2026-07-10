@@ -11,8 +11,6 @@ let jwksClient: ReturnType<typeof createRemoteJWKSet> | null = null;
 function getJWKSClient(supabaseUrl: string) {
   if (!jwksClient) {
     const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    console.log('MIDDLEWARE SUPABASE URL:', supabaseUrl);
-    console.log('MIDDLEWARE ANON KEY:', anonKey ? anonKey.substring(0, 10) + '...' : 'UNDEFINED');
     jwksClient = createRemoteJWKSet(
       new URL(`${supabaseUrl.replace(/\/$/, '')}/auth/v1/.well-known/jwks.json`),
       {
@@ -49,6 +47,14 @@ async function verifyToken(token: string) {
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  // ── Rewrite /api/portal/:path* to /api/:path* ──
+  if (pathname.startsWith('/api/portal/')) {
+    const newPath = pathname.replace('/api/portal/', '/api/');
+    const url = req.nextUrl.clone();
+    url.pathname = newPath;
+    return NextResponse.rewrite(url);
+  }
 
   // ── Admin routes ──────────────────────────────
   if (ADMIN_PROTECTED.some((p) => pathname.startsWith(p))) {
@@ -95,7 +101,7 @@ export async function middleware(req: NextRequest) {
   }
 
   // ── User routes ───────────────────────────────
-  const isProtected = USER_PROTECTED.some((p) => pathname.startsWith(p));
+  const isProtected = USER_PROTECTED.some((p) => pathname.startsWith(p)) || pathname.startsWith('/my-courses');
   const accessToken = req.cookies.get('access_token');
   const supabaseCookie = req.cookies.getAll().find(
     (c) => c.name.startsWith('sb-') && c.name.endsWith('-auth-token'),
@@ -120,6 +126,8 @@ export const config = {
     '/portal/my-courses/:path*',
     '/portal/admin/:path*',
     '/portal/auth/login',
-    '/portal/auth/register'
+    '/portal/auth/register',
+    '/my-courses/:path*',
+    '/api/:path*'
   ],
 };

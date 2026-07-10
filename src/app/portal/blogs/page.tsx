@@ -6,6 +6,7 @@ import { BlogFilters } from '@/components/portal/sections/blogs/BlogFilters';
 import { BlogPaginationNav } from '@/components/portal/sections/blogs/BlogPaginationNav';
 import type { Blog, PaginatedResponse } from '@aizen/types';
 import type { Metadata } from 'next';
+import { fetchBlogsServer } from '@/lib/portal/server-data';
 
 export const metadata: Metadata = {
   title: 'Blog & Tin tức AI',
@@ -18,22 +19,11 @@ interface SearchParams {
 }
 
 async function fetchBlogs(params: SearchParams): Promise<PaginatedResponse<Blog>> {
-  const query = new URLSearchParams();
-  if (params.category) query.set('category', params.category);
-  if (params.page) query.set('page', params.page);
-  query.set('limit', '6');
-
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/blogs?${query.toString()}`,
-      { next: { revalidate: 30 } },
-    );
-    if (!res.ok) throw new Error('Fetch failed');
-    const json = (await res.json()) as { data: PaginatedResponse<Blog> };
-    return json.data ?? { items: [], pagination: { total: 0, page: 1, limit: 6, totalPages: 0 } };
-  } catch {
-    return { items: [], pagination: { total: 0, page: 1, limit: 6, totalPages: 0 } };
-  }
+  return fetchBlogsServer({
+    category: params.category,
+    page: params.page ? Number(params.page) : 1,
+    limit: 6,
+  });
 }
 
 export default async function BlogsPage({

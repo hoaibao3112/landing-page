@@ -1,7 +1,9 @@
 import axios, { type AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from 'axios';
 import { useAuthStore } from '@/store/portal/auth.store';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001/api';
+const BASE_URL = typeof window !== 'undefined'
+  ? '/api'
+  : (process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:20000/api');
 
 let isRefreshing = false;
 let refreshSubscribers: ((token: string) => void)[] = [];

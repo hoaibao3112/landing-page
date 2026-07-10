@@ -1,6 +1,9 @@
-﻿import { getAdminToken } from './auth';
+import { getAdminToken } from './auth';
 
-const BASE = (process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:3001/api').replace(/\/$/, '');
+const BASE = (typeof window !== 'undefined'
+  ? '/api'
+  : (process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:20000/api')
+).replace(/\/$/, '');
 
 // ── Response shape từ ResponseTransformInterceptor ────
 interface ApiEnvelope<T> {
@@ -214,17 +217,13 @@ export async function getCourses(params: {
 
 /** Lấy promo đang active theo từng gói của khóa học — dùng trong tab Cấu hình Đăng ký */
 export async function getActivePromos(course_id: string): Promise<ActivePromoMap> {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('admin_access_token') : null;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/promo-codes/active?course_id=${course_id}`,
-    { headers: { Authorization: `Bearer ${token ?? ''}` } },
-  );
-  if (!res.ok) return {};
-  return res.json() as Promise<ActivePromoMap>;
+  const res = await adminFetch<{ data: ActivePromoMap }>(`/promo-codes/active?course_id=${course_id}`);
+  // adminFetch đã unwrap envelope, res là data trực tiếp
+  return (res as unknown as ActivePromoMap) ?? {};
 }
 
 export async function createCourse(payload: CourseFormInput): Promise<Course> {
-  return adminFetch<Course>('/portal/courses', {
+  return adminFetch<Course>('/courses', {
     method: 'POST',
     body: JSON.stringify(payload),
   });
@@ -248,7 +247,7 @@ export interface InstructorOption {
 }
 
 export async function getInstructorOptions(): Promise<InstructorOption[]> {
-  return adminFetch<InstructorOption[]>('/portal/instructors');
+  return adminFetch<InstructorOption[]>('/instructors');
 }
 
 export async function uploadCourseThumbnail(file: File): Promise<string> {

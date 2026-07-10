@@ -37,6 +37,34 @@ const nextConfig: NextConfig = {
       allowedOrigins: ['103.200.23.54', 'checkin.aizenworld.com'],
     },
   },
+  async rewrites() {
+    return [
+      {
+        source: '/courses/:path*',
+        destination: '/portal/courses/:path*',
+      },
+      {
+        source: '/blogs/:path*',
+        destination: '/portal/blogs/:path*',
+      },
+      {
+        source: '/instructors/:path*',
+        destination: '/portal/instructors/:path*',
+      },
+      {
+        source: '/my-courses/:path*',
+        destination: '/portal/my-courses/:path*',
+      },
+      {
+        source: '/learning-path/:path*',
+        destination: '/portal/learning-path/:path*',
+      },
+      {
+        source: '/resources/:path*',
+        destination: '/portal/resources/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
