@@ -92,8 +92,12 @@ jobs:
               echo "    Không có DB cũ, bỏ qua backup"
             fi
 
-            # ── BƯỚC 2: Đảm bảo thư mục data tồn tại ───────────────────────────
+            # ── BƯỚC 2: Đảm bảo thư mục data và file .env tồn tại ────────────────
             mkdir -p "$DATA_DIR"
+            if [ ! -f "/opt/landing-page/.env" ]; then
+              touch "/opt/landing-page/.env"
+              echo "    Tạo file .env trống trên VPS để tránh lỗi Docker env_file"
+            fi
 
             # ── BƯỚC 3: Khôi phục database từ backup ────────────────────────────
             echo "==> Đang khôi phục database..."

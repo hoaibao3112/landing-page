@@ -9,6 +9,8 @@ services:
       - "20000:20000"
     environment:
       - DATABASE_DIR=/app/data
+    env_file:
+      - .env
     volumes:
       # Mount cả thư mục data thay vì từng file riêng lẻ
       # Tránh lỗi Docker tạo thư mục thay vì file khi host chưa có file
