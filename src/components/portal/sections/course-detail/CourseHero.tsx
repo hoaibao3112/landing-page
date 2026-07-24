@@ -97,19 +97,17 @@ export function CourseHero({ course }: CourseHeroProps) {
         animate="show"
         className="relative z-10 flex flex-col items-center text-center"
       >
-        {/* Logos Bar — Chỉ hiển thị bộ 3 logo cho khóa phối hợp tổ chức (AI Sales & Marketing Fullstack) */}
-        {(course.slug?.toLowerCase().includes('aisalemark') || course.title?.toLowerCase().includes('sales & marketing')) && (
-          <motion.div variants={fadeUp} className="mb-4 flex justify-center">
-            <Image
-              src="/anh3logo.png"
-              alt="3 Logos - PTIT, PTTC, AIZEN"
-              width={700}
-              height={200}
-              className="h-24 sm:h-36 md:h-44 w-auto object-contain drop-shadow-md"
-              priority
-            />
-          </motion.div>
-        )}
+        {/* Logos Bar — Bộ 3 logo đối tác (PTIT, PTTC, AIZEN) */}
+        <motion.div variants={fadeUp} className="mb-4 flex justify-center">
+          <Image
+            src="/anh3logo.png"
+            alt="3 Logos - PTIT, PTTC, AIZEN"
+            width={700}
+            height={200}
+            className="h-24 sm:h-36 md:h-44 w-auto object-contain drop-shadow-md"
+            priority
+          />
+        </motion.div>
 
         {/* Title */}
         <motion.h1
