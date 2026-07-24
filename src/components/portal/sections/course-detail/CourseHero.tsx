@@ -84,6 +84,10 @@ export function CourseHero({ course }: CourseHeroProps) {
     : (course.price_group > 0 ? course.price_group : 0);
   const formattedWeekdayDate = formatWeekdayDate(course.start_date, course.end_date);
   const isCompleted = course.status === 'completed';
+  const isPtitCourse = Boolean(
+    course.slug?.toLowerCase().includes('aisalemark') ||
+    course.title?.toLowerCase().includes('sales & marketing')
+  );
 
   return (
     <section className="relative pt-6 pb-12 text-white overflow-hidden">
@@ -97,17 +101,19 @@ export function CourseHero({ course }: CourseHeroProps) {
         animate="show"
         className="relative z-10 flex flex-col items-center text-center"
       >
-        {/* Logos Bar — Bộ 3 logo đối tác (PTIT, PTTC, AIZEN) */}
-        <motion.div variants={fadeUp} className="mb-4 flex justify-center">
-          <Image
-            src="/anh3logo.png"
-            alt="3 Logos - PTIT, PTTC, AIZEN"
-            width={700}
-            height={200}
-            className="h-24 sm:h-36 md:h-44 w-auto object-contain drop-shadow-md"
-            priority
-          />
-        </motion.div>
+        {/* Logos Bar — Bộ 3 logo đối tác (PTIT, PTTC, AIZEN) (Chỉ dành riêng cho khóa AI Sales & Marketing Fullstack) */}
+        {isPtitCourse && (
+          <motion.div variants={fadeUp} className="mb-4 flex justify-center">
+            <Image
+              src="/anh3logo.png"
+              alt="3 Logos - PTIT, PTTC, AIZEN"
+              width={700}
+              height={200}
+              className="h-24 sm:h-36 md:h-44 w-auto object-contain drop-shadow-md"
+              priority
+            />
+          </motion.div>
+        )}
 
         {/* Title */}
         <motion.h1
@@ -119,23 +125,35 @@ export function CourseHero({ course }: CourseHeroProps) {
 
         {/* Description / Co-organizer info */}
         {(() => {
-          const isPtitCourse = course.slug?.toLowerCase().includes('aisalemark') || course.title?.toLowerCase().includes('sales & marketing');
-          const descriptionText = isPtitCourse
-            ? (course.description || 'Khóa đào tạo do Aizen phối hợp tổ chức cùng Trung tâm đào tạo bưu chính viễn thông (PTTC), trực thuộc Học viện công nghệ bưu chính viễn thông (PTIT).')
-            : course.description;
+          if (isPtitCourse) {
+            const descriptionText =
+              course.description ||
+              'Khóa đào tạo do Aizen phối hợp tổ chức cùng Trung tâm đào tạo bưu chính viễn thông (PTTC), trực thuộc Học viện công nghệ bưu chính viễn thông (PTIT).';
+            return (
+              <motion.p
+                variants={fadeUp}
+                className="text-xs sm:text-sm text-sky-400 font-semibold leading-relaxed mb-6 max-w-2xl mx-auto px-4"
+              >
+                {descriptionText}
+              </motion.p>
+            );
+          }
 
-          if (!descriptionText) return null;
+          // Các khóa học khác: hiển thị mô tả riêng của khóa học đó (nếu có) và không hiển thị thông tin PTTC
+          if (
+            !course.description ||
+            course.description.includes('PTTC') ||
+            course.description.includes('Học viện công nghệ bưu chính viễn thông')
+          ) {
+            return null;
+          }
 
           return (
             <motion.p
               variants={fadeUp}
-              className={
-                isPtitCourse
-                  ? 'text-xs sm:text-sm text-sky-400 font-semibold leading-relaxed mb-6 max-w-2xl mx-auto px-4'
-                  : 'text-base sm:text-lg text-slate-200 font-medium leading-[1.6] mb-6 max-w-2xl mx-auto px-4'
-              }
+              className="text-base sm:text-lg text-slate-200 font-medium leading-[1.6] mb-6 max-w-2xl mx-auto px-4"
             >
-              {descriptionText}
+              {course.description}
             </motion.p>
           );
         })()}
