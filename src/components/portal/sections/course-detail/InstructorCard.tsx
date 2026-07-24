@@ -15,7 +15,7 @@ export function InstructorCard({ instructor }: InstructorCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      className="mb-12"
+      className="mb-6 md:mb-8"
     >
       <p className="inline-flex items-center gap-2 text-[11px] font-black tracking-[0.2em] text-[#38bdf8] uppercase mb-6 w-full justify-center">
         <span className="w-6 h-px bg-[#38bdf8]/60" />
@@ -24,18 +24,24 @@ export function InstructorCard({ instructor }: InstructorCardProps) {
       </p>
 
       <div
-        className="relative rounded-2xl p-6 overflow-hidden"
-        style={{
-          background: 'linear-gradient(135deg, rgba(15,33,51,0.9) 0%, rgba(11,22,40,0.95) 100%)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          backdropFilter: 'blur(12px)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-        }}
+        className="relative rounded-3xl p-6 sm:p-10 overflow-hidden border border-white/20 shadow-2xl shadow-sky-950/50"
       >
-        {/* Background glow */}
-        <div className="absolute top-0 right-0 w-48 h-48 bg-[#0EA5E9]/6 rounded-full -translate-y-1/3 translate-x-1/3 blur-3xl pointer-events-none" />
+        {/* Background Image Layer */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <Image
+            src="/backgoundTrangkhoahoc.jpg"
+            alt="Instructor background"
+            fill
+            className="object-cover object-center opacity-85"
+            priority
+          />
+          <div className="absolute inset-0 bg-slate-950/55 backdrop-blur-[2px]" />
+        </div>
 
-        <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-start gap-6">
+        {/* Background glow */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-[#0EA5E9]/20 rounded-full -translate-y-1/3 translate-x-1/3 blur-3xl pointer-events-none z-0" />
+
+        <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-center gap-8 sm:gap-10">
           {/* Avatar */}
           <motion.div
             whileHover={{ scale: 1.04 }}
@@ -44,20 +50,20 @@ export function InstructorCard({ instructor }: InstructorCardProps) {
           >
             {instructor.avatar_url ? (
               <div className="relative">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#0EA5E9] to-[#3b82f6] blur-md opacity-40 scale-110" />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#0EA5E9] to-[#3b82f6] blur-xl opacity-60 scale-110" />
                 <Image
                   src={instructor.avatar_url}
                   alt={instructor.name}
-                  width={100}
-                  height={100}
-                  className="relative w-24 h-24 rounded-full object-cover border-2 border-sky-500/40 shadow-xl shadow-sky-500/20"
+                  width={220}
+                  height={220}
+                  className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full object-cover border-4 border-sky-400/60 shadow-2xl shadow-sky-500/40"
                 />
               </div>
             ) : (
               <div className="relative">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#0EA5E9] to-[#3b82f6] blur-md opacity-40 scale-110" />
-                <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shadow-xl shadow-sky-500/30 border-2 border-sky-500/40">
-                  <span className="text-white text-3xl font-bold">{instructor.name.charAt(0)}</span>
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#0EA5E9] to-[#3b82f6] blur-xl opacity-60 scale-110" />
+                <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shadow-2xl shadow-sky-500/40 border-4 border-sky-400/60">
+                  <span className="text-white text-5xl font-bold">{instructor.name.charAt(0)}</span>
                 </div>
               </div>
             )}

@@ -11,14 +11,13 @@ interface CompletedCoursesPreviewSectionProps {
 
 export function CompletedCoursesPreviewSection({ courses }: CompletedCoursesPreviewSectionProps) {
   return (
-    <section className="py-16 md:py-24 bg-transparent">
+    <section className="pt-6 md:pt-8 pb-16 md:pb-20 bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <FadeIn direction="up" className="flex flex-col md:flex-row md:items-end md:justify-between mb-10 gap-4">
           <div>
-            <p className="text-amber-400 text-xs font-extrabold uppercase tracking-widest mb-2">Thư viện</p>
             <h2 className="text-2xl md:text-3xl font-black text-white mb-2 drop-shadow-md">
-              Thư Viện Khóa Học Đã Hoàn Thành
+              Khóa Đào Tạo Đã Hoàn Thành
             </h2>
             <p className="text-slate-100 text-sm max-w-lg font-medium">
               Xem lại chương trình giảng dạy, truy cập tài liệu và xem lại nội dung tóm tắt.

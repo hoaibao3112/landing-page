@@ -396,28 +396,28 @@ export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: R
 
   const PLANS: PlanConfig[] = [
     {
-      key: 'early_bird', label: 'Early Bird', sublabel: '1 người · Ưu đãi có hạn',
+      key: 'early_bird', label: 'Early Bird', sublabel: '',
       priceLabel: formatCurrency(Math.round(price * 0.73)),
       originalPriceLabel: formatCurrency(price),
       memberCount: 1, basePrice: Math.round(price * 0.73),
       badge: { text: 'SỐ LƯỢNG CÓ HẠN', color: 'bg-amber-500' },
     },
     {
-      key: 'individual', label: '1 người', sublabel: 'Đăng ký cá nhân',
+      key: 'individual', label: 'Cá nhân', sublabel: '',
       priceLabel: formatCurrency(indivPrice),
       // Chỉ hiện gạch ngang nếu admin đã set original_price
       ...(indivOriginalPrice ? { originalPriceLabel: formatCurrency(indivOriginalPrice) } : {}),
       memberCount: 1, basePrice: indivPrice,
     },
     {
-      key: 'group_2', label: 'Nhóm 2 người', sublabel: `${formatCurrency(g2Price)}/người`,
+      key: 'group_2', label: 'Nhóm 2 người', sublabel: '',
       priceLabel: formatCurrency(g2Price * 2),
       originalPriceLabel: formatCurrency(g2OriginalPrice * 2),
       memberCount: 2, basePrice: g2Price * 2,
       badge: { text: 'HOT NHẤT', color: 'bg-gradient-to-r from-red-600 via-rose-500 to-orange-500 shadow-md shadow-red-500/30' },
     },
     {
-      key: 'group_4', label: 'Nhóm 4 người', sublabel: `${formatCurrency(g4Price)}/người`,
+      key: 'group_4', label: 'Nhóm 4 người', sublabel: '',
       priceLabel: formatCurrency(group4TotalPrice),
       originalPriceLabel: formatCurrency(g4OriginalPrice * 4),
       memberCount: 4, basePrice: group4TotalPrice,

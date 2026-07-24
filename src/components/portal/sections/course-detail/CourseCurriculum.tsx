@@ -35,12 +35,11 @@ function resolveStartTimes(modules: CourseModule[]): string[] {
 export function CourseCurriculum({ modules, headline }: CourseCurriculumProps) {
   if (!modules.length) return null;
 
-  const startTimes = resolveStartTimes(modules);
   const moduleCount = modules.filter((m) => m.item_type === 'module').length;
   const displayHeadline = headline ?? `1 ngày – ${moduleCount} module thực chiến`;
 
   return (
-    <section className="mb-14">
+    <section className="mb-6 md:mb-8">
       {/* Section header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -49,10 +48,10 @@ export function CourseCurriculum({ modules, headline }: CourseCurriculumProps) {
         transition={{ duration: 0.5 }}
         className="text-center mb-10"
       >
-        <p className="inline-flex items-center gap-2 text-[11px] font-black tracking-[0.2em] text-[#38bdf8] uppercase mb-3">
-          <span className="w-6 h-px bg-[#38bdf8]/60" />
+        <p className="inline-flex items-center gap-2 text-[11px] font-black tracking-[0.2em] text-white uppercase mb-3">
+          <span className="w-6 h-px bg-white/40" />
           NỘI DUNG CHƯƠNG TRÌNH
-          <span className="w-6 h-px bg-[#38bdf8]/60" />
+          <span className="w-6 h-px bg-white/40" />
         </p>
         <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">
           {displayHeadline}
@@ -62,13 +61,12 @@ export function CourseCurriculum({ modules, headline }: CourseCurriculumProps) {
       <div className="relative">
         {/* Vertical timeline line */}
         <div
-          className="absolute left-[68px] top-5 bottom-5 w-px"
+          className="absolute left-[6px] top-5 bottom-5 w-px"
           style={{ background: 'linear-gradient(to bottom, transparent, rgba(14,165,233,0.4) 15%, rgba(14,165,233,0.25) 85%, transparent)' }}
         />
 
         <ol className="space-y-2">
           {modules.map((mod, idx) => {
-            const timeLabel = startTimes[idx] ?? '';
             const isBreak = mod.item_type === 'break';
             const isEvent = mod.item_type === 'event';
             const isModule = mod.item_type === 'module';
@@ -82,21 +80,10 @@ export function CourseCurriculum({ modules, headline }: CourseCurriculumProps) {
                 transition={{ duration: 0.4, delay: idx * 0.04, ease: 'easeOut' }}
                 className="flex items-start gap-0"
               >
-                {/* Time label */}
-                <div className="w-[68px] flex-shrink-0 pt-3.5">
-                  <span
-                    className={`text-[11px] font-mono leading-none tabular-nums ${
-                      isModule ? 'text-white font-bold' : isEvent ? 'text-sky-400 font-semibold' : 'text-slate-500'
-                    }`}
-                  >
-                    {timeLabel}
-                  </span>
-                </div>
-
                 {/* Dot */}
                 <div className="flex flex-col items-center relative w-0">
                   <div
-                    className={`rounded-full border-2 border-slate-900 flex-shrink-0 mt-3.5 z-10 relative left-[-5px] ${
+                    className={`rounded-full border-2 border-slate-900 flex-shrink-0 mt-3.5 z-10 relative left-[0px] -translate-x-1/2 ${
                       isEvent
                         ? 'w-4 h-4 ring-2 ring-sky-500/40 bg-sky-500'
                         : isBreak

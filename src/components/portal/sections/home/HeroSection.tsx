@@ -4,7 +4,7 @@ import { AnimatedCounter } from '@/components/portal/ui/AnimatedCounter';
 
 export function HeroSection() {
   return (
-    <section className="hero-animated-bg relative overflow-hidden py-24 md:py-36 bg-transparent">
+    <section className="hero-animated-bg relative overflow-hidden pt-16 md:pt-24 pb-8 md:pb-12 bg-transparent">
 
       {/* ═══ Animated Background Layers ═══ */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
@@ -78,13 +78,13 @@ export function HeroSection() {
         {/* Badge */}
         <div className="animate-fade-in mb-6 inline-flex items-center gap-2 px-4 py-1.5 bg-slate-900/80 backdrop-blur-md border border-amber-400/50 rounded-full shadow-lg shadow-orange-500/10 hover:scale-105 transition-transform duration-300">
           <span className="w-2.5 h-2.5 bg-amber-400 rounded-full animate-pulse" />
-          <span className="text-amber-300 text-xs font-extrabold tracking-wide">Nền tảng đào tạo AI hàng đầu Việt Nam 🚀</span>
+          <span className="text-amber-300 text-xs font-extrabold tracking-wide">Chương Trình Đào Tạo AI Thực Chiến Cho Lãnh Đạo &amp; Doanh Nghiệp</span>
         </div>
 
         <h1 className="text-4xl md:text-6xl font-black text-white leading-tight mb-6 tracking-tight drop-shadow-md">
-          {['Làm', 'Chủ', 'Tương', 'Lai', 'cùng'].map((word, i) => (
+          {['Bứt', 'phá', 'tăng', 'trưởng', 'cùng'].map((word, i) => (
             <span
-              key={word}
+              key={`${word}-${i}`}
               className="hero-word-reveal inline-block text-white"
               style={{ animationDelay: `${200 + i * 120}ms` }}
             >
@@ -93,12 +93,12 @@ export function HeroSection() {
           ))}
           <br />
           <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-orange-500 font-black drop-shadow-lg animate-pulse-glow">
-            AIZEN Education
+            Aizen Training
           </span>
         </h1>
 
-        <p className="animate-slide-up delay-200 text-base md:text-lg text-slate-100 font-medium max-w-2xl mx-auto mb-10 leading-relaxed drop-shadow-sm">
-          Tăng tốc sự nghiệp với các khóa học chuyên nghiệp cao cấp, ứng dụng AI. Thiết kế dành cho các nhà lãnh đạo doanh nghiệp và những người đổi mới công nghệ.
+        <p className="animate-slide-up delay-200 text-base md:text-lg text-slate-100 font-medium max-w-3xl mx-auto mb-10 leading-relaxed drop-shadow-sm">
+          Trang bị tư duy hệ thống và năng lực ứng dụng AI thực tế cho Lãnh đạo, Cấp quản lý và Nhân viên. Giải pháp giúp doanh nghiệp xóa bỏ các điểm nghẽn thủ công, tối ưu chi phí vận hành và chuẩn hóa quy trình làm việc cho toàn bộ bộ máy.
         </p>
 
         <div className="animate-slide-up delay-300 flex justify-center gap-4 flex-wrap">
@@ -107,26 +107,17 @@ export function HeroSection() {
               size="lg"
               className="px-8 py-4 rounded-xl font-bold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 transition-all text-white border-0 text-base shadow-xl shadow-orange-500/30 hover:shadow-orange-500/50 hover:-translate-y-1 active:translate-y-0 cursor-pointer"
             >
-              Khám phá chương trình học →
-            </Button>
-          </Link>
-          <Link href="/portal/instructors">
-            <Button
-              size="lg"
-              variant="outline"
-              className="px-8 py-4 rounded-xl font-bold text-base border-white/60 text-white bg-slate-900/60 backdrop-blur-md hover:bg-slate-900/80 hover:border-amber-400 hover:text-amber-300 hover:-translate-y-1 transition-all cursor-pointer shadow-md"
-            >
-              Gặp gỡ giảng viên
+              Đăng ký đào tạo →
             </Button>
           </Link>
         </div>
 
         {/* Stats row with Animated Counter */}
-        <div className="animate-fade-in delay-500 mt-14 grid grid-cols-3 gap-4 max-w-md mx-auto">
+        <div className="animate-fade-in delay-500 mt-8 md:mt-10 grid grid-cols-3 gap-4 max-w-xl mx-auto">
           {[
-            { end: 500, suffix: '+', label: 'Học viên' },
-            { end: 10, suffix: '+', label: 'Khóa học' },
-            { end: 98, suffix: '%', label: 'Hài lòng' },
+            { end: 500, suffix: '+', label: 'Lãnh đạo & nhân viên các cấp' },
+            { end: 100, suffix: '%', label: 'Chương trình thực hành' },
+            { end: 98, suffix: '%', label: 'Đánh giá thực chiến' },
           ].map((s) => (
             <div
               key={s.label}
@@ -135,7 +126,7 @@ export function HeroSection() {
               <div className="text-2xl md:text-3xl font-black text-amber-400 group-hover:text-sky-300 transition-colors">
                 <AnimatedCounter end={s.end} suffix={s.suffix} />
               </div>
-              <div className="text-xs text-slate-200 font-semibold mt-1">{s.label}</div>
+              <div className="text-xs text-slate-200 font-semibold mt-1 leading-snug">{s.label}</div>
             </div>
           ))}
         </div>

@@ -72,7 +72,7 @@ export function CourseSkills({ skills }: CourseSkillsProps) {
   const [featured, ...rest] = items;
 
   return (
-    <section className="mb-16">
+    <section className="mb-6 md:mb-8">
       {/* Section header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -81,16 +81,13 @@ export function CourseSkills({ skills }: CourseSkillsProps) {
         transition={{ duration: 0.5 }}
         className="text-center mb-10"
       >
-        <p className="inline-flex items-center gap-2 text-[11px] font-black tracking-[0.2em] text-[#38bdf8] uppercase mb-3">
-          <span className="w-6 h-px bg-[#38bdf8]/60" />
+        <p className="inline-flex items-center gap-2 text-[11px] font-black tracking-[0.2em] text-white uppercase mb-3">
+          <span className="w-6 h-px bg-white/40" />
           KỸ NĂNG BẠN SẼ CÓ
-          <span className="w-6 h-px bg-[#38bdf8]/60" />
+          <span className="w-6 h-px bg-white/40" />
         </p>
         <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">
-          Kết thúc khóa học,{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] to-[#3b82f6]">
-            bạn sở hữu ngay
-          </span>
+          Kết thúc khóa học, bạn sở hữu ngay
         </h2>
       </motion.div>
 
@@ -166,7 +163,7 @@ export function CourseSkills({ skills }: CourseSkillsProps) {
         ))}
       </div>
 
-      {/* Row 2: 2 cards */}
+      {/* Row 2: remaining cards */}
       {rest.length > 2 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {rest.slice(2).map((skill, idx) => (

@@ -674,8 +674,8 @@ function PlanCard({ plan, disabled, disabledReason = 'Đã hết hạn đăng k�
         </div>
 
         {/* Name */}
-        <p className="font-black text-white text-base mb-0.5 tracking-tight">{plan.label}</p>
-        <p className="text-slate-500 text-xs mb-4">{plan.sublabel}</p>
+        <p className={`font-black text-white text-base tracking-tight ${plan.sublabel ? 'mb-0.5' : 'mb-4'}`}>{plan.label}</p>
+        {plan.sublabel && <p className="text-slate-500 text-xs mb-4">{plan.sublabel}</p>}
 
         {/* Price */}
         <div className="mt-auto">
@@ -748,7 +748,7 @@ export function CoursePlanSection({
 }: CoursePlanSectionProps) {
   const earlyBirdPrice = plansConfig?.early_bird?.price ?? price;
   const earlyBirdLabel = plansConfig?.early_bird?.label || 'Early Bird';
-  const earlyBirdSublabel = plansConfig?.early_bird?.sublabel || '1 người · Ưu đãi có hạn';
+  const earlyBirdSublabel = plansConfig?.early_bird?.sublabel || '';
 
   const plansList = plansConfig || {};
   const isExpired = earlyBirdDeadline ? new Date(earlyBirdDeadline) < new Date() : false;
@@ -756,18 +756,18 @@ export function CoursePlanSection({
 
   const individualPrice = plansConfig?.individual?.price ?? price;
   const individualOriginalPrice = plansConfig?.individual?.original_price ?? null; // null = không gạch ngang
-  const individualLabel = plansConfig?.individual?.label || '1 người';
-  const individualSublabel = plansConfig?.individual?.sublabel || 'Đăng ký cá nhân';
+  const individualLabel = plansConfig?.individual?.label || 'Cá nhân';
+  const individualSublabel = plansConfig?.individual?.sublabel || '';
 
   const group2PricePerPerson = plansConfig?.group_2?.price ?? priceGroup;
   const group2OriginalPerPerson = plansConfig?.group_2?.original_price ?? price; // fallback: giá cá nhân
   const group2Label = plansConfig?.group_2?.label || 'Nhóm 2 người';
-  const group2Sublabel = plansConfig?.group_2?.sublabel || `${formatCurrency(group2PricePerPerson)}/người`;
+  const group2Sublabel = plansConfig?.group_2?.sublabel || '';
 
   const group4PricePerPerson = plansConfig?.group_4?.price ?? Math.round(priceGroup * 1.8 / 4);
   const group4OriginalPerPerson = plansConfig?.group_4?.original_price ?? price; // fallback: giá cá nhân
   const group4Label = plansConfig?.group_4?.label || 'Nhóm 4 người';
-  const group4Sublabel = plansConfig?.group_4?.sublabel || `${formatCurrency(group4PricePerPerson)}/người`;
+  const group4Sublabel = plansConfig?.group_4?.sublabel || '';
 
   const PLANS: PlanConfig[] = [
     {
@@ -824,14 +824,14 @@ export function CoursePlanSection({
 
   return (
     <>
-      <section id="dang-ky" className="py-12">
+      <section id="dang-ky" className="py-4 md:py-6">
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-10"
+          className="text-center mb-6"
         >
           <p className="inline-flex items-center gap-2 text-[11px] font-black tracking-[0.2em] text-[#38bdf8] uppercase mb-3">
             <span className="w-6 h-px bg-[#38bdf8]/60" />

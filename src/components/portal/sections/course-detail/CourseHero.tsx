@@ -27,6 +27,7 @@ function formatWeekdayDate(dateStr: string | null, endDateStr?: string | null) {
   const weekday = weekdays[d.getDay()];
   const day = String(d.getDate()).padStart(2, '0');
   const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
 
   if (endDateStr) {
     const dEnd = new Date(endDateStr);
@@ -34,11 +35,25 @@ function formatWeekdayDate(dateStr: string | null, endDateStr?: string | null) {
       const weekdayEnd = weekdays[dEnd.getDay()];
       const dayEnd = String(dEnd.getDate()).padStart(2, '0');
       const monthEnd = String(dEnd.getMonth() + 1).padStart(2, '0');
-      return `${weekday} & ${weekdayEnd}, ${day}/${month} - ${dayEnd}/${monthEnd}`;
+      const yearEnd = dEnd.getFullYear();
+      return `${weekday} & ${weekdayEnd}, ${day}/${month} - ${dayEnd}/${monthEnd}/${yearEnd}`;
     }
   }
 
-  return `${weekday}, ${day}/${month}`;
+  return `${weekday}, ${day}/${month}/${year}`;
+}
+
+function renderLocationText(loc: string) {
+  if (loc.includes(' (')) {
+    const parts = loc.split(' (');
+    return (
+      <>
+        <span className="block">{parts[0]}</span>
+        <span className="block text-xs sm:text-sm font-semibold text-slate-200 mt-0.5">({parts.slice(1).join(' (')}</span>
+      </>
+    );
+  }
+  return loc;
 }
 
 const containerVariants = {
@@ -81,28 +96,13 @@ export function CourseHero({ course }: CourseHeroProps) {
         animate="show"
         className="relative z-10 flex flex-col items-center text-center"
       >
-        {/* Top Tagline (Matching Image 1) */}
-        <motion.div variants={fadeUp} className="mb-4">
-          <span className="text-xs sm:text-sm font-black tracking-[0.2em] text-[#38bdf8] uppercase">
-            KHÓA HỌC TỪ CƠ BẢN ĐẾN CHUYÊN SÂU
-          </span>
-        </motion.div>
 
         {/* Title */}
         <motion.h1
           variants={fadeUp}
-          className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.08] mb-4"
+          className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.08] mb-4 text-white"
         >
-          {course.title.split(' ').map((word, i) => {
-            const isOrange = ['Claude', 'AI', 'Automation'].some(k => word.includes(k));
-            return isOrange ? (
-              <span key={i} className="text-[#ea580c]">
-                {word}{' '}
-              </span>
-            ) : (
-              <span key={i}>{word} </span>
-            );
-          })}
+          {course.title}
         </motion.h1>
 
         {/* Description (Italic matching Image 1) */}
@@ -122,7 +122,7 @@ export function CourseHero({ course }: CourseHeroProps) {
             {/* Date & Time Column */}
             {formattedWeekdayDate && (
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-amber-500 text-2xl shrink-0">calendar_month</span>
+                <span className="material-symbols-outlined text-white text-2xl shrink-0">calendar_month</span>
                 <div className="flex flex-col">
                   <span className="text-white font-black text-sm sm:text-base leading-tight">
                     {formattedWeekdayDate}
@@ -141,21 +141,21 @@ export function CourseHero({ course }: CourseHeroProps) {
 
             {/* Location */}
             {course.location && (
-              <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-orange-500 text-2xl shrink-0">location_on</span>
+              <div className="flex items-start sm:items-center gap-2.5 max-w-[380px] sm:max-w-[480px]">
+                <span className="material-symbols-outlined text-white text-2xl shrink-0 mt-0.5 sm:mt-0">location_on</span>
                 {course.location_url ? (
                   <a
                     href={course.location_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white font-black text-sm sm:text-base hover:text-sky-300 transition-colors cursor-pointer"
+                    className="text-white font-black text-sm sm:text-base hover:text-sky-300 transition-colors cursor-pointer leading-snug break-words"
                     title="Mở vị trí trên Google Maps"
                   >
-                    {course.location}
+                    {renderLocationText(course.location)}
                   </a>
                 ) : (
-                  <span className="text-white font-black text-sm sm:text-base">
-                    {course.location}
+                  <span className="text-white font-black text-sm sm:text-base leading-snug break-words">
+                    {renderLocationText(course.location)}
                   </span>
                 )}
               </div>
@@ -187,7 +187,7 @@ export function CourseHero({ course }: CourseHeroProps) {
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   className={`flex flex-col items-center text-center px-3 ${i < items.length - 1 ? 'border-r border-white/10' : ''}`}
                 >
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-[#0284C7] to-[#38bdf8] flex items-center justify-center shadow-lg shadow-blue-500/25 mb-2.5">
+                  <div className="w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center mb-2.5">
                     <span className="material-symbols-outlined text-white text-lg">{item.icon || 'star'}</span>
                   </div>
                   <h3 className="text-base font-black text-white uppercase tracking-tight">{item.value}</h3>
@@ -198,32 +198,7 @@ export function CourseHero({ course }: CourseHeroProps) {
           );
         })()}
 
-        {/* Price + Date */}
-        <motion.div variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
-          {date && (
-            <div className="grid grid-cols-[auto_1fr] items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 min-h-[68px]">
-              <div className="w-8 h-8 rounded-lg bg-[#0EA5E9]/15 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-[#0EA5E9] text-base leading-none">calendar_month</span>
-              </div>
-              <div className="flex flex-col justify-center leading-none text-left">
-                <p className="text-white font-bold text-sm leading-tight m-0 p-0">{date}</p>
-                <p className="text-slate-400 text-xs leading-tight mt-1 m-0 p-0">{course.schedule_time || '8h30 – 17h00'}</p>
-              </div>
-            </div>
-          )}
-
-          <div className="grid grid-cols-[auto_1fr] items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 min-h-[68px] @container">
-            <div className="w-8 h-8 rounded-lg bg-[#0EA5E9]/15 flex items-center justify-center shrink-0">
-              <span className="material-symbols-outlined text-[#0EA5E9] text-base leading-none">sell</span>
-            </div>
-            <div className="flex flex-col justify-center leading-none">
-              <p className="text-white font-black text-lg leading-tight m-0 p-0">{formatPrice(course.price)}</p>
-              {displayGroupPrice > 0 && (
-                <p className="text-slate-400 text-xs leading-tight mt-1 m-0 p-0">Nhóm từ {formatPrice(displayGroupPrice)}/người</p>
-              )}
-            </div>
-          </div>
-        </motion.div>
+        {/* Price + Date block removed per user request */}
       </motion.div>
     </section>
   );

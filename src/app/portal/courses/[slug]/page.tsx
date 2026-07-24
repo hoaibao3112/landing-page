@@ -37,25 +37,25 @@ export default async function CourseDetailPage({
   if (!course) notFound();
 
   return (
-    <div className="py-6">
+    <div className="py-2">
       {/* Hero - narrow centered */}
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-1">
         <CourseHero course={course} />
       </div>
 
       {/* Skills - wider, centered */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-1">
         <CourseSkills skills={course.skills} />
       </div>
 
       {/* Curriculum - narrow centered */}
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-1">
         <CourseCurriculum modules={course.course_modules} headline={course.curriculum_headline} />
       </div>
 
       {/* Instructor - narrow centered */}
       {course.instructors && (
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-1">
           <InstructorCard
             instructor={{
               ...course.instructors,
@@ -66,7 +66,7 @@ export default async function CourseDetailPage({
       )}
 
       {/* Plan section - wider, centered */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         <CoursePlanSection
           courseId={course.id}
           courseTitle={course.title}

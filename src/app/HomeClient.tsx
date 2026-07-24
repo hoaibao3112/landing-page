@@ -738,14 +738,7 @@ export default function HomeClient({ initialPopupConfig }: { initialPopupConfig:
           </motion.div>
 
 
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="text-sm sm:text-base font-black tracking-widest text-white uppercase mb-4"
-          >
-            Khóa học từ cơ bản đến chuyên sâu
-          </motion.div>
+
 
           <motion.h1
             initial={{ y: 20, opacity: 0 }}

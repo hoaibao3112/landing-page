@@ -104,7 +104,7 @@ export function VerticalThreeSectionModal() {
                   transition={{ duration: 0.5, delay: 0.15 }}
                   className="text-xs sm:text-base font-black uppercase tracking-wider bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400 bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(251,191,36,0.35)] animate-pulse"
                 >
-                  Chương Trình Khóa Học & Ưu Đãi
+                  Lịch Đào Tạo & Ưu Đãi
                 </motion.h3>
               </div>
               <button
