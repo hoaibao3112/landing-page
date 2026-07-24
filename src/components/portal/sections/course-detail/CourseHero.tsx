@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import type { CourseWithDetails } from '@aizen/types';
+import { computeCoursePlanPrices } from '@/lib/portal/utils/pricing';
 
 interface CourseHeroProps {
   course: CourseWithDetails;
@@ -52,6 +53,19 @@ const fadeUp = {
 
 export function CourseHero({ course }: CourseHeroProps) {
   const date = formatDate(course.start_date);
+  const planPrices = computeCoursePlanPrices({
+    price: course.price || 0,
+    priceGroup: course.price_group || 0,
+    plansConfig: course.plans_config ?? undefined,
+  });
+
+  const minGroupPrice = Math.min(
+    planPrices.group2PricePerPerson > 0 ? planPrices.group2PricePerPerson : Infinity,
+    planPrices.group4PricePerPerson > 0 ? planPrices.group4PricePerPerson : Infinity
+  );
+  const displayGroupPrice = Number.isFinite(minGroupPrice) && minGroupPrice > 0
+    ? minGroupPrice
+    : (course.price_group > 0 ? course.price_group : 0);
   const formattedWeekdayDate = formatWeekdayDate(course.start_date, course.end_date);
   const isCompleted = course.status === 'completed';
 
@@ -204,7 +218,9 @@ export function CourseHero({ course }: CourseHeroProps) {
             </div>
             <div className="flex flex-col justify-center leading-none">
               <p className="text-white font-black text-lg leading-tight m-0 p-0">{formatPrice(course.price)}</p>
-              <p className="text-slate-400 text-xs leading-tight mt-1 m-0 p-0">Nhóm từ {formatPrice(course.price_group)}/người</p>
+              {displayGroupPrice > 0 && (
+                <p className="text-slate-400 text-xs leading-tight mt-1 m-0 p-0">Nhóm từ {formatPrice(displayGroupPrice)}/người</p>
+              )}
             </div>
           </div>
         </motion.div>

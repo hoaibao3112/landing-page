@@ -752,11 +752,11 @@ export default function KhoaHocPage() {
             </div>
 
             {/* Tabs Header */}
-            <div className="flex border-b border-slate-100 sticky top-[68px] bg-white z-10 px-6">
+            <div className="flex border-b border-slate-100 sticky top-[68px] bg-white z-10 px-3 sm:px-6 overflow-x-auto scrollbar-none whitespace-nowrap gap-1">
               <button
                 type="button"
                 onClick={() => setActiveTab('info')}
-                className={`py-3 px-4 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+                className={`py-3 px-3 sm:px-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer whitespace-nowrap ${
                   activeTab === 'info'
                     ? 'border-sky-500 text-sky-600'
                     : 'border-transparent text-slate-400 hover:text-slate-600'
@@ -767,7 +767,7 @@ export default function KhoaHocPage() {
               <button
                 type="button"
                 onClick={() => setActiveTab('highlights')}
-                className={`py-3 px-4 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+                className={`py-3 px-3 sm:px-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer whitespace-nowrap ${
                   activeTab === 'highlights'
                     ? 'border-sky-500 text-sky-600'
                     : 'border-transparent text-slate-400 hover:text-slate-600'
@@ -778,7 +778,7 @@ export default function KhoaHocPage() {
               <button
                 type="button"
                 onClick={() => setActiveTab('skills')}
-                className={`py-3 px-4 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+                className={`py-3 px-3 sm:px-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer whitespace-nowrap ${
                   activeTab === 'skills'
                     ? 'border-sky-500 text-sky-600'
                     : 'border-transparent text-slate-400 hover:text-slate-600'
@@ -789,7 +789,7 @@ export default function KhoaHocPage() {
               <button
                 type="button"
                 onClick={() => setActiveTab('modules')}
-                className={`py-3 px-4 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+                className={`py-3 px-3 sm:px-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer whitespace-nowrap ${
                   activeTab === 'modules'
                     ? 'border-sky-500 text-sky-600'
                     : 'border-transparent text-slate-400 hover:text-slate-600'
@@ -800,7 +800,7 @@ export default function KhoaHocPage() {
               <button
                 type="button"
                 onClick={() => setActiveTab('register')}
-                className={`py-3 px-4 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+                className={`py-3 px-3 sm:px-4 text-xs sm:text-sm font-bold border-b-2 transition-all cursor-pointer whitespace-nowrap ${
                   activeTab === 'register'
                     ? 'border-sky-500 text-sky-600'
                     : 'border-transparent text-slate-400 hover:text-slate-600'

@@ -8,7 +8,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/portal/utils/cn';
 
 const NAV_LINKS = [
-  { href: '/portal', label: 'Trang chủ' },
+  { href: '/', label: 'Trang chủ' },
   { href: '/courses', label: 'Khóa học' },
   { href: '/instructors', label: 'Giảng viên' },
   { href: '/learning-path', label: 'Lộ trình' },
@@ -31,7 +31,7 @@ export function Navbar() {
     <header className="sticky top-3 z-50 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto transition-all duration-300">
       <div className="bg-slate-900/80 backdrop-blur-xl border border-white/15 shadow-2xl shadow-slate-950/50 rounded-2xl flex items-center justify-between px-5 h-16 relative">
         {/* Logo */}
-        <Link href="/portal" className="flex items-center gap-2 group transition-transform active:scale-95">
+        <Link href="/" className="flex items-center gap-2 group transition-transform active:scale-95">
           <Image
             src="/logo.png"
             alt="AIZEN Education"

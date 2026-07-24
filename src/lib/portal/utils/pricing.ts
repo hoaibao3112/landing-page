@@ -33,15 +33,17 @@ export function computeCoursePlanPrices(params: {
 }): CoursePlanPrices {
   const { price, priceGroup, plansConfig } = params;
 
+  const effectivePriceGroup = priceGroup > 0 ? priceGroup : Math.round((price || 0) * 0.85);
+
   const earlyBirdPrice = plansConfig?.early_bird?.price ?? price;
   const individualPrice = plansConfig?.individual?.price ?? price;
   const individualOriginalPrice = plansConfig?.individual?.original_price;
 
-  const group2PricePerPerson = plansConfig?.group_2?.price ?? priceGroup;
+  const group2PricePerPerson = plansConfig?.group_2?.price ?? effectivePriceGroup;
   const group2OriginalPerPerson = plansConfig?.group_2?.original_price ?? price;
   const group2Total = group2PricePerPerson * 2;
 
-  const group4PricePerPerson = plansConfig?.group_4?.price ?? Math.round((priceGroup * 1.8) / 4);
+  const group4PricePerPerson = plansConfig?.group_4?.price ?? Math.round((effectivePriceGroup * 1.8) / 4);
   const group4OriginalPerPerson = plansConfig?.group_4?.original_price ?? price;
   const group4Total = group4PricePerPerson * 4;
 
