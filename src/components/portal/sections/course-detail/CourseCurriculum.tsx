@@ -155,11 +155,6 @@ export function CourseCurriculum({ modules, headline }: CourseCurriculumProps) {
                             <p className="text-slate-500 text-xs mt-1.5 leading-relaxed">{mod.description}</p>
                           )}
                         </div>
-                        {mod.duration_minutes > 0 && (
-                          <span className="text-[11px] font-bold text-sky-400/80 flex-shrink-0 tracking-wide mt-0.5 bg-sky-500/10 px-2 py-0.5 rounded-md">
-                            {formatDuration(mod.duration_minutes)}
-                          </span>
-                        )}
                       </div>
                     </div>
                   )}

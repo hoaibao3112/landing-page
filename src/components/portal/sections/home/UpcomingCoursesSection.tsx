@@ -19,7 +19,7 @@ export function UpcomingCoursesSection({ courses }: UpcomingCoursesSectionProps)
             Lịch Đào Tạo AI Thực Chiến
           </h2>
           <p className="text-slate-100 text-sm leading-relaxed max-w-xl font-medium">
-            Đảm bảo chỗ của bạn trong các học phần chuyên sâu do chuyên gia hướng dẫn sắp tới của chúng tôi.
+            Giữ chỗ ngay để trực tiếp cùng đội ngũ AIZEN chuẩn hóa tư duy, làm chủ công cụ và ứng dụng AI vào giải quyết bài toán vận hành thực tế tại doanh nghiệp của bạn.
           </p>
         </FadeIn>
 

@@ -4,7 +4,7 @@ const CATEGORY_LINKS = [
   { href: '/', label: 'Trang chủ' },
   { href: '/portal/courses', label: 'Khóa học' },
   { href: '/portal/instructors', label: 'Giảng viên' },
-  { href: '/portal/resources', label: 'Tài nguyên' },
+  // { href: '/portal/resources', label: 'Tài nguyên' },
   { href: '/portal/blogs', label: 'Blogs' },
 ];
 

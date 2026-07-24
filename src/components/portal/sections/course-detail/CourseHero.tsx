@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import type { CourseWithDetails } from '@aizen/types';
 import { computeCoursePlanPrices } from '@/lib/portal/utils/pricing';
@@ -96,6 +97,19 @@ export function CourseHero({ course }: CourseHeroProps) {
         animate="show"
         className="relative z-10 flex flex-col items-center text-center"
       >
+        {/* Logos Bar — Chỉ hiển thị bộ 3 logo cho khóa phối hợp tổ chức (AI Sales & Marketing Fullstack) */}
+        {(course.slug?.toLowerCase().includes('aisalemark') || course.title?.toLowerCase().includes('sales & marketing')) && (
+          <motion.div variants={fadeUp} className="mb-4 flex justify-center">
+            <Image
+              src="/anh3logo.png"
+              alt="3 Logos - PTIT, PTTC, AIZEN"
+              width={700}
+              height={200}
+              className="h-24 sm:h-36 md:h-44 w-auto object-contain drop-shadow-md"
+              priority
+            />
+          </motion.div>
+        )}
 
         {/* Title */}
         <motion.h1
@@ -105,13 +119,28 @@ export function CourseHero({ course }: CourseHeroProps) {
           {course.title}
         </motion.h1>
 
-        {/* Description (Italic matching Image 1) */}
-        <motion.p
-          variants={fadeUp}
-          className="text-base sm:text-lg text-slate-300 italic font-medium leading-[1.6] mb-6 max-w-xl mx-auto"
-        >
-          {course.description}
-        </motion.p>
+        {/* Description / Co-organizer info */}
+        {(() => {
+          const isPtitCourse = course.slug?.toLowerCase().includes('aisalemark') || course.title?.toLowerCase().includes('sales & marketing');
+          const descriptionText = isPtitCourse
+            ? (course.description || 'Khóa đào tạo do Aizen phối hợp tổ chức cùng Trung tâm đào tạo bưu chính viễn thông (PTTC), trực thuộc Học viện công nghệ bưu chính viễn thông (PTIT).')
+            : course.description;
+
+          if (!descriptionText) return null;
+
+          return (
+            <motion.p
+              variants={fadeUp}
+              className={
+                isPtitCourse
+                  ? 'text-xs sm:text-sm text-sky-400 font-semibold leading-relaxed mb-6 max-w-2xl mx-auto px-4'
+                  : 'text-base sm:text-lg text-slate-200 font-medium leading-[1.6] mb-6 max-w-2xl mx-auto px-4'
+              }
+            >
+              {descriptionText}
+            </motion.p>
+          );
+        })()}
 
         {/* Date + Time + Location Sub-bar (Matching Image 1 Exact Layout) */}
         {(formattedWeekdayDate || course.location) && (
@@ -122,7 +151,7 @@ export function CourseHero({ course }: CourseHeroProps) {
             {/* Date & Time Column */}
             {formattedWeekdayDate && (
               <div className="flex items-center gap-2.5">
-                <span className="material-symbols-outlined text-white text-2xl shrink-0">calendar_month</span>
+                <span className="material-symbols-outlined text-sky-400 text-2xl shrink-0">calendar_month</span>
                 <div className="flex flex-col">
                   <span className="text-white font-black text-sm sm:text-base leading-tight">
                     {formattedWeekdayDate}
@@ -142,7 +171,7 @@ export function CourseHero({ course }: CourseHeroProps) {
             {/* Location */}
             {course.location && (
               <div className="flex items-start sm:items-center gap-2.5 max-w-[380px] sm:max-w-[480px]">
-                <span className="material-symbols-outlined text-white text-2xl shrink-0 mt-0.5 sm:mt-0">location_on</span>
+                <span className="material-symbols-outlined text-sky-400 text-2xl shrink-0 mt-0.5 sm:mt-0">location_on</span>
                 {course.location_url ? (
                   <a
                     href={course.location_url}
@@ -187,8 +216,8 @@ export function CourseHero({ course }: CourseHeroProps) {
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   className={`flex flex-col items-center text-center px-3 ${i < items.length - 1 ? 'border-r border-white/10' : ''}`}
                 >
-                  <div className="w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center mb-2.5">
-                    <span className="material-symbols-outlined text-white text-lg">{item.icon || 'star'}</span>
+                  <div className="w-11 h-11 rounded-full bg-sky-500/15 border border-sky-400/30 flex items-center justify-center mb-2.5 shadow-sm shadow-sky-500/20">
+                    <span className="material-symbols-outlined text-sky-400 text-lg">{item.icon || 'star'}</span>
                   </div>
                   <h3 className="text-base font-black text-white uppercase tracking-tight">{item.value}</h3>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">{item.label}</p>
