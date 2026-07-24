@@ -138,6 +138,12 @@ export type CourseStatus = 'upcoming' | 'completed';
 export type PlanConfigItem = { price?: number; original_price?: number; label?: string; sublabel?: string; [key: string]: unknown };
 export type PlansConfigMap = Record<string, PlanConfigItem>;
 
+export interface CourseHighlight {
+  icon?: string;
+  value: string;
+  label: string;
+}
+
 export interface Course {
   id: string;
   title: string;
@@ -155,6 +161,7 @@ export interface Course {
   price_group: number;
   instructor_id: string;
   skills?: { title: string; description: string; badge?: string }[] | null;
+  highlights?: CourseHighlight[] | null;
   curriculum_headline?: string | null;
   qr_early_bird?: string | null;
   qr_individual?: string | null;
@@ -199,6 +206,7 @@ export interface CourseFormInput {
   price_group: number;
   instructor_id: string;
   skills?: { title: string; description: string; badge?: string }[];
+  highlights?: CourseHighlight[];
   curriculum_headline?: string;
   qr_early_bird?: string;
   qr_individual?: string;

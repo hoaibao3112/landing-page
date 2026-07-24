@@ -150,29 +150,39 @@ export function CourseHero({ course }: CourseHeroProps) {
         )}
 
         {/* Meta stats */}
-        <motion.div
-          variants={fadeUp}
-          className="grid grid-cols-3 border-y border-white/10 py-6 mb-8 gap-2 w-full max-w-2xl"
-        >
-          {[
-            { icon: 'groups', value: '01 Ngày', label: 'Offline thực hành' },
-            { icon: 'headset_mic', value: '03 Ngày', label: 'Online hỗ trợ' },
-            { icon: 'all_inclusive', value: 'Trọn đời', label: 'Học lại miễn phí' },
-          ].map((item, i) => (
+        {(() => {
+          const items = (course.highlights && course.highlights.length > 0)
+            ? course.highlights
+            : [
+                { icon: 'groups', value: '01 Ngày', label: 'Offline thực hành' },
+                { icon: 'headset_mic', value: '03 Ngày', label: 'Online hỗ trợ' },
+                { icon: 'all_inclusive', value: 'Trọn đời', label: 'Học lại miễn phí' },
+              ];
+
+          return (
             <motion.div
-              key={i}
-              whileHover={{ scale: 1.04 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              className={`flex flex-col items-center text-center px-3 ${i < 2 ? 'border-r border-white/10' : ''}`}
+              variants={fadeUp}
+              className={`grid gap-2 border-y border-white/10 py-6 mb-8 w-full max-w-2xl ${
+                items.length === 1 ? 'grid-cols-1' : items.length === 2 ? 'grid-cols-2' : 'grid-cols-3'
+              }`}
             >
-              <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-[#0284C7] to-[#38bdf8] flex items-center justify-center shadow-lg shadow-blue-500/25 mb-2.5">
-                <span className="material-symbols-outlined text-white text-lg">{item.icon}</span>
-              </div>
-              <h3 className="text-base font-black text-white uppercase tracking-tight">{item.value}</h3>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">{item.label}</p>
+              {items.map((item, i) => (
+                <motion.div
+                  key={i}
+                  whileHover={{ scale: 1.04 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className={`flex flex-col items-center text-center px-3 ${i < items.length - 1 ? 'border-r border-white/10' : ''}`}
+                >
+                  <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-[#0284C7] to-[#38bdf8] flex items-center justify-center shadow-lg shadow-blue-500/25 mb-2.5">
+                    <span className="material-symbols-outlined text-white text-lg">{item.icon || 'star'}</span>
+                  </div>
+                  <h3 className="text-base font-black text-white uppercase tracking-tight">{item.value}</h3>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-0.5">{item.label}</p>
+                </motion.div>
+              ))}
             </motion.div>
-          ))}
-        </motion.div>
+          );
+        })()}
 
         {/* Price + Date */}
         <motion.div variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">

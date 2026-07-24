@@ -2,6 +2,12 @@ export type CourseStatus = 'upcoming' | 'completed';
 export type PlanType = 'individual' | 'group_2' | 'group_4';
 export type EnrollmentStatus = 'upcoming' | 'completed';
 
+export interface CourseHighlight {
+  icon?: string;
+  value: string;
+  label: string;
+}
+
 export interface Course {
   id: string;
   title: string;
@@ -20,6 +26,7 @@ export interface Course {
   price_group: number;
   instructor_id: string;
   skills?: { title: string; description: string; badge?: string }[];
+  highlights?: CourseHighlight[];
   curriculum_headline?: string | null;
   qr_early_bird?: string | null;
   qr_individual?: string | null;

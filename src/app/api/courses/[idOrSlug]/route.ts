@@ -109,7 +109,7 @@ export async function PATCH(
         delete retryBody[match[1]];
       }
 
-      ['schedule_time', 'location', 'location_url', 'end_date', 'early_bird_deadline'].forEach((field) => {
+      ['schedule_time', 'location', 'location_url', 'end_date', 'early_bird_deadline', 'highlights'].forEach((field) => {
         if (field in retryBody) {
           extraMeta[field] = retryBody[field];
           delete retryBody[field];

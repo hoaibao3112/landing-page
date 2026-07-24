@@ -52,6 +52,11 @@ const EMPTY_FORM: CourseFormInput = {
   price_group: 0,
   instructor_id: '',
   skills: [],
+  highlights: [
+    { icon: 'groups', value: '01 Ngày', label: 'Offline thực hành' },
+    { icon: 'headset_mic', value: '03 Ngày', label: 'Online hỗ trợ' },
+    { icon: 'all_inclusive', value: 'Trọn đời', label: 'Học lại miễn phí' },
+  ],
   curriculum_headline: '',
   qr_early_bird: '',
   qr_individual: '',
@@ -95,11 +100,34 @@ export default function KhoaHocPage() {
   const [uploadError, setUploadError] = useState('');
 
   // Tab state
-  const [activeTab, setActiveTab] = useState<'info' | 'skills' | 'modules' | 'register'>('info');
+  const [activeTab, setActiveTab] = useState<'info' | 'highlights' | 'skills' | 'modules' | 'register'>('info');
 
   // Modules state
   const [formModules, setFormModules] = useState<CourseModuleInput[]>([]);
   const [loadingModules, setLoadingModules] = useState(false);
+
+  // Highlights dynamic edit helpers
+  function addHighlight() {
+    setForm((f) => ({
+      ...f,
+      highlights: [...(f.highlights ?? []), { icon: 'groups', value: '', label: '' }],
+    }));
+  }
+
+  function handleHighlightChange(index: number, field: string, value: string) {
+    setForm((f) => {
+      const newHighlights = [...(f.highlights ?? [])];
+      newHighlights[index] = { ...newHighlights[index], [field]: value };
+      return { ...f, highlights: newHighlights };
+    });
+  }
+
+  function removeHighlight(index: number) {
+    setForm((f) => ({
+      ...f,
+      highlights: (f.highlights ?? []).filter((_, idx) => idx !== index),
+    }));
+  }
 
   // Skills dynamic edit helpers
   function addSkill() {
@@ -309,6 +337,13 @@ export default function KhoaHocPage() {
       price_group: course.price_group,
       instructor_id: course.instructor_id,
       skills: course.skills ?? [],
+      highlights: (course.highlights && course.highlights.length > 0)
+        ? course.highlights
+        : [
+            { icon: 'groups', value: '01 Ngày', label: 'Offline thực hành' },
+            { icon: 'headset_mic', value: '03 Ngày', label: 'Online hỗ trợ' },
+            { icon: 'all_inclusive', value: 'Trọn đời', label: 'Học lại miễn phí' },
+          ],
       curriculum_headline: course.curriculum_headline ?? '',
       qr_early_bird: course.qr_early_bird ?? '',
       qr_individual: course.qr_individual ?? '',
@@ -731,6 +766,17 @@ export default function KhoaHocPage() {
               </button>
               <button
                 type="button"
+                onClick={() => setActiveTab('highlights')}
+                className={`py-3 px-4 text-sm font-bold border-b-2 transition-all cursor-pointer ${
+                  activeTab === 'highlights'
+                    ? 'border-sky-500 text-sky-600'
+                    : 'border-transparent text-slate-400 hover:text-slate-600'
+                }`}
+              >
+                Thông số nổi bật
+              </button>
+              <button
+                type="button"
                 onClick={() => setActiveTab('skills')}
                 className={`py-3 px-4 text-sm font-bold border-b-2 transition-all cursor-pointer ${
                   activeTab === 'skills'
@@ -1017,6 +1063,100 @@ export default function KhoaHocPage() {
                     </div>
                   </div>
                 </>
+              )}
+
+              {activeTab === 'highlights' && (
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-bold text-slate-700">Thông số nổi bật (Badge Hàng đầu)</p>
+                      <p className="text-xs text-slate-400">Hiển thị ở phần Hero của trang chi tiết khóa học</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={addHighlight}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-sky-50 hover:bg-sky-100 active:bg-sky-200 text-sky-600 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                      </svg>
+                      Thêm thông số
+                    </button>
+                  </div>
+
+                  {(form.highlights ?? []).length === 0 ? (
+                    <div className="text-center py-8 border border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
+                      <p className="text-slate-400 text-sm font-medium">Chưa có thông số nào được thiết lập.</p>
+                      <button
+                        type="button"
+                        onClick={addHighlight}
+                        className="text-sky-500 hover:text-sky-600 text-xs font-bold mt-2"
+                      >
+                        Thêm ngay
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-4 max-h-[50vh] overflow-y-auto pr-1">
+                      {(form.highlights ?? []).map((h, idx) => (
+                        <div key={idx} className="p-4 rounded-xl border border-slate-100 bg-slate-50/30 flex flex-col gap-3 relative group/item">
+                          <div className="flex items-center justify-between gap-4">
+                            <span className="text-xs font-bold text-slate-400">Thông số #{idx + 1}</span>
+                            <button
+                              type="button"
+                              onClick={() => removeHighlight(idx)}
+                              className="text-slate-400 hover:text-red-500 transition-colors p-1"
+                              title="Xóa"
+                            >
+                              <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div>
+                              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tiêu đề (Giá trị chính)</label>
+                              <input
+                                type="text"
+                                value={h.value}
+                                onChange={(e) => handleHighlightChange(idx, 'value', e.target.value)}
+                                placeholder="VD: 01 NGÀY"
+                                className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:border-sky-500 transition-all"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Mô tả phụ</label>
+                              <input
+                                type="text"
+                                value={h.label}
+                                onChange={(e) => handleHighlightChange(idx, 'label', e.target.value)}
+                                placeholder="VD: OFFLINE THỰC HÀNH"
+                                className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:border-sky-500 transition-all"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Icon (Material Symbol)</label>
+                              <select
+                                value={h.icon || 'groups'}
+                                onChange={(e) => handleHighlightChange(idx, 'icon', e.target.value)}
+                                className="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:outline-none focus:border-sky-500 transition-all"
+                              >
+                                <option value="groups">👥 groups (Nhóm / Offline)</option>
+                                <option value="headset_mic">🎧 headset_mic (Hỗ trợ / Online)</option>
+                                <option value="all_inclusive">♾️ all_inclusive (Trọn đời)</option>
+                                <option value="timer">⏱️ timer (Thời gian)</option>
+                                <option value="workspace_premium">📜 workspace_premium (Bằng cấp / Chứng chỉ)</option>
+                                <option value="star">⭐ star (Nổi bật)</option>
+                                <option value="rocket_launch">🚀 rocket_launch (Tốc độ / Nâng cao)</option>
+                                <option value="menu_book">📖 menu_book (Tài liệu)</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               )}
 
               {activeTab === 'skills' && (
