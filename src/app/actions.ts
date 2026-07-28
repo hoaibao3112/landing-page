@@ -194,8 +194,8 @@ export async function submitRegistration(formData: FormData): Promise<
         const messageText = `🆕 Đăng ký mới!${voucherLarkMsg}\nHọ tên: ${fullname}\nĐiện thoại: ${phone}\nEmail: ${email}\nNguồn: ${referral}\nVai trò: ${role}\nCông ty: ${company}\nGói: ${packageType} (${members} người)\nSố tiền: ${amount.toLocaleString('vi-VN')}đ\nMã CK: ${paymentContent}\nThời gian: ${vietnamTime}`;
         await fetch(larkUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-          body: messageText,
+          headers: { 'Content-Type': 'application/json; charset=utf-8' },
+          body: JSON.stringify({ msg_type: 'text', content: { text: messageText } }),
         });
       }
     } catch (webhookError) {
@@ -407,7 +407,11 @@ export async function submitGroupRegistration(formData: FormData): Promise<
       if (larkUrl) {
         const voucherLarkMsg = voucherCode ? `\nMã giảm giá: ${voucherCode} (Giảm ${discountPercent}%)` : '';
         const messageText = `🆕 Đăng ký nhóm mới!${voucherLarkMsg}\nGói: ${packageType} (${memberCount} người)\nSố tiền: ${(amountPerPerson * memberCount).toLocaleString('vi-VN')}đ\nMã CK: ${paymentContent}\nThời gian: ${vietnamTime}\n\n${memberDetails}`;
-        await fetch(larkUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain; charset=utf-8' }, body: messageText });
+        await fetch(larkUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json; charset=utf-8' },
+          body: JSON.stringify({ msg_type: 'text', content: { text: messageText } }),
+        });
       }
     } catch {}
 
@@ -1522,8 +1526,8 @@ async function sendLarkResourceNotification(userEmail: string, resourceTitle: st
   try {
     await fetch(webhookUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-      body,
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      body: JSON.stringify({ msg_type: 'text', content: { text: body } }),
     });
   } catch (err) {
     console.warn('Lark resource notification webhook error:', err);

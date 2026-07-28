@@ -20,17 +20,24 @@ async function verifyCourse(courseIdOrSlug: string) {
   return course;
 }
 
-async function postLark(body: string) {
+async function postLark(bodyText: string) {
   const webhookUrl = process.env.LARK_WEBHOOK_URL;
   if (!webhookUrl) {
     console.warn('LARK_WEBHOOK_URL chưa được cấu hình');
     return;
   }
 
+  const payload = {
+    msg_type: 'text',
+    content: {
+      text: bodyText,
+    },
+  };
+
   const response = await fetch(webhookUrl, {
     method: 'POST',
-    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-    body: body,
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
