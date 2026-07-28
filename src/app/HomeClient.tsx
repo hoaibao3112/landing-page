@@ -580,7 +580,7 @@ export default function HomeClient({ initialPopupConfig }: { initialPopupConfig:
                 {/* Poster Image */}
                 <div className="relative w-full flex-shrink-0">
                   <Image
-                    src="/khoa3.jpg"
+                    src="/claudeKhoa3moi.jpg"
                     alt="Làm Chủ Claude AI - Khóa học"
                     width={480}
                     height={480}

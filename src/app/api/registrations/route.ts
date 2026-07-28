@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { supabaseAdmin, verifyAdmin, successResponse, errorResponse } from '@/lib/portal/supabase-server';
 import { applyCode } from '@/lib/portal/promo-codes';
 import { checkRateLimit, getClientIp } from '@/lib/portal/rate-limit';
+import { createRegistrationSchema } from '@/schemas/registration.schema';
 import db from '@/lib/db';
 import crypto from 'crypto';
 
@@ -88,11 +89,14 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { courseId, fullName, phone, email, company, position, referral, plan, promoCode } = body;
+    const parseResult = createRegistrationSchema.safeParse(body);
 
-    if (!courseId || !fullName || !phone || !email || !referral || !plan) {
-      return errorResponse('Thiếu thông tin đăng ký bắt buộc', 400, req.nextUrl.pathname);
+    if (!parseResult.success) {
+      const issue = parseResult.error.issues[0];
+      return errorResponse(issue?.message || 'Dữ liệu thông tin đăng ký không hợp lệ', 400, req.nextUrl.pathname);
     }
+
+    const { courseId, fullName, phone, email, company, position, referral, plan, promoCode } = parseResult.data;
 
     const course = await verifyCourse(courseId);
     if (!course) {
@@ -159,8 +163,8 @@ export async function POST(req: NextRequest) {
       fullName,
       phone,
       email,
-      company,
-      position,
+      company: company ?? undefined,
+      position: position ?? undefined,
       referral,
       plan,
       createdAt,

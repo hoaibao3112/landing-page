@@ -11,8 +11,7 @@ const NAV_LINKS = [
   { href: '/', label: 'Trang chủ' },
   { href: '/courses', label: 'Khóa học' },
   { href: '/instructors', label: 'Giảng viên' },
-  // { href: '/learning-path', label: 'Lộ trình' },
-  // { href: '/resources', label: 'Tài nguyên' },
+  { href: '/resources', label: 'Tài liệu' },
   { href: '/blogs', label: 'Blogs' },
 ];
 

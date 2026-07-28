@@ -1,50 +1,34 @@
 import { NextRequest } from 'next/server';
 import { supabaseAdmin, successResponse, errorResponse } from '@/lib/portal/supabase-server';
-import { checkRateLimit, getClientIp } from '@/lib/portal/rate-limit';
-import { loginSchema } from '@/schemas/auth.schema';
 
 export async function POST(req: NextRequest) {
   try {
-    // 1. Rate Limit Check (5 requests / 1 phút / IP)
-    const clientIp = getClientIp(req);
-    if (!checkRateLimit(clientIp, 'auth-login', 5, 60_000)) {
-      return errorResponse('Bạn đã thử đăng nhập quá nhiều lần. Vui lòng thử lại sau 1 phút.', 429, req.nextUrl.pathname);
+    const refreshToken = req.cookies.get('refresh_token')?.value;
+    if (!refreshToken) {
+      return errorResponse('Không tìm thấy refresh token', 401, req.nextUrl.pathname);
     }
 
-    // 2. Validate input bằng Zod
-    const body = await req.json();
-    const parseResult = loginSchema.safeParse(body);
-
-    if (!parseResult.success) {
-      const issue = parseResult.error.issues[0];
-      return errorResponse(issue?.message || 'Dữ liệu không hợp lệ', 400, req.nextUrl.pathname);
-    }
-
-    const { email, password } = parseResult.data;
-
-    // 3. Đăng nhập Supabase Auth
-    const { data, error } = await supabaseAdmin.auth.signInWithPassword({
-      email,
-      password,
+    const { data, error } = await supabaseAdmin.auth.refreshSession({
+      refresh_token: refreshToken,
     });
 
     if (error || !data.session || !data.user) {
-      return errorResponse('Email hoặc mật khẩu không chính xác', 401, req.nextUrl.pathname);
+      const response = errorResponse('Phiên đăng nhập đã hết hạn', 401, req.nextUrl.pathname);
+      response.cookies.delete('access_token');
+      response.cookies.delete('admin_token');
+      response.cookies.delete('refresh_token');
+      return response;
     }
 
-    // 4. Kiểm tra Role người dùng (Admin vs User thường)
     let isAdmin = false;
     try {
       const { data: { user: fullUser } } = await supabaseAdmin.auth.admin.getUserById(data.user.id);
       if (fullUser) {
         const role = fullUser.app_metadata?.role || fullUser.role;
-        if (role === 'admin') {
-          isAdmin = true;
-        }
+        if (role === 'admin') isAdmin = true;
       }
     } catch (_) {}
 
-    // 🔒 KHÔNG trả accessToken/refreshToken trong JSON Response Body để tránh lộ token qua JS
     const response = successResponse({
       user: {
         id: data.user.id,
@@ -55,7 +39,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // 5. Đặt Token vào HttpOnly Cookies bảo mật (chống XSS)
     const isProd = process.env.NODE_ENV === 'production';
     const sevenDaysInSeconds = 7 * 24 * 60 * 60;
 
@@ -75,9 +58,6 @@ export async function POST(req: NextRequest) {
         maxAge: sevenDaysInSeconds,
         path: '/',
       });
-    } else {
-      // Dọn cookie admin_token dư thừa nếu là user thường
-      response.cookies.delete('admin_token');
     }
 
     if (data.session.refresh_token) {
@@ -92,7 +72,7 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (err) {
-    console.error('Login error:', err);
+    console.error('Refresh token error:', err);
     return errorResponse(err instanceof Error ? err.message : 'Internal Server Error', 500, req.nextUrl.pathname);
   }
 }

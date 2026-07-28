@@ -99,6 +99,24 @@ jobs:
               echo "    Tạo file .env trống trên VPS để tránh lỗi Docker env_file"
             fi
 
+            # ── BƯỚC 2b: Inject env vars từ GitHub Secrets vào .env VPS ──────────
+            # Hàm helper: thêm hoặc cập nhật 1 dòng KEY=VALUE trong .env
+            update_env() {
+              local key="$1"
+              local value="$2"
+              local env_file="/opt/landing-page/.env"
+              if [ -z "$value" ]; then
+                return  # Bỏ qua nếu secret chưa được set
+              fi
+              if grep -q "^${key}=" "$env_file" 2>/dev/null; then
+                sed -i "s|^${key}=.*|${key}=${value}|" "$env_file"
+              else
+                echo "${key}=${value}" >> "$env_file"
+              fi
+            }
+
+            update_env "LARK_WEBHOOK_URL" "${{ secrets.LARK_WEBHOOK_URL }}"
+
             # ── BƯỚC 3: Khôi phục database từ backup ────────────────────────────
             echo "==> Đang khôi phục database..."
             if [ -f "$BACKUP_DIR/registrations.db" ]; then

@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { supabaseAdmin, verifyAdmin, successResponse, errorResponse } from '@/lib/portal/supabase-server';
 import { adjustCourseStatus } from '@/lib/portal/utils/course';
 import { invalidateCoursesServerCache } from '@/lib/portal/server-data';
+import { updateCourseSchema } from '@/schemas/course.schema';
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -88,9 +89,17 @@ export async function PATCH(
       ...cleanBody
     } = body;
 
+    const parseResult = updateCourseSchema.safeParse(cleanBody);
+    if (!parseResult.success) {
+      const issue = parseResult.error.issues[0];
+      return errorResponse(issue?.message || 'Dữ liệu cập nhật khóa học không hợp lệ', 400, req.nextUrl.pathname);
+    }
+
+    const updateData = parseResult.data;
+
     let { data, error } = await supabaseAdmin
       .from('courses')
-      .update(cleanBody)
+      .update(updateData)
       .eq('id', idOrSlug)
       .select()
       .single();

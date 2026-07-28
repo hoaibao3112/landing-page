@@ -1,10 +1,8 @@
 // Client-side only — chỉ gọi trong browser context
-// ⚠️ SECURITY: Token KHÔNG bao giờ lưu vào localStorage (dễ bị XSS đánh cắp)
-// Token được lưu bằng document.cookie (SameSite=Lax) — middleware đọc từ cookie này
-// User info (không nhạy cảm) lưu sessionStorage để hiển thị UI
+// 🔒 SECURITY: Token được lưu trong HttpOnly Cookie phía Server (chống XSS)
+// User info (không nhạy cảm) lưu sessionStorage để hiển thị UI admin
 
 const ADMIN_USER_KEY = 'admin_user';
-const SESSION_DURATION_SECS = 8 * 60 * 60; // 8 giờ
 
 export interface AdminUser {
   id: string;
@@ -12,25 +10,18 @@ export interface AdminUser {
   fullName?: string;
 }
 
-export function setAdminSession(token: string, user: AdminUser): void {
+export function setAdminSession(_token: string | undefined, user: AdminUser): void {
   if (typeof window === 'undefined') return;
 
-  // Lưu user info (không nhạy cảm) vào sessionStorage để hiển thị UI admin
+  // Chỉ lưu user info (không nhạy cảm) vào sessionStorage để hiển thị UI admin
   try {
     sessionStorage.setItem(ADMIN_USER_KEY, JSON.stringify(user));
   } catch (_) {}
-
-  // Token → cookie (SameSite=Lax, Secure khi production)
-  // Không dùng localStorage — localStorage scope theo origin, khách hàng thấy được!
-  const secure = window.location.protocol === 'https:' ? '; Secure' : '';
-  document.cookie = `admin_token=${token}; path=/; max-age=${SESSION_DURATION_SECS}; SameSite=Lax${secure}`;
 }
 
 export function getAdminToken(): string | null {
-  if (typeof document === 'undefined') return null;
-  // Đọc từ cookie (không phải localStorage)
-  const match = document.cookie.match(/(?:^|;)\s*admin_token=([^;]+)/);
-  return match ? decodeURIComponent(match[1]) : null;
+  // Token được lưu trong HttpOnly Cookie phía Server, JS client không đọc token
+  return null;
 }
 
 export function getAdminUser(): AdminUser | null {
@@ -48,10 +39,11 @@ export function clearAdminSession(): void {
   if (typeof window === 'undefined') return;
   // Xóa user info khỏi sessionStorage
   try { sessionStorage.removeItem(ADMIN_USER_KEY); } catch (_) {}
-  // Xóa token cookie
-  document.cookie = 'admin_token=; path=/; max-age=0; SameSite=Lax';
 
-  // Dọn dẹp localStorage cũ (nếu user đã login trước khi fix này)
+  // Gọi API logout để xóa HttpOnly Cookies ở Server
+  fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }).catch(() => {});
+
+  // Dọn dẹp localStorage cũ (nếu có)
   try {
     localStorage.removeItem('admin_access_token');
     localStorage.removeItem('admin_expires_at');
@@ -60,22 +52,17 @@ export function clearAdminSession(): void {
 }
 
 export function isAdminLoggedIn(): boolean {
-  if (typeof document === 'undefined') return false;
-  const token = getAdminToken();
-  return !!token;
+  return !!getAdminUser();
 }
 
 // Dọn dẹp các key cũ trong localStorage khi app khởi động
-// Gọi 1 lần trong layout admin để xóa token cũ còn sót lại
 export function cleanupLegacyAdminStorage(): void {
   if (typeof window === 'undefined') return;
   try {
     localStorage.removeItem('admin_access_token');
     localStorage.removeItem('admin_expires_at');
-    // Không xóa admin_user vì có thể dùng sessionStorage rồi
     const oldUser = localStorage.getItem('admin_user');
     if (oldUser) {
-      // Di chuyển sang sessionStorage rồi xóa khỏi localStorage
       try { sessionStorage.setItem(ADMIN_USER_KEY, oldUser); } catch (_) {}
       localStorage.removeItem('admin_user');
     }

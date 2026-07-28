@@ -21,12 +21,11 @@ interface ApiError {
 }
 
 async function adminFetch<T>(path: string, init?: RequestInit): Promise<T> {
-  const token = getAdminToken();
   const res = await fetch(`${BASE}${path}`, {
     ...init,
+    credentials: 'include', // 🔒 Đính kèm HttpOnly cookies tự động
     headers: {
       'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(init?.headers ?? {}),
     },
   });
@@ -47,12 +46,13 @@ async function adminFetch<T>(path: string, init?: RequestInit): Promise<T> {
 
 // ── Auth ──────────────────────────────────────────────
 export interface LoginResponse {
-  accessToken: string;
+  accessToken?: string;
   refreshToken?: string;
   user: {
     id: string;
     email: string;
     fullName?: string;
+    role?: string;
   };
 }
 
@@ -60,6 +60,7 @@ export async function adminLogin(email: string, password: string): Promise<Login
   const res = await fetch(`${BASE}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify({ email, password }),
   });
 
@@ -76,8 +77,8 @@ export async function adminLogin(email: string, password: string): Promise<Login
   const envelope = json as ApiEnvelope<LoginResponse>;
   const payload = envelope.data ?? (json as LoginResponse);
 
-  if (!payload.accessToken) {
-    throw new Error('Server không trả về token');
+  if (!payload.user) {
+    throw new Error('Đăng nhập thất bại: Không nhận được dữ liệu phản hồi');
   }
   return payload;
 }
@@ -272,16 +273,13 @@ export async function getInstructorOptions(): Promise<InstructorOption[]> {
 }
 
 export async function uploadAdminImage(file: File, bucket: 'courses' | 'blogs' = 'blogs'): Promise<string> {
-  const token = getAdminToken();
   const formData = new FormData();
   formData.append('file', file);
   formData.append('bucket', bucket);
 
   const res = await fetch(`${BASE}/courses/upload`, {
     method: 'POST',
-    headers: {
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
+    credentials: 'include',
     body: formData,
   });
 

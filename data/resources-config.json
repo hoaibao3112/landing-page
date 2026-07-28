@@ -1,0 +1,89 @@
+[
+  {
+    "id": "claude-khoa1-2-slide",
+    "title": "Slide Bài Giảng & Giáo Trình Claude AI (Khóa 1 & 2)",
+    "description": "Bộ slide bài giảng chi tiết bao gồm Mindset - Skillset - Toolset giúp tối ưu hiệu suất làm việc 8 tiếng thành 3 tiếng với Claude AI.",
+    "category": "Làm chủ Claude AI (Khóa 1 & 2)",
+    "course_origin": "🎓 Khóa 1 & 2 (Đã hoàn thành - 150+ Học viên)",
+    "cover_image": "/Lam_chu_claude_ai.jpg",
+    "file_type": "pdf",
+    "file_type_label": "Google Drive PDF",
+    "drive_url": "https://drive.google.com/drive/u/0/folders/1h5FurHTwdsduTNjwxfsWy6p3pqsjoAp3",
+    "tags": [
+      "Claude AI",
+      "Slide bài giảng",
+      "Tối ưu hiệu suất",
+      "Khóa 1 & 2"
+    ],
+    "course_cta_text": "Đăng ký ngay Khóa 3 (05/09/2026)",
+    "course_cta_link": "/portal/courses/lam-chu-claude-ai-khoa-3",
+    "course_cta_badge": "🔥 ĐANG MỞ CỔNG KHÓA 3",
+    "is_popular": true,
+    "is_active": true,
+    "updated_at": "2026-07-28T06:57:03.819Z"
+  },
+  {
+    "id": "claude-prompt-library-500",
+    "title": "Prompts Claude AI Thực Chiến Cho Doanh Nghiệp",
+    "description": "Tổng hợp câu lệnh prompt chuẩn hóa dành cho tự động hóa phòng ban, quản trị, lập kế hoạch marketing và viết content sales.",
+    "category": "Làm chủ Claude AI (Khóa 1 & 2)",
+    "course_origin": "🎓 Khóa 1 & 2 (Tài liệu tốt nghiệp thực hành)",
+    "cover_image": "/khoa3.jpg",
+    "file_type": "sheet",
+    "file_type_label": "Google Sheet / Excel",
+    "drive_url": "https://drive.google.com/",
+    "tags": [
+      "Prompt Library",
+      "Automated Workflow",
+      "Claude 3.5 Sonnet"
+    ],
+    "course_cta_text": "Đăng ký ngay Khóa 3 (05/09/2026)",
+    "course_cta_link": "/portal/courses/lam-chu-claude-ai-khoa-3",
+    "course_cta_badge": "🔥 ĐANG MỞ CỔNG KHÓA 3",
+    "is_popular": true,
+    "is_active": true,
+    "updated_at": "2026-07-28T03:51:39.159Z"
+  },
+  {
+    "id": "ai-sale-marketing-fullstack-kit",
+    "title": "Bộ Toolkit & Template AI Sale & Marketing Fullstack",
+    "description": "Tài liệu hướng dẫn xây dựng kịch bản bán hàng, tự động hóa phễu tư vấn và bộ công cụ AI Marketing trọn gói.",
+    "category": "AI Sale & Marketing Fullstack",
+    "course_origin": "🚀 Khóa AI Sale & Marketing (Đã tốt nghiệp)",
+    "cover_image": "/khoa3.jpg",
+    "file_type": "doc",
+    "file_type_label": "Google Docs",
+    "drive_url": "https://drive.google.com/",
+    "tags": [
+      "AI Marketing",
+      "Sale Funnel",
+      "Fullstack AI"
+    ],
+    "course_cta_text": "Tham gia Khóa tiếp theo (22-23/08/2026)",
+    "course_cta_link": "/portal/courses/aisalemarkertingfullstack",
+    "course_cta_badge": "📅 KHAI GIẢNG 22-23/08",
+    "is_popular": false,
+    "is_active": true,
+    "updated_at": "2026-07-28T04:39:43.076Z"
+  },
+  {
+    "id": "resource-1785221647513",
+    "title": "tài liệu dành tặng mọi người nha ",
+    "description": "123",
+    "category": "Slide & Ebook",
+    "course_origin": "🎓 Khóa 1 & 2 (150+ Học viên)",
+    "cover_image": "https://qdhlzyijmyllqmmdzmgi.supabase.co/storage/v1/object/public/blogs/popups/popup_1785221652284_30c1b6c0-a87e-4584-85ad-fdbd58a66f26.jpg",
+    "file_type": "pdf",
+    "file_type_label": "Google Drive PDF",
+    "drive_url": "",
+    "tags": [
+      ""
+    ],
+    "course_cta_text": "Xem chi tiết khóa học",
+    "course_cta_link": "/portal/courses",
+    "course_cta_badge": "🔥 KHÓA HỌC HOT",
+    "is_popular": false,
+    "is_active": true,
+    "updated_at": "2026-07-28T06:54:36.886Z"
+  }
+]

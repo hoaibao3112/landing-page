@@ -7,6 +7,8 @@ import { Input } from '@/components/portal/ui/Input';
 import { Button } from '@/components/portal/ui/Button';
 import { apiClient } from '@/lib/portal/api/api-client';
 
+import { registerSchema } from '@/schemas/auth.schema';
+
 interface RegisterForm {
   fullName: string;
   email: string;
@@ -28,8 +30,13 @@ export default function RegisterPage() {
     if (!form.fullName.trim()) next.fullName = 'Vui lòng nhập họ tên';
     if (!form.email.trim()) next.email = 'Vui lòng nhập email';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = 'Email không hợp lệ';
-    if (!form.password || form.password.length < 6)
-      next.password = 'Mật khẩu tối thiểu 6 ký tự';
+
+    const pwResult = registerSchema.shape.password.safeParse(form.password);
+    if (!pwResult.success) {
+      const issue = pwResult.error.issues[0];
+      next.password = issue?.message || 'Mật khẩu tối thiểu 8 ký tự, gồm chữ và số';
+    }
+
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -39,8 +46,8 @@ export default function RegisterPage() {
     setIsLoading(true);
     setApiError(null);
     try {
-      await apiClient.post('/portal/auth/register', {
-        full_name: form.fullName,
+      await apiClient.post('/auth/register', {
+        fullName: form.fullName,
         email: form.email,
         password: form.password,
         phone: form.phone || undefined,
@@ -98,7 +105,7 @@ export default function RegisterPage() {
             id="password"
             label="Mật khẩu"
             type="password"
-            placeholder="Tối thiểu 6 ký tự"
+            placeholder="Tối thiểu 8 ký tự, gồm chữ và số"
             value={form.password}
             onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
             error={errors.password}

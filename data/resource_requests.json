@@ -1,0 +1,130 @@
+[
+  {
+    "id": "req-1785222751949-ty5xu",
+    "user_email": "test.user.1785222751948@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-28T07:12:31.949Z"
+  },
+  {
+    "id": "req-1785222661191-gz4kk",
+    "user_email": "test.user.1785222661190@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-28T07:11:01.191Z"
+  },
+  {
+    "id": "req-1785222570608-plkkx",
+    "user_email": "test.user.1785222570607@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-28T07:09:30.608Z"
+  },
+  {
+    "id": "req-1785222117738-ufivt",
+    "user_email": "test.user.1785222117737@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-28T07:01:57.738Z"
+  },
+  {
+    "id": "req-1785221634091-89oxs",
+    "user_email": "test.user.1785221634090@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-28T06:53:54.091Z"
+  },
+  {
+    "id": "req-1785221486529-30xsv",
+    "user_email": "test.user.1785221486529@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-28T06:51:26.529Z"
+  },
+  {
+    "id": "req-1785221444108-egnu2",
+    "user_email": "test.user.1785221444107@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-28T06:50:44.108Z"
+  },
+  {
+    "id": "req-1785221399938-bxwww",
+    "user_email": "test.user.1785221399937@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-28T06:49:59.938Z"
+  },
+  {
+    "id": "req-1785220768062-dh2jr",
+    "user_email": "test.user.1785220768062@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-28T06:39:28.062Z"
+  },
+  {
+    "id": "req-1785220386548-ccoes",
+    "user_email": "test.user.1785220386548@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-28T06:33:06.548Z"
+  },
+  {
+    "id": "req-1785220354316-w6yst",
+    "user_email": "test.user.1785220354315@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-28T06:32:34.316Z"
+  },
+  {
+    "id": "req-1785215059859-m4g4o",
+    "user_email": "baohoaitran3112hkjjh@gmail.com",
+    "resource_id": "claude-khoa1-2-slide",
+    "resource_title": "Slide Bài Giảng & Giáo Trình Claude AI (Khóa 1 & 2)",
+    "status": "pending",
+    "created_at": "2026-07-28T05:04:19.859Z"
+  },
+  {
+    "id": "req-1785214311496-a1e6q",
+    "user_email": "test.user.1785214311496@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-28T04:51:51.496Z"
+  },
+  {
+    "id": "req-1785213700460-te8tn",
+    "user_email": "test.user.1785213700459@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-28T04:41:40.460Z"
+  },
+  {
+    "id": "req-1785213599861-ls7d2",
+    "user_email": "baohoaitran3112@gmail.com",
+    "resource_id": "claude-khoa1-2-slide",
+    "resource_title": "Slide Bài Giảng & Giáo Trình Claude AI (Khóa 1 & 2)",
+    "status": "pending",
+    "created_at": "2026-07-28T04:39:59.861Z"
+  },
+  {
+    "id": "req-1785212526494-ab5n7",
+    "user_email": "bao0@tragmail.com",
+    "resource_id": "claude-khoa1-2-slide",
+    "resource_title": "Slide Bài Giảng & Giáo Trình Claude AI (Khóa 1 & 2)",
+    "status": "pending",
+    "created_at": "2026-07-28T04:22:06.494Z"
+  }
+]

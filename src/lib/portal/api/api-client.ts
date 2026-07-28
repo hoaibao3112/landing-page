@@ -6,14 +6,14 @@ const BASE_URL = typeof window !== 'undefined'
   : (process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:20000/api');
 
 let isRefreshing = false;
-let refreshSubscribers: ((token: string) => void)[] = [];
+let refreshSubscribers: ((success: boolean) => void)[] = [];
 
-function subscribeTokenRefresh(cb: (token: string) => void) {
+function subscribeTokenRefresh(cb: (success: boolean) => void) {
   refreshSubscribers.push(cb);
 }
 
-function onRefreshed(token: string) {
-  refreshSubscribers.forEach((cb) => cb(token));
+function onRefreshed(success: boolean) {
+  refreshSubscribers.forEach((cb) => cb(success));
   refreshSubscribers = [];
 }
 
@@ -25,21 +25,11 @@ function createApiClient(): AxiosInstance {
   const instance = axios.create({
     baseURL: BASE_URL,
     timeout: 10_000,
+    withCredentials: true, // 🔒 Đính kèm HttpOnly cookies tự động trong mọi request
     headers: { 'Content-Type': 'application/json' },
   });
 
-  // Attach auth token from Zustand if present
-  instance.interceptors.request.use((config) => {
-    if (typeof window !== 'undefined') {
-      const token = useAuthStore.getState().accessToken;
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    }
-    return config;
-  });
-
-  // Interceptor response: if 401, refresh token and retry exactly once
+  // Interceptor response: nếu 401, tự động gọi refreshSession qua server endpoint
   instance.interceptors.response.use(
     (res) => res,
     async (error: AxiosError<{ message?: string }>) => {
@@ -52,11 +42,10 @@ function createApiClient(): AxiosInstance {
           if (!isRefreshing) {
             isRefreshing = true;
             try {
-              const newToken = await useAuthStore.getState().refreshToken();
+              const success = await useAuthStore.getState().refreshToken();
               isRefreshing = false;
-              if (newToken) {
-                onRefreshed(newToken);
-                originalRequest.headers.Authorization = `Bearer ${newToken}`;
+              if (success) {
+                onRefreshed(true);
                 return instance(originalRequest);
               }
             } catch (refreshError) {
@@ -64,10 +53,13 @@ function createApiClient(): AxiosInstance {
               return Promise.reject(refreshError);
             }
           } else {
-            return new Promise((resolve) => {
-              subscribeTokenRefresh((token) => {
-                originalRequest.headers.Authorization = `Bearer ${token}`;
-                resolve(instance(originalRequest));
+            return new Promise((resolve, reject) => {
+              subscribeTokenRefresh((success) => {
+                if (success) {
+                  resolve(instance(originalRequest));
+                } else {
+                  reject(error);
+                }
               });
             });
           }

@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { adminLogin } from '@/lib/portal/admin/api';
-import { setAdminSession, isAdminLoggedIn } from '@/lib/portal/admin/auth';
+import { setAdminSession, getAdminUser, clearAdminSession } from '@/lib/portal/admin/auth';
 
 function LoginForm() {
   const router = useRouter();
@@ -16,10 +16,28 @@ function LoginForm() {
   const [showPw, setShowPw] = useState(false);
 
   useEffect(() => {
-    if (isAdminLoggedIn()) {
-      router.replace('/portal/admin/dang-ky');
-    }
-  }, [router]);
+    // Kiểm tra phiên đăng nhập thực tế ở Server qua API /api/auth/me trước khi redirect
+    fetch('/api/auth/me', { credentials: 'include' })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success && json.data?.user && json.data.user.role === 'admin') {
+          const adminData = {
+            id: json.data.user.id,
+            email: json.data.user.email || 'admin@aizen.edu.vn',
+            fullName: json.data.user.email?.split('@')[0] || 'Admin User',
+          };
+          setAdminSession(undefined, adminData);
+          const redirect = searchParams.get('redirect') ?? '/portal/admin/khoa-hoc';
+          router.replace(redirect);
+        } else {
+          // Xóa phiên sessionStorage cũ bị lệch để dừng vòng lặp redirect
+          clearAdminSession();
+        }
+      })
+      .catch(() => {
+        clearAdminSession();
+      });
+  }, [router, searchParams]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -31,8 +49,8 @@ function LoginForm() {
     setError('');
     try {
       const loginEmail = email.trim().includes('@') ? email.trim() : `${email.trim()}@aizen.edu.vn`;
-      const { accessToken, user } = await adminLogin(loginEmail, password);
-      setAdminSession(accessToken, {
+      const { user } = await adminLogin(loginEmail, password);
+      setAdminSession(undefined, {
         id: user.id,
         email: user.email ?? loginEmail,
         fullName: user.fullName,

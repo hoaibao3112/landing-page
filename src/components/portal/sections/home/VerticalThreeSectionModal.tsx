@@ -161,7 +161,7 @@ export function VerticalThreeSectionModal() {
                 {/* Thumbnail Image Left - Ultra Large Poster Size */}
                 <div className="relative w-44 sm:w-56 h-28 sm:h-34 rounded-xl overflow-hidden bg-slate-950 border border-slate-800 shrink-0">
                   <Image
-                    src="/khoa3.jpg"
+                    src="/claudeKhoa3moi.jpg"
                     alt="Làm chủ Claude AI khóa 3"
                     fill
                     className="object-contain group-hover:scale-105 transition-transform duration-500"

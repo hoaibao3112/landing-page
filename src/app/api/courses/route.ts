@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { supabaseAdmin, verifyAdmin, successResponse, errorResponse } from '@/lib/portal/supabase-server';
 import { adjustCourseStatus, sortCoursesSmart } from '@/lib/portal/utils/course';
 import { invalidateCoursesServerCache } from '@/lib/portal/server-data';
+import { createCourseSchema } from '@/schemas/course.schema';
 
 export async function GET(req: NextRequest) {
   try {
@@ -68,7 +69,15 @@ export async function POST(req: NextRequest) {
       return errorResponse('Quyền truy cập bị từ chối', 403, req.nextUrl.pathname);
     }
 
-    const body = await req.json();
+    const rawBody = await req.json();
+    const parseResult = createCourseSchema.safeParse(rawBody);
+
+    if (!parseResult.success) {
+      const issue = parseResult.error.issues[0];
+      return errorResponse(issue?.message || 'Dữ liệu khóa học không hợp lệ', 400, req.nextUrl.pathname);
+    }
+
+    const body = parseResult.data;
 
     let { data, error } = await supabaseAdmin
       .from('courses')

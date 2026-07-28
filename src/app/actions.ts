@@ -38,29 +38,40 @@ function generatePaymentContent(fullname: string, phone?: string, packageType?: 
 }
 
 // ─────────────────────────────────────────────
-// Helper: kiểm tra auth bằng session token trong DB
+// Helper: kiểm tra auth bằng JWT — verify thực sự qua Supabase
+// KHÔNG chỉ check sự tồn tại cookie (tránh bypass bằng cookie giả)
 // ─────────────────────────────────────────────
 export async function checkAuth(): Promise<boolean> {
   try {
     const cookieStore = await cookies();
-    const token = cookieStore.get('admin_session')?.value;
-    const portalToken = cookieStore.get('admin_token')?.value || cookieStore.get('sb-access-token')?.value;
 
-    // Chấp nhận nếu có phiên Portal Admin (admin_token) hoặc phiên Admin thông thường (admin_session)
-    if (portalToken) return true;
-    if (!token) return false;
+    // 1. Ưu tiên admin_token (Portal Admin session) — verify JWT thực sự
+    const adminToken = cookieStore.get('admin_token')?.value;
+    if (adminToken) {
+      const { data: { user }, error } = await supabaseAdmin.auth.getUser(adminToken);
+      if (!error && user) {
+        const role = user.app_metadata?.role || user.role;
+        if (role === 'admin') return true;
+      }
+    }
 
-    const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
-    const session = db
-      .prepare('SELECT id FROM sessions WHERE token = ? AND expires_at > ?')
-      .get(token, now);
+    // 2. Legacy: kiểm tra admin_session trong SQLite DB (hệ thống cũ)
+    const sessionToken = cookieStore.get('admin_session')?.value;
+    if (sessionToken) {
+      const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
+      const session = db
+        .prepare('SELECT id FROM sessions WHERE token = ? AND expires_at > ?')
+        .get(sessionToken, now);
+      if (session) return true;
+    }
 
-    return !!session;
+    return false;
   } catch (error) {
     console.error('Lỗi khi kiểm tra auth:', error);
     return false;
   }
 }
+
 
 // ─────────────────────────────────────────────
 // Action: Đăng ký tham gia (public)
@@ -177,16 +188,16 @@ export async function submitRegistration(formData: FormData): Promise<
 
     // Gửi thông báo sang Lark webhook
     try {
-      const voucherLarkMsg = voucherCode ? `\nMã giảm giá: ${voucherCode} (Giảm ${discountPercent}%)` : '';
-      const messageText = `🆕 Đăng ký mới!${voucherLarkMsg}\nHọ tên: ${fullname}\nĐiện thoại: ${phone}\nEmail: ${email}\nNguồn: ${referral}\nVai trò: ${role}\nCông ty: ${company}\nGói: ${packageType} (${members} người)\nSố tiền: ${amount.toLocaleString('vi-VN')}đ\nMã CK: ${paymentContent}\nThời gian: ${vietnamTime}`;
-      await fetch(
-        'https://open-sg.larksuite.com/anycross/trigger/callback/MDczOWJlNzg4NTc0MzliZjlhMDZhNDhiOWYyNGM5YzE4',
-        {
+      const larkUrl = process.env.LARK_WEBHOOK_URL;
+      if (larkUrl) {
+        const voucherLarkMsg = voucherCode ? `\nMã giảm giá: ${voucherCode} (Giảm ${discountPercent}%)` : '';
+        const messageText = `🆕 Đăng ký mới!${voucherLarkMsg}\nHọ tên: ${fullname}\nĐiện thoại: ${phone}\nEmail: ${email}\nNguồn: ${referral}\nVai trò: ${role}\nCông ty: ${company}\nGói: ${packageType} (${members} người)\nSố tiền: ${amount.toLocaleString('vi-VN')}đ\nMã CK: ${paymentContent}\nThời gian: ${vietnamTime}`;
+        await fetch(larkUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain; charset=utf-8' },
           body: messageText,
-        },
-      );
+        });
+      }
     } catch (webhookError) {
       console.error('Lỗi khi gửi thông báo sang Lark:', webhookError);
     }
@@ -392,12 +403,12 @@ export async function submitGroupRegistration(formData: FormData): Promise<
         const refLine = ref ? `\n   Nguồn: ${ref}` : '';
         return `👤 Người ${idx}: ${fn}\n   Điện thoại: ${ph}\n   Email: ${em}${compLine}${roleLine}${refLine}`;
       }).join('\n');
-      const voucherLarkMsg = voucherCode ? `\nMã giảm giá: ${voucherCode} (Giảm ${discountPercent}%)` : '';
-      const messageText = `🆕 Đăng ký nhóm mới!${voucherLarkMsg}\nGói: ${packageType} (${memberCount} người)\nSố tiền: ${(amountPerPerson * memberCount).toLocaleString('vi-VN')}đ\nMã CK: ${paymentContent}\nThời gian: ${vietnamTime}\n\n${memberDetails}`;
-      await fetch(
-        'https://open-sg.larksuite.com/anycross/trigger/callback/MDczOWJlNzg4NTc0MzliZjlhMDZhNDhiOWYyNGM5YzE4',
-        { method: 'POST', headers: { 'Content-Type': 'text/plain; charset=utf-8' }, body: messageText }
-      );
+      const larkUrl = process.env.LARK_WEBHOOK_URL;
+      if (larkUrl) {
+        const voucherLarkMsg = voucherCode ? `\nMã giảm giá: ${voucherCode} (Giảm ${discountPercent}%)` : '';
+        const messageText = `🆕 Đăng ký nhóm mới!${voucherLarkMsg}\nGói: ${packageType} (${memberCount} người)\nSố tiền: ${(amountPerPerson * memberCount).toLocaleString('vi-VN')}đ\nMã CK: ${paymentContent}\nThời gian: ${vietnamTime}\n\n${memberDetails}`;
+        await fetch(larkUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain; charset=utf-8' }, body: messageText });
+      }
     } catch {}
 
     revalidatePath('/admin');
@@ -1178,5 +1189,422 @@ export async function uploadPopupImageAction(formData: FormData) {
     return { success: false, error: error?.message || 'Có lỗi xảy ra khi tải ảnh lên server.' };
   }
 }
+
+// ==========================================
+// Actions: Cấu hình Tài liệu Khóa học (Admin & Client)
+// ==========================================
+
+export interface ResourceConfigItem {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  course_origin: string;
+  cover_image: string;
+  file_type: 'pdf' | 'sheet' | 'doc' | 'video' | 'folder';
+  file_type_label: string;
+  drive_url: string;
+  tags: string[];
+  course_cta_text: string;
+  course_cta_link: string;
+  course_cta_badge: string;
+  is_popular?: boolean;
+  is_active?: boolean;
+  updated_at?: string;
+}
+
+export interface ResourceAccessRequest {
+  id: string;
+  user_email: string;
+  resource_id: string;
+  resource_title: string;
+  status: 'pending' | 'approved';
+  created_at: string;
+}
+
+const RESOURCES_CONFIG_FILE = path.join(process.cwd(), 'data', 'resources-config.json');
+const RESOURCE_REQUESTS_FILE = path.join(process.cwd(), 'data', 'resource_requests.json');
+
+function readResourceRequestsFallback(): ResourceAccessRequest[] {
+  try {
+    if (fs.existsSync(RESOURCE_REQUESTS_FILE)) {
+      const raw = fs.readFileSync(RESOURCE_REQUESTS_FILE, 'utf-8');
+      return JSON.parse(raw) as ResourceAccessRequest[];
+    }
+  } catch (err) {
+    console.error('Lỗi đọc JSON fallback resource_requests:', err);
+  }
+  return [];
+}
+
+function saveResourceRequestsFallback(list: ResourceAccessRequest[]): void {
+  try {
+    const dir = path.dirname(RESOURCE_REQUESTS_FILE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(RESOURCE_REQUESTS_FILE, JSON.stringify(list, null, 2), 'utf-8');
+  } catch (err) {
+    console.error('Lỗi ghi JSON fallback resource_requests:', err);
+  }
+}
+
+function saveResourcesJsonFallback(payload: ResourceConfigItem[]) {
+  try {
+    const dataDir = path.join(process.cwd(), 'data');
+    if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+    fs.writeFileSync(RESOURCES_CONFIG_FILE, JSON.stringify(payload, null, 2), 'utf-8');
+  } catch (err) {
+    console.error('Lỗi ghi JSON fallback resources:', err);
+  }
+}
+
+function readResourcesJsonFallback(): ResourceConfigItem[] {
+  try {
+    if (fs.existsSync(RESOURCES_CONFIG_FILE)) {
+      const raw = fs.readFileSync(RESOURCES_CONFIG_FILE, 'utf-8');
+      return JSON.parse(raw) as ResourceConfigItem[];
+    }
+  } catch (err) {
+    console.error('Lỗi đọc JSON fallback resources:', err);
+  }
+  return [];
+}
+
+export async function getResourcesAction(options?: { includeInactive?: boolean }): Promise<ResourceConfigItem[]> {
+  let resources = readResourcesJsonFallback();
+
+  try {
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      const { data, error } = await supabaseAdmin
+        .from('resources')
+        .select('*')
+        .order('id', { ascending: true });
+
+      if (!error && data && data.length > 0) {
+        resources = data as ResourceConfigItem[];
+      }
+    }
+  } catch (sbErr) {
+    console.warn('Lỗi đọc Supabase resources:', sbErr);
+  }
+
+  if (!options?.includeInactive) {
+    resources = resources.filter((r) => r.is_active !== false);
+  }
+
+  return resources;
+}
+
+export async function saveResourceAction(item: ResourceConfigItem): Promise<{ success: boolean; message: string }> {
+  // 🔒 Chỉ Admin mới được phép ghi dữ liệu tài liệu
+  const authenticated = await checkAuth();
+  if (!authenticated) {
+    return { success: false, message: 'Bạn không có quyền thực hiện thao tác này.' };
+  }
+
+  try {
+    if (!item || !item.title) {
+      return { success: false, message: 'Vui lòng nhập đầy đủ tiêu đề tài liệu.' };
+    }
+
+    let list = readResourcesJsonFallback();
+    const index = list.findIndex((r) => r.id === item.id);
+    const updatedItem = {
+      ...item,
+      course_cta_link: item.course_cta_link || '/portal/courses',
+      course_cta_text: item.course_cta_text || 'Khám phá Khóa học',
+      course_cta_badge: item.course_cta_badge || '🔥 KHÓA HỌC AIZEN',
+      updated_at: new Date().toISOString(),
+    };
+
+    if (index >= 0) {
+      list[index] = updatedItem;
+    } else {
+      list.push(updatedItem);
+    }
+    saveResourcesJsonFallback(list);
+
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      try {
+        await supabaseAdmin.from('resources').upsert(updatedItem);
+      } catch (err) {
+        console.warn('Supabase resources upsert warning:', err);
+      }
+    }
+
+    try {
+      revalidatePath('/resources');
+      revalidatePath('/portal/resources');
+      revalidatePath('/admin/resources');
+      revalidatePath('/portal/admin/resources');
+    } catch {}
+
+    return { success: true, message: 'Lưu tài liệu thành công!' };
+  } catch (err: any) {
+    return { success: false, message: err?.message || 'Có lỗi xảy ra khi lưu tài liệu.' };
+  }
+}
+
+export async function deleteResourceAction(id: string): Promise<{ success: boolean; message: string }> {
+  // 🔒 Chỉ Admin mới được phép xóa tài liệu
+  const authenticated = await checkAuth();
+  if (!authenticated) {
+    return { success: false, message: 'Bạn không có quyền thực hiện thao tác này.' };
+  }
+
+  try {
+    let list = readResourcesJsonFallback();
+    list = list.filter((r) => r.id !== id);
+    saveResourcesJsonFallback(list);
+
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      try {
+        await supabaseAdmin.from('resources').delete().eq('id', id);
+      } catch (err) {
+        console.warn('Supabase delete resource warning:', err);
+      }
+    }
+
+    try {
+      revalidatePath('/resources');
+      revalidatePath('/portal/resources');
+      revalidatePath('/admin/resources');
+    } catch {}
+
+    return { success: true, message: 'Xóa tài liệu thành công!' };
+  } catch (err: any) {
+    return { success: false, message: err?.message || 'Có lỗi xảy ra khi xóa tài liệu.' };
+  }
+}
+
+export async function uploadResourceCoverImageAction(formData: FormData) {
+  // 🔒 Chỉ Admin mới được phép upload ảnh bìa tài liệu
+  const authenticated = await checkAuth();
+  if (!authenticated) {
+    return { success: false, error: 'Bạn không có quyền thực hiện thao tác này.' };
+  }
+  return uploadPopupImageAction(formData);
+}
+
+export async function getAvailableCourseOptionsAction(): Promise<Array<{ title: string; cover_image: string }>> {
+  const optionsMap = new Map<string, { title: string; cover_image: string }>();
+
+  // Danh sách các ảnh bìa mặc định chuẩn
+  const defaultOptions = [
+    { title: 'Làm chủ Claude AI (Khóa 3 mới nhất)', cover_image: '/claudeKhoa3moi.jpg' },
+    { title: 'Làm chủ Claude AI (Khóa 1 & 2)', cover_image: '/khoa3.jpg' },
+    { title: 'AI Sale & Marketing Fullstack', cover_image: '/fullstack.jpg' },
+    { title: 'Claude AI Trợ Lý Tự Động', cover_image: '/Lam_chu_claude_ai.jpg' },
+  ];
+
+  defaultOptions.forEach((opt) => optionsMap.set(opt.cover_image, opt));
+
+  try {
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      const { data } = await supabaseAdmin
+        .from('courses')
+        .select('title, cover_image')
+        .order('created_at', { ascending: false });
+
+      if (data && data.length > 0) {
+        data.forEach((c) => {
+          if (c.cover_image) {
+            optionsMap.set(c.cover_image, {
+              title: c.title || 'Khóa học AIZEN',
+              cover_image: c.cover_image,
+            });
+          }
+        });
+      }
+    }
+  } catch (err) {
+    console.warn('getAvailableCourseOptionsAction fallback error:', err);
+  }
+
+  return Array.from(optionsMap.values());
+}
+
+export async function submitResourceAccessRequestAction(
+  email: string,
+  resourceId: string,
+  resourceTitle: string
+): Promise<{ success: boolean; message: string }> {
+  try {
+    if (!email || !email.includes('@')) {
+      return { success: false, message: 'Email không hợp lệ.' };
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+    const targetResourceId = resourceId || 'general';
+
+    // 1. Kiểm tra trùng lặp trong Supabase CSDL
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      try {
+        const { data } = await supabaseAdmin
+          .from('resource_requests')
+          .select('*')
+          .eq('user_email', normalizedEmail)
+          .eq('resource_id', targetResourceId);
+
+        if (data && data.length > 0) {
+          return {
+            success: false,
+            message: `Dạ Gmail này đã gửi yêu cầu rồi ạ! AIZEN đang duyệt cấp quyền cho bạn nè ✨`,
+          };
+        }
+      } catch (err) {
+        console.warn('Supabase duplicate request check error:', err);
+      }
+    }
+
+    // 2. Kiểm tra trùng lặp trong danh sách fallback
+    const list = readResourceRequestsFallback();
+    const existing = list.find(
+      (r) => r.user_email === normalizedEmail && r.resource_id === targetResourceId
+    );
+    if (existing) {
+      return {
+        success: false,
+        message: `Dạ Gmail này đã gửi yêu cầu rồi ạ! AIZEN đang duyệt cấp quyền cho bạn nè ✨`,
+      };
+    }
+
+    const newReq: ResourceAccessRequest = {
+      id: `req-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+      user_email: normalizedEmail,
+      resource_id: targetResourceId,
+      resource_title: resourceTitle || 'Tài liệu AIZEN',
+      status: 'pending',
+      created_at: new Date().toISOString(),
+    };
+
+    list.unshift(newReq);
+    saveResourceRequestsFallback(list);
+
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      try {
+        await supabaseAdmin.from('resource_requests').upsert(newReq);
+      } catch (sbErr) {
+        console.warn('Supabase resource_requests upsert warning:', sbErr);
+      }
+    }
+
+    try {
+      revalidatePath('/portal/admin/tai-lieu');
+      revalidatePath('/admin/resources');
+    } catch {}
+
+    // 3. Gửi thông báo tự động về nhóm Lark Suite của Admin
+    sendLarkResourceNotification(normalizedEmail, resourceTitle || 'Tài liệu AIZEN').catch(() => {});
+
+    return { success: true, message: 'Yêu cầu nhận tài liệu đã gửi thành công!' };
+  } catch (err: any) {
+    return { success: false, message: err?.message || 'Lỗi khi gửi yêu cầu.' };
+  }
+}
+
+async function sendLarkResourceNotification(userEmail: string, resourceTitle: string) {
+  const webhookUrl = process.env.LARK_WEBHOOK_URL;
+  if (!webhookUrl) return;
+
+  const vnTime = new Date(new Date().getTime() + 7 * 60 * 60 * 1000)
+    .toISOString()
+    .replace('T', ' ')
+    .substring(0, 19);
+
+  const body = [
+    `📚 YÊU CẦU XIN NHẬN TÀI LIỆU MỚI!`,
+    `--------------------------------`,
+    `👤 Gmail Học viên: ${userEmail}`,
+    `📖 Tên tài liệu: ${resourceTitle}`,
+    `⏰ Thời gian gửi: ${vnTime}`,
+  ].join('\n');
+
+  try {
+    await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+      body,
+    });
+  } catch (err) {
+    console.warn('Lark resource notification webhook error:', err);
+  }
+}
+
+export async function getResourceAccessRequestsAction(): Promise<ResourceAccessRequest[]> {
+  let list = readResourceRequestsFallback();
+
+  try {
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      const { data, error } = await supabaseAdmin
+        .from('resource_requests')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (!error && data && data.length > 0) {
+        list = data as ResourceAccessRequest[];
+      }
+    }
+  } catch (err) {
+    console.warn('Lỗi đọc Supabase resource_requests:', err);
+  }
+
+  return list;
+}
+
+export async function updateResourceAccessRequestStatusAction(
+  id: string,
+  status: 'pending' | 'approved'
+): Promise<{ success: boolean; message: string }> {
+  try {
+    const list = readResourceRequestsFallback();
+    const target = list.find((r) => r.id === id);
+    if (target) {
+      target.status = status;
+      saveResourceRequestsFallback(list);
+    }
+
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      try {
+        await supabaseAdmin.from('resource_requests').update({ status }).eq('id', id);
+      } catch (sbErr) {
+        console.warn('Supabase resource_requests update status warning:', sbErr);
+      }
+    }
+
+    try {
+      revalidatePath('/portal/admin/tai-lieu');
+    } catch {}
+
+    return { success: true, message: 'Cập nhật trạng thái thành công!' };
+  } catch (err: any) {
+    return { success: false, message: err?.message || 'Có lỗi xảy ra khi cập nhật.' };
+  }
+}
+
+export async function deleteResourceAccessRequestAction(id: string): Promise<{ success: boolean; message: string }> {
+  try {
+    let list = readResourceRequestsFallback();
+    list = list.filter((r) => r.id !== id);
+    saveResourceRequestsFallback(list);
+
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      try {
+        await supabaseAdmin.from('resource_requests').delete().eq('id', id);
+      } catch (err) {
+        console.warn('Supabase delete resource_requests warning:', err);
+      }
+    }
+
+    try {
+      revalidatePath('/portal/admin/tai-lieu');
+    } catch {}
+
+    return { success: true, message: 'Xóa yêu cầu thành công!' };
+  } catch (err: any) {
+    return { success: false, message: err?.message || 'Có lỗi xảy ra khi xóa yêu cầu.' };
+  }
+}
+
+
 
 

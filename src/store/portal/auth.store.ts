@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { getSupabaseClient } from '@/lib/portal/supabase-client';
 
 interface AuthUser {
   id: string;
@@ -11,66 +10,63 @@ interface AuthUser {
 
 interface AuthState {
   user: AuthUser | null;
-  accessToken: string | null;
   isAuthenticated: boolean;
-  setAuth: (user: AuthUser, token: string) => void;
+  setAuth: (user: AuthUser, accessToken?: string) => void;
   clearAuth: () => void;
-  refreshToken: () => Promise<string | null>;
+  refreshToken: () => Promise<boolean>;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
-      accessToken: null,
       isAuthenticated: false,
 
-      setAuth: (user, accessToken) => {
-        set({ user, accessToken, isAuthenticated: true });
-        if (typeof window !== 'undefined') {
-          // Sync to access_token cookie for middleware verification.
-          // Note: Cookie này là SameSite=Lax, KHÔNG httpOnly vì JavaScript cần set/clear nó từ client. 
-          // Đây là trade-off đã được cân nhắc — chấp nhận được vì token Supabase tự expire sau 1 giờ và có refresh mechanism.
-          document.cookie = `access_token=${accessToken}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
-        }
+      setAuth: (user) => {
+        set({ user, isAuthenticated: true });
       },
 
       clearAuth: () => {
-        set({ user: null, accessToken: null, isAuthenticated: false });
+        set({ user: null, isAuthenticated: false });
         if (typeof window !== 'undefined') {
-          document.cookie = 'access_token=; path=/; max-age=0; SameSite=Lax';
+          // Gọi API logout phía server để xóa HttpOnly cookies
+          fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }).catch(() => {});
         }
       },
 
       refreshToken: async () => {
         try {
-          const supabase = getSupabaseClient();
-          const { data, error } = await supabase.auth.refreshSession();
-          if (error || !data.session) {
-            set({ user: null, accessToken: null, isAuthenticated: false });
-            if (typeof window !== 'undefined') {
-              document.cookie = 'access_token=; path=/; max-age=0; SameSite=Lax';
-            }
-            return null;
+          const res = await fetch('/api/auth/refresh', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+          });
+
+          if (!res.ok) {
+            set({ user: null, isAuthenticated: false });
+            return false;
           }
-          const user: AuthUser = {
-            id: data.session.user.id,
-            email: data.session.user.email!,
-            full_name: data.session.user.user_metadata?.['full_name'] || '',
-            avatar_url: data.session.user.user_metadata?.['avatar_url'] || null,
-          };
-          const token = data.session.access_token;
-          set({ user, accessToken: token, isAuthenticated: true });
-          if (typeof window !== 'undefined') {
-            document.cookie = `access_token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+
+          const json = await res.json();
+          if (json.success && json.data?.user) {
+            const u = json.data.user;
+            set({
+              user: {
+                id: u.id,
+                email: u.email,
+                full_name: u.fullName || u.full_name || '',
+                avatar_url: u.avatarUrl || u.avatar_url || null,
+              },
+              isAuthenticated: true,
+            });
+            return true;
           }
-          return token;
-        } catch (err) {
-          set({ user: null, accessToken: null, isAuthenticated: false });
-          if (typeof window !== 'undefined') {
-            document.cookie = 'access_token=; path=/; max-age=0; SameSite=Lax';
-          }
-          return null;
+
+          set({ user: null, isAuthenticated: false });
+          return false;
+        } catch (_) {
+          set({ user: null, isAuthenticated: false });
+          return false;
         }
       },
     }),
@@ -78,7 +74,6 @@ export const useAuthStore = create<AuthState>()(
       name: 'aizen-auth',
       partialize: (state) => ({
         user: state.user,
-        accessToken: state.accessToken,
         isAuthenticated: state.isAuthenticated,
       }),
     },

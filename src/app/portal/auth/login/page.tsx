@@ -29,7 +29,6 @@ export default function LoginPage() {
     try {
       const { data } = await apiClient.post<{
         data: {
-          accessToken: string;
           user: {
             id: string;
             email: string;
@@ -39,14 +38,14 @@ export default function LoginPage() {
             avatar_url?: string;
           };
         };
-      }>('/portal/auth/login', form);
-      const { accessToken, user } = data.data;
+      }>('/auth/login', form);
+      const { user } = data.data;
       useAuthStore.getState().setAuth({
         id: user.id,
         email: user.email,
         full_name: user.fullName || user.full_name || '',
         avatar_url: user.avatarUrl || user.avatar_url || null,
-      }, accessToken);
+      });
       router.push('/portal/my-courses');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Đăng nhập thất bại.');
