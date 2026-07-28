@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getResourcesAction } from '@/app/actions';
 import { ResourcesClient } from './ResourcesClient';
+import { VerticalThreeSectionModal } from '@/components/portal/sections/home/VerticalThreeSectionModal';
 
 export const metadata: Metadata = {
   title: 'Kho Tài Nguyên Khóa Học Thực Chiến | AIZEN Education',
@@ -13,6 +14,7 @@ export default async function ResourcesPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <VerticalThreeSectionModal />
       <ResourcesClient initialResources={resources} />
     </div>
   );
