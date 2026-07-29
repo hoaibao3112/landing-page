@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { supabaseAdmin, verifyAdmin, successResponse, errorResponse } from '@/lib/portal/supabase-server';
+import { supabaseAdmin, verifyAdmin, successResponse, errorResponse, sanitizePostgrestSearch } from '@/lib/portal/supabase-server';
 import { adjustCourseStatus, sortCoursesSmart } from '@/lib/portal/utils/course';
 import { invalidateCoursesServerCache } from '@/lib/portal/server-data';
 import { createCourseSchema } from '@/schemas/course.schema';
@@ -20,7 +20,10 @@ export async function GET(req: NextRequest) {
       .select('*');
 
     if (search) {
-      builder = builder.ilike('title', `%${search}%`);
+      const safeSearch = sanitizePostgrestSearch(search);
+      if (safeSearch) {
+        builder = builder.ilike('title', `%${safeSearch}%`);
+      }
     }
 
     const today = new Date(new Date().getTime() + 7 * 60 * 60 * 1000).toISOString().slice(0, 10);
@@ -36,7 +39,10 @@ export async function GET(req: NextRequest) {
       builder = builder.eq('category', category);
     }
     if (year) {
-      builder = builder.like('start_date', `${year}%`);
+      const safeYear = sanitizePostgrestSearch(year);
+      if (safeYear) {
+        builder = builder.like('start_date', `${safeYear}%`);
+      }
     }
 
     const { data, error } = await builder;

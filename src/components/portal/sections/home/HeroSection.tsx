@@ -1,8 +1,14 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/portal/ui/Button';
 import { AnimatedCounter } from '@/components/portal/ui/AnimatedCounter';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function HeroSection() {
+  const { t } = useLanguage();
+  const words = t('hero.words').split(',');
+
   return (
     <section className="hero-animated-bg relative overflow-hidden pt-16 md:pt-24 pb-8 md:pb-12 bg-transparent">
 
@@ -78,11 +84,13 @@ export function HeroSection() {
         {/* Badge */}
         <div className="animate-fade-in mb-6 inline-flex items-center gap-2 px-4 py-1.5 bg-slate-900/80 backdrop-blur-md border border-amber-400/50 rounded-full shadow-lg shadow-orange-500/10 hover:scale-105 transition-transform duration-300">
           <span className="w-2.5 h-2.5 bg-amber-400 rounded-full animate-pulse" />
-          <span className="text-amber-300 text-xs font-extrabold tracking-wide">Chương Trình Đào Tạo AI Thực Chiến Cho Lãnh Đạo &amp; Doanh Nghiệp</span>
+          <span className="text-amber-300 text-xs font-extrabold tracking-wide">
+            {t('hero.badge_full')}
+          </span>
         </div>
 
         <h1 className="text-4xl md:text-6xl font-black text-white leading-tight mb-6 tracking-tight drop-shadow-md">
-          {['Bứt', 'phá', 'tăng', 'trưởng', 'cùng'].map((word, i) => (
+          {words.map((word, i) => (
             <span
               key={`${word}-${i}`}
               className="hero-word-reveal inline-block text-white"
@@ -93,12 +101,12 @@ export function HeroSection() {
           ))}
           <br />
           <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-orange-500 font-black drop-shadow-lg animate-pulse-glow">
-            Aizen Training
+            {t('hero.brand')}
           </span>
         </h1>
 
         <p className="animate-slide-up delay-200 text-base md:text-lg text-slate-100 font-medium max-w-3xl mx-auto mb-10 leading-relaxed drop-shadow-sm">
-          Trang bị tư duy hệ thống và năng lực ứng dụng AI thực tế cho Lãnh đạo, Cấp quản lý và Nhân viên. Giải pháp giúp doanh nghiệp xóa bỏ các điểm nghẽn thủ công, tối ưu chi phí vận hành và chuẩn hóa quy trình làm việc cho toàn bộ bộ máy.
+          {t('hero.description_full')}
         </p>
 
         <div className="animate-slide-up delay-300 flex justify-center gap-4 flex-wrap">
@@ -107,7 +115,7 @@ export function HeroSection() {
               size="lg"
               className="px-8 py-4 rounded-xl font-bold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 transition-all text-white border-0 text-base shadow-xl shadow-orange-500/30 hover:shadow-orange-500/50 hover:-translate-y-1 active:translate-y-0 cursor-pointer"
             >
-              Đăng ký đào tạo →
+              {t('hero.cta_training')}
             </Button>
           </Link>
         </div>
@@ -115,9 +123,9 @@ export function HeroSection() {
         {/* Stats row with Animated Counter */}
         <div className="animate-fade-in delay-500 mt-8 md:mt-10 grid grid-cols-3 gap-4 max-w-xl mx-auto">
           {[
-            { end: 500, suffix: '+', label: 'Lãnh đạo & nhân viên các cấp' },
-            { end: 100, suffix: '%', label: 'Chương trình thực hành' },
-            { end: 98, suffix: '%', label: 'Đánh giá thực chiến' },
+            { end: 500, suffix: '+', label: t('hero.stat1_label') },
+            { end: 100, suffix: '%', label: t('hero.stat2_label') },
+            { end: 98, suffix: '%', label: t('hero.stat3_label') },
           ].map((s) => (
             <div
               key={s.label}

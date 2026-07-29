@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { supabaseAdmin, verifyAdmin, successResponse, errorResponse } from '@/lib/portal/supabase-server';
+import { supabaseAdmin, verifyAdmin, successResponse, errorResponse, sanitizePostgrestSearch } from '@/lib/portal/supabase-server';
 
 export async function GET(req: NextRequest) {
   try {
@@ -29,7 +29,10 @@ export async function GET(req: NextRequest) {
     }
 
     if (search) {
-      query = query.ilike('code', `%${search.toUpperCase().trim()}%`);
+      const safeSearch = sanitizePostgrestSearch(search.toUpperCase());
+      if (safeSearch) {
+        query = query.ilike('code', `%${safeSearch}%`);
+      }
     }
 
     const { data, error, count } = await query;

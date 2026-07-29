@@ -4,11 +4,17 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import type { Instructor } from '@aizen/types';
 
+import { useLanguage } from '@/context/LanguageContext';
+import { getInstructorTranslation } from '@/lib/portal/utils/instructor-i18n';
+
 interface InstructorCardProps {
   instructor: Pick<Instructor, 'id' | 'name' | 'title' | 'avatar_url' | 'bio'>;
 }
 
 export function InstructorCard({ instructor }: InstructorCardProps) {
+  const { language, t } = useLanguage();
+  const { title: displayTitle, bio: displayBio } = getInstructorTranslation(instructor, language);
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 24 }}
@@ -19,7 +25,7 @@ export function InstructorCard({ instructor }: InstructorCardProps) {
     >
       <p className="inline-flex items-center gap-2 text-[11px] font-black tracking-[0.2em] text-[#38bdf8] uppercase mb-6 w-full justify-center">
         <span className="w-6 h-px bg-[#38bdf8]/60" />
-        DIỄN GIẢ CHƯƠNG TRÌNH
+        {t('course_detail.speaker_tag')}
         <span className="w-6 h-px bg-[#38bdf8]/60" />
       </p>
 
@@ -74,25 +80,25 @@ export function InstructorCard({ instructor }: InstructorCardProps) {
             <h3 className="text-2xl md:text-3xl font-black text-white mb-1 tracking-tight">
               {instructor.name}
             </h3>
-            <p className="text-sky-400 font-semibold text-sm mb-3">{instructor.title}</p>
+            <p className="text-sky-400 font-semibold text-sm mb-3">{displayTitle}</p>
             <div className="flex items-center gap-1 mb-4 justify-center sm:justify-start">
               <div className="w-6 h-0.5 bg-sky-500 rounded-full" />
               <div className="w-2 h-0.5 bg-sky-500/50 rounded-full" />
             </div>
 
-            {instructor.bio && (
-              <p className="text-slate-300 text-sm leading-[1.8] mb-5 max-w-lg">{instructor.bio}</p>
+            {displayBio && (
+              <p className="text-slate-300 text-sm leading-[1.8] mb-5 max-w-lg">{displayBio}</p>
             )}
 
             {/* Social icons */}
             <div className="flex items-center gap-2.5 justify-center sm:justify-start">
               {[
                 {
-                  label: 'Chia sẻ',
+                  label: t('course_detail.share'),
                   path: 'M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z',
                 },
                 {
-                  label: 'Email',
+                  label: t('course_detail.email'),
                   path: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
                 },
               ].map((btn) => (

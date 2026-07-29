@@ -1,75 +1,51 @@
 [
   {
-    "id": "req-1785222751949-ty5xu",
-    "user_email": "test.user.1785222751948@gmail.com",
+    "id": "req-1785293099654-c8p9n",
+    "user_email": "test.user.1785293099653@gmail.com",
     "resource_id": "test-dup-doc-1",
     "resource_title": "Tài Liệu Test Trùng Lặp",
     "status": "pending",
-    "created_at": "2026-07-28T07:12:31.949Z"
+    "created_at": "2026-07-29T02:44:59.654Z"
   },
   {
-    "id": "req-1785222661191-gz4kk",
-    "user_email": "test.user.1785222661190@gmail.com",
+    "id": "req-1785292544173-hz05y",
+    "user_email": "test.user.1785292544172@gmail.com",
     "resource_id": "test-dup-doc-1",
     "resource_title": "Tài Liệu Test Trùng Lặp",
     "status": "pending",
-    "created_at": "2026-07-28T07:11:01.191Z"
+    "created_at": "2026-07-29T02:35:44.173Z"
   },
   {
-    "id": "req-1785222570608-plkkx",
-    "user_email": "test.user.1785222570607@gmail.com",
+    "id": "req-1785292385050-eqe02",
+    "user_email": "test.user.1785292385049@gmail.com",
     "resource_id": "test-dup-doc-1",
     "resource_title": "Tài Liệu Test Trùng Lặp",
     "status": "pending",
-    "created_at": "2026-07-28T07:09:30.608Z"
+    "created_at": "2026-07-29T02:33:05.050Z"
   },
   {
-    "id": "req-1785222117738-ufivt",
-    "user_email": "test.user.1785222117737@gmail.com",
+    "id": "req-1785292342263-tyjgb",
+    "user_email": "test.user.1785292342262@gmail.com",
     "resource_id": "test-dup-doc-1",
     "resource_title": "Tài Liệu Test Trùng Lặp",
     "status": "pending",
-    "created_at": "2026-07-28T07:01:57.738Z"
+    "created_at": "2026-07-29T02:32:22.263Z"
   },
   {
-    "id": "req-1785221634091-89oxs",
-    "user_email": "test.user.1785221634090@gmail.com",
+    "id": "req-1785292124327-lgxs9",
+    "user_email": "test.user.1785292124326@gmail.com",
     "resource_id": "test-dup-doc-1",
     "resource_title": "Tài Liệu Test Trùng Lặp",
     "status": "pending",
-    "created_at": "2026-07-28T06:53:54.091Z"
+    "created_at": "2026-07-29T02:28:44.327Z"
   },
   {
-    "id": "req-1785221486529-30xsv",
-    "user_email": "test.user.1785221486529@gmail.com",
+    "id": "req-1785226338056-ykrag",
+    "user_email": "test.user.1785226338055@gmail.com",
     "resource_id": "test-dup-doc-1",
     "resource_title": "Tài Liệu Test Trùng Lặp",
     "status": "pending",
-    "created_at": "2026-07-28T06:51:26.529Z"
-  },
-  {
-    "id": "req-1785221444108-egnu2",
-    "user_email": "test.user.1785221444107@gmail.com",
-    "resource_id": "test-dup-doc-1",
-    "resource_title": "Tài Liệu Test Trùng Lặp",
-    "status": "pending",
-    "created_at": "2026-07-28T06:50:44.108Z"
-  },
-  {
-    "id": "req-1785221399938-bxwww",
-    "user_email": "test.user.1785221399937@gmail.com",
-    "resource_id": "test-dup-doc-1",
-    "resource_title": "Tài Liệu Test Trùng Lặp",
-    "status": "pending",
-    "created_at": "2026-07-28T06:49:59.938Z"
-  },
-  {
-    "id": "req-1785220768062-dh2jr",
-    "user_email": "test.user.1785220768062@gmail.com",
-    "resource_id": "test-dup-doc-1",
-    "resource_title": "Tài Liệu Test Trùng Lặp",
-    "status": "pending",
-    "created_at": "2026-07-28T06:39:28.062Z"
+    "created_at": "2026-07-28T08:12:18.056Z"
   },
   {
     "id": "req-1785220386548-ccoes",
@@ -78,14 +54,6 @@
     "resource_title": "Tài Liệu Test Trùng Lặp",
     "status": "pending",
     "created_at": "2026-07-28T06:33:06.548Z"
-  },
-  {
-    "id": "req-1785220354316-w6yst",
-    "user_email": "test.user.1785220354315@gmail.com",
-    "resource_id": "test-dup-doc-1",
-    "resource_title": "Tài Liệu Test Trùng Lặp",
-    "status": "pending",
-    "created_at": "2026-07-28T06:32:34.316Z"
   },
   {
     "id": "req-1785215059859-m4g4o",

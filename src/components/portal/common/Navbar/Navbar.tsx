@@ -6,18 +6,21 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/portal/utils/cn';
+import { useLanguage } from '@/context/LanguageContext';
+import LanguageSwitcher from '@/components/common/LanguageSwitcher';
 
-const NAV_LINKS = [
-  { href: '/', label: 'Trang chủ' },
-  { href: '/courses', label: 'Khóa học' },
-  { href: '/instructors', label: 'Giảng viên' },
-  { href: '/resources', label: 'Tài liệu' },
-  { href: '/blogs', label: 'Blogs' },
+const NAV_LINK_KEYS = [
+  { href: '/', key: 'nav.home' },
+  { href: '/courses', key: 'nav.courses' },
+  { href: '/instructors', key: 'nav.instructors' },
+  { href: '/resources', key: 'nav.resources' },
+  { href: '/blogs', key: 'nav.blog' },
 ];
 
 export function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { t } = useLanguage();
 
   const isActive = (href: string) => {
     if (href === '/portal' || href === '/') {
@@ -43,7 +46,7 @@ export function Navbar() {
 
         {/* Desktop Nav - Centered Floating Pill */}
         <nav className="hidden md:flex items-center gap-1 bg-slate-950/70 p-1.5 rounded-full border border-white/10 shadow-inner">
-          {NAV_LINKS.map(({ href, label }) => {
+          {NAV_LINK_KEYS.map(({ href, key }) => {
             const active = isActive(href);
             return (
               <Link
@@ -56,19 +59,21 @@ export function Navbar() {
                     : 'text-slate-200 hover:text-white hover:bg-white/10',
                 )}
               >
-                {label}
+                {t(key)}
               </Link>
             );
           })}
         </nav>
 
-        {/* Right Action Button */}
+        {/* Right Action Button & Language Switcher */}
         <div className="flex items-center gap-3">
+          <LanguageSwitcher />
+
           <Link
             href="/courses"
             className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-extrabold bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-400/40 hover:border-sky-400 transition-all cursor-pointer shadow-sm hover:scale-105"
           >
-            <span>Tư vấn khóa học</span>
+            <span>{t('nav.register_now')}</span>
             <span className="text-sky-400 font-bold">→</span>
           </Link>
 
@@ -76,7 +81,7 @@ export function Navbar() {
           <button
             className="md:hidden p-2 rounded-xl text-slate-200 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
             onClick={() => setMobileOpen((o) => !o)}
-            aria-label="Toggle menu"
+            aria-label={t('navbar.toggle_menu_aria')}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {mobileOpen ? (
@@ -100,17 +105,17 @@ export function Navbar() {
             className="md:hidden absolute top-full right-4 sm:right-6 mt-2 w-72 max-w-[calc(100vw-2rem)] overflow-hidden bg-slate-900/95 backdrop-blur-2xl border border-white/20 rounded-2xl p-4 shadow-2xl shadow-slate-950/90 z-50 origin-top-right ml-auto"
           >
             <div className="flex items-center justify-between pb-2.5 mb-2 border-b border-white/10">
-              <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">Danh mục Menu</span>
+              <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">{t('navbar.menu_category_label')}</span>
               <button
                 onClick={() => setMobileOpen(false)}
                 className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center text-xs transition-colors"
-                aria-label="Đóng menu"
+                aria-label={t('navbar.close_menu_aria')}    
               >
                 ✕
               </button>
             </div>
             <nav className="flex flex-col gap-1.5">
-              {NAV_LINKS.map(({ href, label }) => {
+              {NAV_LINK_KEYS.map(({ href, key }) => {
                 const active = isActive(href);
                 return (
                   <Link
@@ -124,7 +129,7 @@ export function Navbar() {
                         : 'text-slate-200 hover:bg-white/10 hover:text-white',
                     )}
                   >
-                    <span>{label}</span>
+                    <span>{t(key)}</span>
                     {active && <span className="text-sky-300 text-xs">●</span>}
                   </Link>
                 );
@@ -135,7 +140,7 @@ export function Navbar() {
                   onClick={() => setMobileOpen(false)}
                   className="w-full py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-extrabold text-center block transition-all shadow-md shadow-sky-500/25"
                 >
-                  Tư vấn khóa học →
+                  {t('nav.register_now')} →
                 </Link>
               </div>
             </nav>

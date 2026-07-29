@@ -3,12 +3,14 @@
 import { useRef } from 'react';
 import { BlogCard } from '@/components/portal/sections/blogs/BlogCard';
 import type { Blog } from '@aizen/types';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface RelatedArticlesProps {
   items: Blog[];
 }
 
 export function RelatedArticles({ items }: RelatedArticlesProps) {
+  const { t } = useLanguage();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   if (items.length === 0) return null;
@@ -21,14 +23,14 @@ export function RelatedArticles({ items }: RelatedArticlesProps) {
     <section className="mt-14 pt-10 border-t border-slate-800/80">
       <div className="flex items-center gap-2 mb-6">
         <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-        <h2 className="text-xl md:text-2xl font-extrabold text-white">Bài viết liên quan</h2>
+        <h2 className="text-xl md:text-2xl font-extrabold text-white">{t('blog.related_posts')}</h2>
       </div>
 
       <div className="relative">
         {items.length > 3 && (
           <button
             onClick={() => scrollBy(-1)}
-            aria-label="Bài trước"
+            aria-label={t('blog.prev_post')}
             className="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-9 h-9 items-center justify-center rounded-full bg-slate-800 text-sky-300 border border-slate-700 shadow-xl hover:bg-sky-500 hover:text-white transition-all"
           >
             ‹
@@ -49,7 +51,7 @@ export function RelatedArticles({ items }: RelatedArticlesProps) {
         {items.length > 3 && (
           <button
             onClick={() => scrollBy(1)}
-            aria-label="Bài sau"
+            aria-label={t('blog.next_post')}
             className="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-9 h-9 items-center justify-center rounded-full bg-slate-800 text-sky-300 border border-slate-700 shadow-xl hover:bg-sky-500 hover:text-white transition-all"
           >
             ›

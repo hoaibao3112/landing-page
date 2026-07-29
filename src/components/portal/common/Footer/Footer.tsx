@@ -1,7 +1,21 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function Footer() {
+  const { t } = useLanguage();
+
+  const footerLinks = [
+    { href: '/privacy', labelKey: 'footer.privacy' },
+    { href: '/terms', labelKey: 'footer.terms' },
+    { href: '/contact', labelKey: 'footer.contact' },
+    { href: '/', labelKey: 'footer.about' },
+    { href: '/support', labelKey: 'footer.support' },
+    { href: '/careers', labelKey: 'footer.careers' },
+  ];
+
   return (
     <footer className="bg-white border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -18,20 +32,20 @@ export function Footer() {
               />
             </Link>
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
-              Đồng hành cùng doanh nghiệp trong kỷ nguyên trí tuệ nhân tạo. Giải pháp tối ưu, hiệu suất đột phá và thực chiến.
+              {t('footer.brand_desc')}
             </p>
           </div>
 
           {/* Contact info */}
           <div>
-            <h3 className="text-gray-900 font-bold text-sm mb-4">Thông tin liên hệ</h3>
+            <h3 className="text-gray-900 font-bold text-sm mb-4">{t('footer.contact_title')}</h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-2 text-sm text-gray-500">
                 <svg className="w-4 h-4 text-gray-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span>112 Lý Phục Man, Phường Tân Thuận, TP. Hồ Chí Minh</span>
+                <span>{t('footer.address')}</span>
               </li>
               <li className="flex items-center gap-2 text-sm text-gray-500">
                 <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -44,19 +58,12 @@ export function Footer() {
 
           {/* Policy & Links */}
           <div>
-            <h3 className="text-gray-900 font-bold text-sm mb-4">Chính sách & Liên kết</h3>
+            <h3 className="text-gray-900 font-bold text-sm mb-4">{t('footer.policy_title')}</h3>
             <ul className="space-y-2.5">
-              {[
-                { href: '/privacy', label: 'Chính sách bảo mật' },
-                { href: '/terms', label: 'Điều khoản dịch vụ' },
-                { href: '/contact', label: 'Liên hệ' },
-                { href: '/', label: 'Về AIZEN' },
-                { href: '/support', label: 'Trung tâm trợ giúp' },
-                { href: '/careers', label: 'Tuyển dụng' },
-              ].map(({ href, label }) => (
-                <li key={label}>
+              {footerLinks.map(({ href, labelKey }) => (
+                <li key={labelKey}>
                   <Link href={href} className="text-sm text-gray-500 hover:text-sky-500 transition-colors">
-                    {label}
+                    {t(labelKey)}
                   </Link>
                 </li>
               ))}
@@ -67,7 +74,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-gray-100 mt-10 pt-6">
           <p className="text-xs text-gray-400">
-            © {new Date().getFullYear()} AIZEN Academy. Tôn vinh Sự Xuất sắc Chuyên nghiệp.
+            © {new Date().getFullYear()} {t('footer.copyright')}
           </p>
         </div>
       </div>
@@ -78,12 +85,12 @@ export function Footer() {
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#0068ff] text-white rounded-full shadow-xl px-4 py-3 hover:scale-105 transition-transform"
-        aria-label="Hỗ trợ Zalo"
+        aria-label={t('footer.zalo_support')}
       >
         <svg viewBox="0 0 48 48" className="w-5 h-5" fill="white">
           <path d="M24 4C13 4 4 12 4 22c0 5.5 2.8 10.5 7.3 14L10 40l7-2.5A20.7 20.7 0 0024 40c11 0 20-8 20-18S35 4 24 4z" />
         </svg>
-        <span className="text-sm font-semibold">Hỗ trợ Zalo</span>
+        <span className="text-sm font-semibold">{t('footer.zalo_support')}</span>
       </a>
     </footer>
   );

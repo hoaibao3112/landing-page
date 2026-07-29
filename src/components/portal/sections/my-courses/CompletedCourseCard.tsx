@@ -4,12 +4,14 @@ import { Badge } from '@/components/portal/ui/Badge';
 import { Button } from '@/components/portal/ui/Button';
 import { formatDate } from '@/lib/portal/utils/format';
 import type { Enrollment } from '@aizen/types';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface CompletedCourseCardProps {
   enrollment: Enrollment;
 }
 
 export function CompletedCourseCard({ enrollment }: CompletedCourseCardProps) {
+  const { t } = useLanguage();
   const course = enrollment.courses;
   if (!course) return null;
 
@@ -39,22 +41,22 @@ export function CompletedCourseCard({ enrollment }: CompletedCourseCardProps) {
             <span className="text-xs font-semibold uppercase tracking-wide text-primary-500">
               {course.category}
             </span>
-            <Badge variant="completed">Đã hoàn thành</Badge>
+            <Badge variant="completed">{t('my_courses.completed_badge')}</Badge>
           </div>
           <h3 className="font-bold text-gray-900 leading-snug">{course.title}</h3>
           {enrollment.completed_at && (
             <p className="text-xs text-gray-400 mt-1.5">
-              ✅ Hoàn thành: {formatDate(enrollment.completed_at)}
+              {t('my_courses.completed_on', { date: formatDate(enrollment.completed_at) })}
             </p>
           )}
         </div>
 
         <div className="flex gap-2 mt-4 flex-wrap">
           <Link href={`/courses/${course.slug}`}>
-            <Button size="sm" variant="outline">Xem lại nội dung</Button>
+            <Button size="sm" variant="outline">{t('my_courses.view_content_btn')}</Button>
           </Link>
           <Link href={`/my-courses/${enrollment.id}/certificate`}>
-            <Button size="sm" variant="ghost">⬇ Tải chứng chỉ</Button>
+            <Button size="sm" variant="ghost">{t('my_courses.download_cert_btn')}</Button>
           </Link>
         </div>
       </div>

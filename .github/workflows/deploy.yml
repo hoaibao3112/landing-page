@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build-and-push:
@@ -152,7 +153,7 @@ jobs:
             cd /opt/landing-page
             docker logout ghcr.io || true
             docker compose pull
-            docker compose up -d --remove-orphans
+            docker compose up -d --force-recreate --remove-orphans
             docker image prune -f
 
             echo "==> Deploy successful!"

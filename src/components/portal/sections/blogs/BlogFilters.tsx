@@ -3,17 +3,19 @@
 import { useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { cn } from '@/lib/portal/utils/cn';
-
-const CATEGORIES = [
-  { label: 'Tất cả', value: '' },
-  { label: 'Blog', value: 'blog' },
-  { label: 'Tin tức', value: 'news' },
-];
+import { useLanguage } from '@/context/LanguageContext';
 
 export function BlogFilters() {
+  const { t } = useLanguage();
   const router = useRouter();
   const params = useSearchParams();
   const [, startTransition] = useTransition();
+
+  const categories = [
+    { label: t('blog.all'), value: '' },
+    { label: 'Blog', value: 'blog' },
+    { label: t('blog.news'), value: 'news' },
+  ];
 
   const currentCategory = params.get('category') ?? '';
 
@@ -27,9 +29,9 @@ export function BlogFilters() {
 
   return (
     <div className="flex flex-wrap gap-2">
-      {CATEGORIES.map((cat) => (
+      {categories.map((cat) => (
         <button
-          key={cat.label}
+          key={cat.value}
           onClick={() => updateCategory(cat.value)}
           className={cn(
             'px-4 py-1.5 rounded-full text-sm font-medium border transition-colors',

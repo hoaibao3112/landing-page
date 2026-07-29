@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { formatCurrency } from '@/lib/portal/utils/format';
+import { useLanguage } from '@/context/LanguageContext';
 import {
   createRegistration,
   createGroupRegistration,
@@ -68,6 +69,14 @@ const REFERRAL_SOURCES = [
   'Khác',
 ];
 
+const REFERRAL_KEYS: Record<string, string> = {
+  'Cộng Đồng AI ỨNG DỤNG SALE & MARKETING': 'registration_form.referral_sources.ai_community',
+  'Khách hàng AIZEN': 'registration_form.referral_sources.aizen_customer',
+  'Người quen giới thiệu': 'registration_form.referral_sources.acquaintance',
+  'Facebook / Instagram': 'registration_form.referral_sources.social',
+  'Khác': 'registration_form.referral_sources.other',
+};
+
 const emptyMember = (): MemberForm => ({ fullName: '', phone: '', email: '', company: '', position: '' });
 const emptyErrors = (): MemberErrors => ({});
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -122,6 +131,7 @@ interface PersonSectionProps {
 }
 
 function PersonSection({ index, total, member, errors, onChange }: PersonSectionProps) {
+  const { t } = useLanguage();
   return (
     <div className="flex flex-col gap-3">
       {total > 1 && (
@@ -129,24 +139,24 @@ function PersonSection({ index, total, member, errors, onChange }: PersonSection
           <div className="w-6 h-6 rounded-full bg-sky-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
             {index + 1}
           </div>
-          <p className="text-sm font-semibold text-white">Thông tin người {index + 1}</p>
+          <p className="text-sm font-semibold text-white">{t('registration_form.person_info')} {index + 1}</p>
         </div>
       )}
-      <DarkInput id={`fullName_${index}`} label="Họ và Tên" placeholder="Nguyễn Văn A"
+      <DarkInput id={`fullName_${index}`} label={t('registration_form.fullname')} placeholder={t('registration_form.fullname_placeholder')}
         value={member.fullName} error={errors.fullName} required
         onChange={(e) => onChange('fullName', e.target.value)} />
       <div className="grid grid-cols-2 gap-3">
-        <DarkInput id={`phone_${index}`} label="Số điện thoại" placeholder="090 xxx xxx" type="tel"
+        <DarkInput id={`phone_${index}`} label={t('registration_form.phone')} placeholder={t('registration_form.phone_placeholder')} type="tel"
           value={member.phone} error={errors.phone} required
           onChange={(e) => onChange('phone', e.target.value)} />
-        <DarkInput id={`email_${index}`} label="Email" placeholder="email@example.com" type="email"
+        <DarkInput id={`email_${index}`} label={t('registration_form.email')} placeholder={t('registration_form.email_placeholder')} type="email"
           value={member.email} error={errors.email} required
           onChange={(e) => onChange('email', e.target.value)} />
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <DarkInput id={`company_${index}`} label="Tên Công Ty" placeholder="Công ty của bạn"
+        <DarkInput id={`company_${index}`} label={t('registration_form.company')} placeholder={t('registration_form.company_placeholder')}
           value={member.company} onChange={(e) => onChange('company', e.target.value)} />
-        <DarkInput id={`position_${index}`} label="Chức vụ" placeholder="Chọn vị trí..."
+        <DarkInput id={`position_${index}`} label={t('registration_form.position')} placeholder={t('registration_form.position_placeholder')}
           value={member.position} onChange={(e) => onChange('position', e.target.value)} />
       </div>
     </div>
@@ -210,6 +220,7 @@ interface PromoCodeInputProps {
 }
 
 function PromoCodeInput({ courseId, plan, basePrice, onApplied, onCodeChange }: PromoCodeInputProps) {
+  const { t } = useLanguage();
   const [code, setCode] = useState('');
   const [isChecking, setIsChecking] = useState(false);
   const [applied, setApplied] = useState<PromoValidateResult | null>(null);
@@ -236,7 +247,7 @@ function PromoCodeInput({ courseId, plan, basePrice, onApplied, onCodeChange }: 
         setError(result.message);
       }
     } catch {
-      setError('Không thể kiểm tra mã, thử lại sau.');
+      setError(t('registration_form.promo_error_check'));
     } finally {
       setIsChecking(false);
     }
@@ -253,8 +264,8 @@ function PromoCodeInput({ courseId, plan, basePrice, onApplied, onCodeChange }: 
   return (
     <div className="flex flex-col gap-2">
       <label className="text-xs font-medium text-slate-300">
-        Mã khuyến mãi
-        <span className="ml-1.5 text-sky-400/70 font-normal">(không bắt buộc)</span>
+        {t('registration_form.promo_label')}
+        <span className="ml-1.5 text-sky-400/70 font-normal">{t('registration_form.promo_optional')}</span>
       </label>
 
       {applied?.valid ? (
@@ -267,15 +278,15 @@ function PromoCodeInput({ courseId, plan, basePrice, onApplied, onCodeChange }: 
             <p className="text-emerald-300 text-sm font-bold tracking-wider">{code.toUpperCase()}</p>
             <p className="text-emerald-400/80 text-xs">
               {applied.discount_type === 'percent'
-                ? `Giảm ${applied.discount_value}% · Tiết kiệm ${formatCurrency(discountAmount)}`
-                : `Giảm cố định ${formatCurrency(discountAmount)}`}
+                ? t('registration_form.discount_percent', { value: applied.discount_value ?? 0, amount: formatCurrency(discountAmount) })
+                : t('registration_form.discount_fixed', { amount: formatCurrency(discountAmount) })}
             </p>
           </div>
           <button
             type="button"
             onClick={handleRemove}
             className="text-slate-400 hover:text-red-400 transition-colors flex-shrink-0 p-0.5"
-            aria-label="Xóa mã"
+            aria-label={t('registration_form.clear_code_aria')}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -289,7 +300,7 @@ function PromoCodeInput({ courseId, plan, basePrice, onApplied, onCodeChange }: 
             id="promo-code-input"
             type="text"
             value={code}
-            placeholder="Nhập mã VD: AIZEN50"
+            placeholder={t('registration_form.promo_placeholder')}
             onChange={(e) => {
               const val = e.target.value.toUpperCase();
               setCode(val);
@@ -313,7 +324,7 @@ function PromoCodeInput({ courseId, plan, basePrice, onApplied, onCodeChange }: 
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-            ) : 'Áp dụng'}
+            ) : t('registration_form.promo_apply')}
           </button>
         </div>
       )}
@@ -338,6 +349,7 @@ function PriceSummary({
   basePrice: number;
   promo: PromoValidateResult | null;
 }) {
+  const { t } = useLanguage();
   const discountAmount = promo?.valid && promo.discount_type && promo.discount_value
     ? promo.discount_type === 'percent'
       ? Math.round((basePrice * promo.discount_value) / 100)
@@ -350,7 +362,7 @@ function PriceSummary({
   return (
     <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 space-y-1.5">
       <div className="flex justify-between items-center text-sm text-slate-400">
-        <span>Giá gốc:</span>
+        <span>{t('registration_form.original_price')}:</span>
         <span className={hasDiscount ? 'line-through text-slate-500' : 'text-white font-semibold'}>
           {formatCurrency(basePrice)}
         </span>
@@ -362,19 +374,19 @@ function PriceSummary({
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
             </svg>
-            Khuyến mãi:
+            {t('registration_form.discount')}:
           </span>
           <span className="text-emerald-400 font-semibold">-{formatCurrency(discountAmount)}</span>
         </div>
       )}
 
       <div className="border-t border-white/10 pt-1.5 flex justify-between items-center">
-        <span className="text-sm font-semibold text-white">Tổng thanh toán:</span>
+        <span className="text-sm font-semibold text-white">{t('registration_form.total_payment')}:</span>
         <div className="text-right">
           <span className="text-lg font-extrabold text-sky-300">{formatCurrency(finalPrice)}</span>
           {hasDiscount && (
             <p className="text-[10px] text-emerald-400 text-right">
-              Tiết kiệm {formatCurrency(discountAmount)}!
+              {t('registration_form.savings')} {formatCurrency(discountAmount)}!
             </p>
           )}
         </div>
@@ -385,6 +397,8 @@ function PriceSummary({
 
 // ─── Main Component ───────────────────────────────────
 export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: RegistrationFormProps) {
+  const { t } = useLanguage();
+
   // Đọc giá từ plans_config nếu có, fallback về công thức cũ
   const indivPrice = plansConfig?.individual?.price ?? price;
   const indivOriginalPrice = plansConfig?.individual?.original_price ?? null; // null = không gạch ngang
@@ -396,32 +410,32 @@ export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: R
 
   const PLANS: PlanConfig[] = [
     {
-      key: 'early_bird', label: 'Early Bird', sublabel: '',
+      key: 'early_bird', label: t('registration_form.early_bird'), sublabel: '',
       priceLabel: formatCurrency(Math.round(price * 0.73)),
       originalPriceLabel: formatCurrency(price),
       memberCount: 1, basePrice: Math.round(price * 0.73),
-      badge: { text: 'SỐ LƯỢNG CÓ HẠN', color: 'bg-amber-500' },
+      badge: { text: t('registration_form.limited_qty'), color: 'bg-amber-500' },
     },
     {
-      key: 'individual', label: 'Cá nhân', sublabel: '',
+      key: 'individual', label: t('registration_form.individual'), sublabel: '',
       priceLabel: formatCurrency(indivPrice),
       // Chỉ hiện gạch ngang nếu admin đã set original_price
       ...(indivOriginalPrice ? { originalPriceLabel: formatCurrency(indivOriginalPrice) } : {}),
       memberCount: 1, basePrice: indivPrice,
     },
     {
-      key: 'group_2', label: 'Nhóm 2 người', sublabel: '',
+      key: 'group_2', label: t('registration_form.group_2'), sublabel: '',
       priceLabel: formatCurrency(g2Price * 2),
       originalPriceLabel: formatCurrency(g2OriginalPrice * 2),
       memberCount: 2, basePrice: g2Price * 2,
-      badge: { text: 'HOT NHẤT', color: 'bg-gradient-to-r from-red-600 via-rose-500 to-orange-500 shadow-md shadow-red-500/30' },
+      badge: { text: t('registration_form.hot'), color: 'bg-gradient-to-r from-red-600 via-rose-500 to-orange-500 shadow-md shadow-red-500/30' },
     },
     {
-      key: 'group_4', label: 'Nhóm 4 người', sublabel: '',
+      key: 'group_4', label: t('registration_form.group_4'), sublabel: '',
       priceLabel: formatCurrency(group4TotalPrice),
       originalPriceLabel: formatCurrency(g4OriginalPrice * 4),
       memberCount: 4, basePrice: group4TotalPrice,
-      badge: { text: 'TIẾT KIỆM NHẤT', color: 'bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 shadow-md shadow-emerald-500/30' },
+      badge: { text: t('registration_form.best_savings'), color: 'bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-500 shadow-md shadow-emerald-500/30' },
     },
   ];
 
@@ -462,10 +476,10 @@ export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: R
   function validateStep(idx: number): boolean {
     const m = members[idx]!;
     const e: MemberErrors = {};
-    if (!m.fullName.trim()) e.fullName = 'Vui lòng nhập họ tên';
-    if (!m.phone.trim()) e.phone = 'Vui lòng nhập số điện thoại';
-    if (!m.email.trim()) e.email = 'Vui lòng nhập email';
-    else if (!EMAIL_REGEX.test(m.email)) e.email = 'Email không hợp lệ';
+    if (!m.fullName.trim()) e.fullName = t('registration_form.err_fullname');
+    if (!m.phone.trim()) e.phone = t('registration_form.err_phone');
+    if (!m.email.trim()) e.email = t('registration_form.err_email');
+    else if (!EMAIL_REGEX.test(m.email)) e.email = t('registration_form.err_email_invalid');
     setMemberErrors((prev) => prev.map((old, i) => (i === idx ? e : old)));
     return Object.keys(e).length === 0;
   }
@@ -483,7 +497,7 @@ export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: R
   async function handleSubmit() {
     if (!validateStep(step)) return;
     let refValid = true;
-    if (!referral) { setReferralError('Vui lòng chọn nguồn'); refValid = false; }
+    if (!referral) { setReferralError(t('registration_form.err_referral')); refValid = false; }
     else setReferralError(undefined);
     if (!refValid) return;
 
@@ -517,7 +531,7 @@ export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: R
       }
       setSuccess(message);
     } catch (err) {
-      setApiError(err instanceof Error ? err.message : 'Đăng ký thất bại, thử lại sau.');
+      setApiError(err instanceof Error ? err.message : t('registration_form.err_submit_fallback'));
     } finally {
       setIsLoading(false);
     }
@@ -528,10 +542,10 @@ export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: R
     return (
       <div className="bg-gradient-to-br from-emerald-900/60 to-teal-900/40 border border-emerald-500/30 rounded-2xl p-8 text-center">
         <p className="text-4xl mb-4">🎉</p>
-        <p className="font-bold text-white text-lg mb-1">Đăng ký thành công!</p>
+        <p className="font-bold text-white text-lg mb-1">{t('registration_form.success_title')}</p>
         <p className="text-emerald-300 text-sm">{success}</p>
         <button onClick={() => { setSuccess(null); handlePlanSelect(PLANS[1]!); }}
-          className="mt-5 text-sm text-emerald-400 underline">Đăng ký thêm</button>
+          className="mt-5 text-sm text-emerald-400 underline">{t('registration_form.register_more')}</button>
       </div>
     );
   }
@@ -541,8 +555,8 @@ export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: R
       style={{ backgroundImage: "linear-gradient(180deg, rgba(15,30,53,0.85) 0%, rgba(11,22,40,0.9) 100%), url('/backgoundTrangkhoahoc.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
       {/* Header */}
       <div className="text-center pt-5 pb-4 px-6 border-b border-white/8">
-        <p className="text-sky-400 text-[10px] font-bold uppercase tracking-widest mb-1">ĐĂNG KÝ</p>
-        <h3 className="text-xl font-extrabold text-white">Chọn hình thức đăng ký</h3>
+        <p className="text-sky-400 text-[10px] font-bold uppercase tracking-widest mb-1">{t('registration_form.header_tag')}</p>
+        <h3 className="text-xl font-extrabold text-white">{t('registration_form.header_title')}</h3>
       </div>
 
       <div className="p-5 flex flex-col gap-4">
@@ -561,7 +575,7 @@ export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: R
         {isMulti && (
           <div className="flex flex-col items-center gap-1">
             <StepIndicator current={step} total={totalSteps} />
-            <p className="text-xs text-slate-400">Người {step + 1} / {totalSteps}</p>
+            <p className="text-xs text-slate-400">{t('registration_form.person_info')} {step + 1} / {totalSteps}</p>
           </div>
         )}
 
@@ -580,7 +594,7 @@ export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: R
             {/* Referral */}
             <div className="flex flex-col gap-1.5">
               <label htmlFor="referral" className="text-xs font-medium text-slate-300">
-                Bạn biết đến chương trình từ đâu <span className="text-red-400">*</span>
+                {t('registration_form.referral_question')} <span className="text-red-400">*</span>
               </label>
               <div className="relative">
                 <select id="referral" value={referral}
@@ -590,9 +604,11 @@ export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: R
                     referralError ? 'border-red-400/60' : 'border-white/15 hover:border-white/25'
                   } ${referral === '' ? 'text-slate-500' : 'text-white'}`}
                 >
-                  <option value="" disabled className="bg-slate-800">Chọn nguồn...</option>
+                  <option value="" disabled className="bg-slate-800">{t('registration_form.referral_placeholder')}</option>
                   {REFERRAL_SOURCES.map((src) => (
-                    <option key={src} value={src} className="bg-slate-800">{src}</option>
+                    <option key={src} value={src} className="bg-slate-800">
+                      {t(REFERRAL_KEYS[src] || src)}
+                    </option>
                   ))}
                 </select>
                 <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
@@ -636,7 +652,7 @@ export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: R
         {isMulti && !isLastStep ? (
           <button onClick={handleNext}
             className="w-full py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-bold text-sm transition-colors flex items-center justify-center gap-2">
-            Tiếp tục
+            {t('registration_form.next')}
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -649,13 +665,13 @@ export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: R
                 <><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                </svg>Đang xử lý...</>
+                </svg>{t('registration_form.submitting')}</>
               ) : (
                 <>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                   </svg>
-                  Gửi đăng ký
+                  {t('registration_form.submit')}
                 </>
               )}
             </button>
@@ -665,16 +681,15 @@ export function RegistrationForm({ courseId, price, priceGroup, plansConfig }: R
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
-                Quay lại người {step}
+                {t('registration_form.back_to')} {step}
               </button>
             )}
           </div>
         )}
 
         <p className="text-[11px] text-center text-slate-500 leading-relaxed">
-          Đăng ký đồng ý với{' '}
-          <a href="/terms" className="underline hover:text-slate-300">Điều khoản dịch vụ</a>
-          {' '}của chúng tôi.
+          {t('registration_form.terms_agree')}{' '}
+          <a href="/terms" className="underline hover:text-slate-300">{t('registration_form.terms_link')}</a>
         </p>
       </div>
     </div>

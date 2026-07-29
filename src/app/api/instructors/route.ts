@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { supabaseAdmin, successResponse, errorResponse } from '@/lib/portal/supabase-server';
+import { supabaseAdmin, successResponse, errorResponse, sanitizePostgrestSearch } from '@/lib/portal/supabase-server';
 
 export async function GET(req: NextRequest) {
   try {
@@ -12,7 +12,10 @@ export async function GET(req: NextRequest) {
       .order('created_at', { ascending: true });
 
     if (search) {
-      builder = builder.ilike('name', `%${search}%`);
+      const safeSearch = sanitizePostgrestSearch(search);
+      if (safeSearch) {
+        builder = builder.ilike('name', `%${safeSearch}%`);
+      }
     }
 
     const { data, error } = await builder;

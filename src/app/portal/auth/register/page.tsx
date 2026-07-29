@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Input } from '@/components/portal/ui/Input';
 import { Button } from '@/components/portal/ui/Button';
 import { apiClient } from '@/lib/portal/api/api-client';
+import { useLanguage } from '@/context/LanguageContext';
 
 import { registerSchema } from '@/schemas/auth.schema';
 
@@ -20,6 +21,7 @@ const INITIAL: RegisterForm = { fullName: '', email: '', password: '', phone: ''
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [form, setForm] = useState<RegisterForm>(INITIAL);
   const [errors, setErrors] = useState<Partial<RegisterForm>>({});
   const [apiError, setApiError] = useState<string | null>(null);
@@ -27,14 +29,14 @@ export default function RegisterPage() {
 
   function validate(): boolean {
     const next: Partial<RegisterForm> = {};
-    if (!form.fullName.trim()) next.fullName = 'Vui lòng nhập họ tên';
-    if (!form.email.trim()) next.email = 'Vui lòng nhập email';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = 'Email không hợp lệ';
+    if (!form.fullName.trim()) next.fullName = t('auth.register.err_fullname_required');
+    if (!form.email.trim()) next.email = t('auth.register.err_email_required');
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = t('auth.register.err_email_invalid');
 
     const pwResult = registerSchema.shape.password.safeParse(form.password);
     if (!pwResult.success) {
       const issue = pwResult.error.issues[0];
-      next.password = issue?.message || 'Mật khẩu tối thiểu 8 ký tự, gồm chữ và số';
+      next.password = issue?.message || t('auth.register.err_password_format');
     }
 
     setErrors(next);
@@ -54,7 +56,7 @@ export default function RegisterPage() {
       });
       router.push('/portal/auth/login?registered=1');
     } catch (err) {
-      setApiError(err instanceof Error ? err.message : 'Đăng ký thất bại, thử lại sau.');
+      setApiError(err instanceof Error ? err.message : t('auth.register.err_api_failed'));
     } finally {
       setIsLoading(false);
     }
@@ -69,15 +71,15 @@ export default function RegisterPage() {
             <span className="text-2xl font-bold text-primary-500">AIZEN</span>
             <span className="text-2xl font-light text-gray-400"> Education</span>
           </Link>
-          <h1 className="text-xl font-bold text-gray-900 mt-4">Tạo tài khoản</h1>
-          <p className="text-sm text-gray-500 mt-1">Bắt đầu hành trình AI của bạn</p>
+          <h1 className="text-xl font-bold text-gray-900 mt-4">{t('auth.register.title')}</h1>
+          <p className="text-sm text-gray-500 mt-1">{t('auth.register.subtitle')}</p>
         </div>
 
         <div className="flex flex-col gap-4">
           <Input
             id="fullName"
-            label="Họ và tên"
-            placeholder="Nguyễn Văn A"
+            label={t('auth.register.fullname_label')}
+            placeholder={t('auth.register.fullname_placeholder')}
             value={form.fullName}
             onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
             error={errors.fullName}
@@ -85,9 +87,9 @@ export default function RegisterPage() {
           />
           <Input
             id="email"
-            label="Email"
+            label={t('auth.register.email_label')}
             type="email"
-            placeholder="email@company.com"
+            placeholder={t('auth.register.email_placeholder')}
             value={form.email}
             onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
             error={errors.email}
@@ -95,17 +97,17 @@ export default function RegisterPage() {
           />
           <Input
             id="phone"
-            label="Số điện thoại"
+            label={t('auth.register.phone_label')}
             type="tel"
-            placeholder="0901234567 (không bắt buộc)"
+            placeholder={t('auth.register.phone_placeholder')}
             value={form.phone}
             onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
           />
           <Input
             id="password"
-            label="Mật khẩu"
+            label={t('auth.register.password_label')}
             type="password"
-            placeholder="Tối thiểu 8 ký tự, gồm chữ và số"
+            placeholder={t('auth.register.password_placeholder')}
             value={form.password}
             onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
             error={errors.password}
@@ -125,13 +127,13 @@ export default function RegisterPage() {
           isLoading={isLoading}
           onClick={handleRegister}
         >
-          Đăng ký
+          {t('auth.register.submit_btn')}
         </Button>
 
         <p className="text-sm text-center text-gray-500 mt-5">
-          Đã có tài khoản?{' '}
+          {t('auth.register.has_account')}{' '}
           <Link href="/portal/auth/login" className="text-primary-500 hover:underline font-medium">
-            Đăng nhập
+            {t('auth.register.login_link')}
           </Link>
         </p>
       </div>

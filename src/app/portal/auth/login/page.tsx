@@ -7,6 +7,7 @@ import { Input } from '@/components/portal/ui/Input';
 import { Button } from '@/components/portal/ui/Button';
 import { apiClient } from '@/lib/portal/api/api-client';
 import { useAuthStore } from '@/store/portal/auth.store';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface LoginForm {
   email: string;
@@ -15,13 +16,14 @@ interface LoginForm {
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [form, setForm] = useState<LoginForm>({ email: '', password: '' });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleLogin() {
     if (!form.email || !form.password) {
-      setError('Vui lòng nhập đầy đủ thông tin.');
+      setError(t('auth.login.error_required'));
       return;
     }
     setIsLoading(true);
@@ -48,7 +50,7 @@ export default function LoginPage() {
       });
       router.push('/portal/my-courses');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Đăng nhập thất bại.');
+      setError(err instanceof Error ? err.message : t('auth.login.error_failed'));
     } finally {
       setIsLoading(false);
     }
@@ -63,25 +65,25 @@ export default function LoginPage() {
             <span className="text-2xl font-bold text-primary-500">AIZEN</span>
             <span className="text-2xl font-light text-gray-400"> Education</span>
           </Link>
-          <h1 className="text-xl font-bold text-gray-900 mt-4">Đăng nhập</h1>
-          <p className="text-sm text-gray-500 mt-1">Chào mừng trở lại!</p>
+          <h1 className="text-xl font-bold text-gray-900 mt-4">{t('auth.login.title')}</h1>
+          <p className="text-sm text-gray-500 mt-1">{t('auth.login.subtitle')}</p>
         </div>
 
         <div className="flex flex-col gap-4">
           <Input
             id="email"
-            label="Email"
+            label={t('auth.login.email_label')}
             type="email"
-            placeholder="email@company.com"
+            placeholder={t('auth.login.email_placeholder')}
             value={form.email}
             onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
             required
           />
           <Input
             id="password"
-            label="Mật khẩu"
+            label={t('auth.login.password_label')}
             type="password"
-            placeholder="••••••••"
+            placeholder={t('auth.login.password_placeholder')}
             value={form.password}
             onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
             required
@@ -100,13 +102,13 @@ export default function LoginPage() {
           isLoading={isLoading}
           onClick={handleLogin}
         >
-          Đăng nhập
+          {t('auth.login.submit_btn')}
         </Button>
 
         <p className="text-sm text-center text-gray-500 mt-5">
-          Chưa có tài khoản?{' '}
+          {t('auth.login.no_account')}{' '}
           <Link href="/portal/auth/register" className="text-primary-500 hover:underline font-medium">
-            Đăng ký ngay
+            {t('auth.login.register_now')}
           </Link>
         </p>
       </div>

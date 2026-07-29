@@ -1,4 +1,7 @@
-﻿import { cn } from '@/lib/portal/utils/cn';
+'use client';
+
+import { cn } from '@/lib/portal/utils/cn';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface PaginationProps {
   currentPage: number;
@@ -7,19 +10,21 @@ interface PaginationProps {
 }
 
 export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
+  const { t } = useLanguage();
+
   if (totalPages <= 1) return null;
 
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <nav className="flex items-center justify-center gap-1.5" aria-label="Pagination">
+    <nav className="flex items-center justify-center gap-1.5" aria-label={t('common.pagination_aria')}>
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-        aria-label="Trang trước"
+        aria-label={t('common.prev_page_aria')}
       >
-        ← Trước
+        {t('common.prev_page_btn')}
       </button>
 
       {pages.map((page) => (
@@ -42,9 +47,9 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-        aria-label="Trang sau"
+        aria-label={t('common.next_page_aria')}
       >
-        Sau →
+        {t('common.next_page_btn')}
       </button>
     </nav>
   );

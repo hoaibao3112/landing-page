@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion';
 import type { CourseWithDetails } from '@aizen/types';
 
+import { useLanguage } from '@/context/LanguageContext';
+
 interface CourseSkillsProps {
   skills?: CourseWithDetails['skills'];
 }
@@ -47,6 +49,14 @@ const DEFAULT_SKILLS = [
   },
 ];
 
+const DEFAULT_SKILL_KEYS: Record<string, { descKey: string; badgeKey?: string }> = {
+  cowork: { descKey: 'course_skills.items.cowork.description', badgeKey: 'course_skills.special_badge' },
+  skills: { descKey: 'course_skills.items.skills.description' },
+  projects: { descKey: 'course_skills.items.projects.description' },
+  connectors: { descKey: 'course_skills.items.connectors.description' },
+  artifacts: { descKey: 'course_skills.items.artifacts.description' },
+};
+
 const cardVariants = {
   hidden: { opacity: 0, y: 32 },
   show: (i: number) => ({
@@ -57,6 +67,7 @@ const cardVariants = {
 };
 
 export function CourseSkills({ skills }: CourseSkillsProps) {
+  const { t } = useLanguage();
   const items =
     skills && skills.length > 0
       ? skills.map((s, i) => ({
@@ -67,7 +78,14 @@ export function CourseSkills({ skills }: CourseSkillsProps) {
           featured: i === 0,
           badge: s.badge,
         }))
-      : DEFAULT_SKILLS;
+      : DEFAULT_SKILLS.map((s) => {
+          const config = DEFAULT_SKILL_KEYS[s.id];
+          return {
+            ...s,
+            description: config ? t(config.descKey) : s.description,
+            badge: config?.badgeKey ? t(config.badgeKey) : s.badge,
+          };
+        });
 
   const [featured, ...rest] = items;
 
@@ -83,11 +101,11 @@ export function CourseSkills({ skills }: CourseSkillsProps) {
       >
         <p className="inline-flex items-center gap-2 text-[11px] font-black tracking-[0.2em] text-white uppercase mb-3">
           <span className="w-6 h-px bg-white/40" />
-          KỸ NĂNG BẠN SẼ CÓ
+          {t('course_detail.skills_tag')}
           <span className="w-6 h-px bg-white/40" />
         </p>
         <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">
-          Kết thúc khóa học, bạn sở hữu ngay
+          {t('course_detail.skills_headline')}
         </h2>
       </motion.div>
 

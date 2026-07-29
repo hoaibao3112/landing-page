@@ -8,6 +8,7 @@ import { formatDateBlog } from '@/lib/portal/utils/format';
 import { extractToc } from '@/lib/portal/utils/toc';
 import type { BlogWithRelated } from '@aizen/types';
 import { fetchBlogBySlugServer } from '@/lib/portal/server-data';
+import { getServerDict } from '@/lib/portal/get-server-language';
 
 async function getBlog(slug: string): Promise<BlogWithRelated | null> {
   return fetchBlogBySlugServer(slug) as Promise<BlogWithRelated | null>;
@@ -19,8 +20,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const dict = await getServerDict();
   const blog = await getBlog(slug);
-  if (!blog) return { title: 'Không tìm thấy bài viết' };
+  if (!blog) return { title: dict.blog.meta_not_found };
   return {
     title: blog.title,
     description: blog.excerpt,
@@ -34,6 +36,7 @@ export default async function BlogDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const dict = await getServerDict();
   const blog = await getBlog(slug);
   if (!blog) notFound();
 
@@ -43,8 +46,8 @@ export default async function BlogDetailPage({
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Breadcrumb
         items={[
-          { label: 'Trang chủ', href: '/portal' },
-          { label: 'Blog', href: '/portal/blogs' },
+          { label: dict.blog.breadcrumb_home, href: '/portal' },
+          { label: dict.blog.breadcrumb_blog, href: '/portal/blogs' },
           { label: blog.title },
         ]}
       />
@@ -71,7 +74,7 @@ export default async function BlogDetailPage({
               <svg className="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-              Tác giả: {blog.author}
+              {dict.blog.author_prefix.replace('{{author}}', blog.author)}
             </span>
           </div>
 
@@ -95,7 +98,7 @@ export default async function BlogDetailPage({
               <svg className="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
               </svg>
-              <span>Nguồn bài viết:</span>{' '}
+              <span>{dict.blog.source_label}</span>{' '}
               {blog.source_url ? (
                 <a href={blog.source_url} target="_blank" rel="noopener noreferrer" className="text-sky-300 font-semibold hover:text-amber-300 underline underline-offset-4 transition-colors">
                   {blog.source_name}

@@ -153,7 +153,14 @@ export async function POST(req: NextRequest) {
       .select('id, created_at');
 
     if (error) {
-      console.warn('Insert group registration RLS/Error fallback to SQLite:', error.message || error);
+      console.error('Supabase insert group registration failed:', {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      });
+
+      // Quietly backup to SQLite
       try {
         const stmt = db.prepare(`
           INSERT INTO registrations (fullname, phone, email, referral, role, company, payment_status, amount)
@@ -165,7 +172,12 @@ export async function POST(req: NextRequest) {
       } catch (sqErr) {
         console.error('SQLite fallback group insert error:', sqErr);
       }
-    } else if (data?.[0]?.created_at) {
+
+      // Return explicit errorResponse to client
+      return errorResponse('Đăng ký nhóm không thành công, vui lòng thử lại sau ít phút', 500, req.nextUrl.pathname);
+    }
+
+    if (data?.[0]?.created_at) {
       createdAt = data[0].created_at;
     }
 

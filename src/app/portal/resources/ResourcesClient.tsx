@@ -4,6 +4,34 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ResourceConfigItem, submitResourceAccessRequestAction } from '@/app/actions';
+import { useLanguage } from '@/context/LanguageContext';
+
+const RESOURCE_EN_MAP: Record<string, { title: string; description: string; course_origin: string; cta_text: string }> = {
+  'claude-khoa1-2-slide': {
+    title: 'Claude AI Lecture Slides & Curriculum (Batches 1 & 2)',
+    description: 'Detailed lecture slides covering Mindset - Skillset - Toolset to boost productivity from 8 hours down to 3 hours with Claude AI.',
+    course_origin: '🎓 Batches 1 & 2 (Completed - 150+ Alumni)',
+    cta_text: 'Register Batch 3 Now (Sep 5, 2026)',
+  },
+  'claude-prompt-library-500': {
+    title: '500+ Enterprise Claude AI Practical Prompt Library',
+    description: 'Standardized prompt library for departmental automation, management, marketing planning, and sales copywriting.',
+    course_origin: '🎓 Batches 1 & 2 (Practical Graduation Material)',
+    cta_text: 'Register Batch 3 Now (Sep 5, 2026)',
+  },
+  'ai-sale-marketing-fullstack-kit': {
+    title: 'AI Sale & Marketing Fullstack Toolkit & Templates',
+    description: 'Guide for building sales scripts, automated consultation funnels, and fullstack AI Marketing toolkits.',
+    course_origin: '🚀 AI Sale & Marketing Course (Graduated)',
+    cta_text: 'Join Next Cohort (Aug 22-23, 2026)',
+  },
+  'claude-ai-agent-building-guide': {
+    title: 'Guide to Building Automated AI Department Assistants',
+    description: 'Step-by-step documentation for deploying specialized Claude AI agents: Customer Support, Copywriting, Research.',
+    course_origin: '🎓 Batch 2 (Student Practical Project)',
+    cta_text: 'Register Batch 3 Now (Sep 5, 2026)',
+  },
+};
 
 const DEFAULT_RESOURCES: ResourceConfigItem[] = [
   {
@@ -84,7 +112,16 @@ const CATEGORIES = [
   'Template & Cheat Sheet',
 ];
 
+const CATEGORY_KEYS: Record<string, string> = {
+  'Tất cả': 'resources.categories.all',
+  'Làm chủ Claude AI (Khóa 1 & 2)': 'resources.categories.claude_1_2',
+  'AI Sale & Marketing Fullstack': 'resources.categories.ai_sale_marketing',
+  'Slide & Ebook': 'resources.categories.slide_ebook',
+  'Template & Cheat Sheet': 'resources.categories.template_cheat_sheet',
+};
+
 export function ResourcesClient({ initialResources }: { initialResources?: ResourceConfigItem[] }) {
+  const { language, t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>('Tất cả');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -113,12 +150,12 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
   const handleConfirmEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userEmail.trim()) {
-      setEmailError('Vui lòng nhập Email để mở tài liệu.');
+      setEmailError(t('resources.modal.err_empty_email'));
       return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(userEmail.trim())) {
-      setEmailError('Vui lòng nhập đúng định dạng Email (ví dụ: name@gmail.com).');
+      setEmailError(t('resources.modal.err_invalid_email'));
       return;
     }
 
@@ -138,22 +175,35 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
     if (res.success) {
       setRequestSuccess(true);
     } else {
-      setEmailError(res.message || 'Có lỗi xảy ra khi gửi yêu cầu.');
+      setEmailError(res.message || t('resources.modal.err_submit_fallback'));
     }
   };
 
   const resourcesData = initialResources && initialResources.length > 0 ? initialResources : DEFAULT_RESOURCES;
 
-  const filteredResources = resourcesData.filter((item) => {
-    if (item.is_active === false) return false;
-    const matchesCategory =
-      selectedCategory === 'Tất cả' || item.category === selectedCategory;
-    const matchesSearch =
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (Array.isArray(item.tags) && item.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())));
-    return matchesCategory && matchesSearch;
-  });
+  const filteredResources = resourcesData
+    .filter((item) => {
+      if (item.is_active === false) return false;
+      const matchesCategory =
+        selectedCategory === 'Tất cả' || item.category === selectedCategory;
+      const matchesSearch =
+        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (Array.isArray(item.tags) && item.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())));
+      return matchesCategory && matchesSearch;
+    })
+    .map((item) => {
+      if (language !== 'en') return item;
+      const enData = RESOURCE_EN_MAP[item.id];
+      if (!enData) return item;
+      return {
+        ...item,
+        title: enData.title || item.title,
+        description: enData.description || item.description,
+        course_origin: enData.course_origin || item.course_origin,
+        course_cta_text: enData.cta_text || item.course_cta_text,
+      };
+    });
 
   return (
     <div className="px-3 sm:px-6 lg:px-8 py-4 sm:py-10 max-w-7xl mx-auto">
@@ -178,7 +228,7 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
                           : 'bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-amber-400/50'
                       }`}
                     >
-                      {cat}
+                      {t(CATEGORY_KEYS[cat] || cat)}
                     </button>
                   );
                 })}
@@ -188,7 +238,7 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
               <div className="relative w-full sm:w-auto sm:min-w-[220px]">
                 <input
                   type="text"
-                  placeholder="Tìm tài liệu, slide..."
+                  placeholder={t('resources.search_placeholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full bg-slate-900/90 border border-slate-800 focus:border-amber-400 rounded-xl px-4 py-2.5 pl-9 text-xs text-white placeholder-slate-400 outline-none transition-all"
@@ -234,35 +284,37 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
 
             <div className="relative z-10">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40 text-amber-300 text-[10px] sm:text-xs font-black uppercase tracking-wider mb-3.5 shadow-sm max-w-full">
-                <span className="truncate">❤️ CHO ĐI GIÁ TRỊ THỰC — ĐỒNG HÀNH CÙNG CỘNG ĐỒNG</span>
+                <span className="truncate">{t('resources.hero.badge')}</span>
               </div>
 
               <h1 className="text-xl sm:text-3xl lg:text-4xl font-black text-white leading-tight mb-3.5 drop-shadow-md">
-                Kho Tài Nguyên AI Thực Chiến <br className="hidden sm:inline" />
+                {t('resources.hero.title')}<br className="hidden sm:inline" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-yellow-300">
-                  Cho Đi Để Cùng Phát Triển
+                  {t('resources.hero.title_highlight')}
                 </span>
               </h1>
 
               <p className="text-slate-200 text-xs sm:text-sm leading-relaxed font-medium mb-5">
-                AIZEN tin rằng tri thức chỉ thực sự có giá trị khi được chia sẻ. Toàn bộ Slide bài giảng, Ebook, Prompt Library &amp; Template vận hành từ các khóa học 
-                <strong className="text-amber-400 font-bold"> Làm chủ Claude AI (Khóa 1 &amp; 2) </strong> 
-                và <strong className="text-sky-400 font-bold"> AI Sale &amp; Marketing </strong> đều được chúng tôi công khai 100% miễn phí — Không giấu nghề!
+                {t('resources.hero.desc_p1')}
+                <strong className="text-amber-400 font-bold">{t('resources.hero.desc_claude')}</strong>
+                {t('resources.hero.desc_and')}
+                <strong className="text-sky-400 font-bold">{t('resources.hero.desc_sale_marketing')}</strong>
+                {t('resources.hero.desc_p2')}
               </p>
 
               {/* Social Proof Stats */}
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-2 sm:p-3 text-center backdrop-blur-md">
-                  <p className="text-sm sm:text-xl font-black text-amber-400">100% Free</p>
-                  <p className="text-slate-400 text-[9px] sm:text-[11px] font-bold mt-0.5">Google Drive</p>
+                  <p className="text-sm sm:text-xl font-black text-amber-400">{t('resources.hero.stat1_value')}</p>
+                  <p className="text-slate-400 text-[9px] sm:text-[11px] font-bold mt-0.5">{t('resources.hero.stat1_label')}</p>
                 </div>
                 <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-2 sm:p-3 text-center backdrop-blur-md">
-                  <p className="text-sm sm:text-xl font-black text-sky-400">150+ Học viên</p>
-                  <p className="text-slate-400 text-[9px] sm:text-[11px] font-bold mt-0.5">Đã tốt nghiệp</p>
+                  <p className="text-sm sm:text-xl font-black text-sky-400">{t('resources.hero.stat2_value')}</p>
+                  <p className="text-slate-400 text-[9px] sm:text-[11px] font-bold mt-0.5">{t('resources.hero.stat2_label')}</p>
                 </div>
                 <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-2 sm:p-3 text-center backdrop-blur-md">
-                  <p className="text-sm sm:text-xl font-black text-emerald-400">Thực Chiến</p>
-                  <p className="text-slate-400 text-[9px] sm:text-[11px] font-bold mt-0.5">Áp dụng ngay</p>
+                  <p className="text-sm sm:text-xl font-black text-emerald-400">{t('resources.hero.stat3_value')}</p>
+                  <p className="text-slate-400 text-[9px] sm:text-[11px] font-bold mt-0.5">{t('resources.hero.stat3_label')}</p>
                 </div>
               </div>
             </div>
@@ -272,7 +324,7 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
           {filteredResources.length === 0 ? (
             <div className="text-center py-12 sm:py-16 bg-slate-900/60 rounded-2xl sm:rounded-3xl border border-slate-800 p-4">
               <p className="text-slate-400 text-xs sm:text-sm font-semibold mb-2">
-                Không tìm thấy tài liệu phù hợp với tìm kiếm &quot;{searchQuery}&quot;
+                {t('resources.empty_search', { query: searchQuery })}
               </p>
               <button
                 onClick={() => {
@@ -281,7 +333,7 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
                 }}
                 className="text-xs font-bold text-amber-400 hover:underline"
               >
-                Đặt lại bộ lọc
+                {t('resources.reset_filter')}
               </button>
             </div>
           ) : (
@@ -318,7 +370,7 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
                         {/* Popular Badge */}
                         {item.is_popular && (
                           <span className="absolute top-1.5 right-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] sm:text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full shadow-md z-10">
-                            ★ HOT RESOURCE
+                            {t('resources.hot_resource_badge')}
                           </span>
                         )}
                       </div>
@@ -360,7 +412,7 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
                         onClick={() => handleOpenReceiveModal(item)}
                         className="w-full h-9.5 flex items-center justify-center py-2 px-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs rounded-lg sm:rounded-xl shadow-lg transition-all hover:scale-[1.02] active:scale-95 cursor-pointer uppercase tracking-wider touch-manipulation"
                       >
-                        <span>Nhận Tài Liệu Ngay</span>
+                        <span>{t('resources.get_document_now')}</span>
                       </button>
                     </div>
                   </div>
@@ -375,13 +427,13 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
           {/* Sidebar Header Banner */}
           <div className="bg-gradient-to-r from-amber-950/80 via-slate-900 to-orange-950/80 border border-amber-500/50 rounded-xl sm:rounded-2xl p-3 text-center shadow-xl backdrop-blur-md">
             <span className="inline-block px-2.5 py-0.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-[9px] uppercase tracking-wider rounded-full mb-1 shadow">
-              🔥 ĐÀO TẠO THỰC CHÍẾN
+              {t('resources.sidebar.badge')}
             </span>
             <h2 className="text-sm sm:text-base font-black text-white uppercase tracking-wide">
-              Các Khóa Học Sắp Diễn Ra
+              {t('resources.sidebar.title')}
             </h2>
             <p className="text-slate-300 text-[11px] font-medium mt-0.5">
-              Đăng ký giữ chỗ các lớp học đào tạo AI mới nhất từ AIZEN
+              {t('resources.sidebar.subtitle')}
             </p>
           </div>
 
@@ -395,19 +447,19 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <span className="absolute top-1.5 left-1.5 bg-gradient-to-r from-sky-500 to-blue-600 text-white text-[8px] sm:text-[9px] font-black uppercase px-2 py-0.5 rounded-md shadow z-10">
-                🚀 KHAI GIẢNG GẦN NHẤT (22-23/08)
+                {t('resources.sidebar.card1.badge')}
               </span>
             </div>
 
             <div>
               <h3 className="font-extrabold text-xs sm:text-sm text-white group-hover:text-sky-300 transition-colors leading-snug">
-                AI Sale &amp; Marketing Fullstack
+                {t('resources.sidebar.card1.title')}
               </h3>
               <p className="text-slate-300 text-[11px] mt-1 font-medium">
-                📅 Khai giảng: <strong className="text-sky-400 font-bold">22-23/08/2026</strong> (2 Ngày Offline)
+                {t('resources.sidebar.card1.start_date')}
               </p>
               <p className="text-emerald-400 text-[10px] font-extrabold mt-0.5">
-                ⚡ Tự động hóa phễu marketing &amp; sales doanh nghiệp
+                {t('resources.sidebar.card1.highlight')}
               </p>
             </div>
 
@@ -415,7 +467,7 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
               href="/portal/courses/aisalemarkertingfullstack"
               className="w-full h-9 flex items-center justify-center py-2 px-3 bg-gradient-to-r from-sky-500 via-blue-600 to-sky-500 hover:from-sky-600 hover:to-blue-700 text-white font-black text-xs rounded-lg sm:rounded-xl text-center transition-all shadow-md hover:scale-[1.02] active:scale-95 uppercase tracking-wider block touch-manipulation"
             >
-              Đăng ký Khóa 22-23/08 →
+              {t('resources.sidebar.card1.cta')}
             </Link>
           </div>
 
@@ -429,19 +481,19 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <span className="absolute top-1.5 left-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] sm:text-[9px] font-black uppercase px-2 py-0.5 rounded-md shadow z-10">
-                🔥 ĐANG MỞ CỔNG KHÓA 3 (05/09)
+                {t('resources.sidebar.card2.badge')}
               </span>
             </div>
 
             <div>
               <h3 className="font-extrabold text-xs sm:text-sm text-white group-hover:text-amber-300 transition-colors leading-snug">
-                Làm Chủ Claude AI (Khóa 3)
+                {t('resources.sidebar.card2.title')}
               </h3>
               <p className="text-slate-300 text-[11px] mt-1 font-medium">
-                📅 Khai giảng: <strong className="text-amber-400 font-bold">05/09/2026</strong> (Offline &amp; Online)
+                {t('resources.sidebar.card2.start_date')}
               </p>
               <p className="text-emerald-400 text-[10px] font-extrabold mt-0.5">
-                ⚡ Chỉ còn 15 suất ưu đãi Early Bird
+                {t('resources.sidebar.card2.highlight')}
               </p>
             </div>
 
@@ -449,18 +501,18 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
               href="/portal/courses/lam-chu-claude-ai-khoa-3"
               className="w-full h-9 flex items-center justify-center py-2 px-3 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs rounded-lg sm:rounded-xl text-center transition-all shadow-md hover:scale-[1.02] active:scale-95 uppercase tracking-wider block touch-manipulation"
             >
-              Đăng ký Khóa 3 ngay →
+              {t('resources.sidebar.card2.cta')}
             </Link>
           </div>
 
           {/* Hotline & Advisory Box */}
           <div className="bg-slate-950/80 border border-slate-800 rounded-xl sm:rounded-2xl p-3 text-center space-y-1.5 backdrop-blur-md">
-            <p className="text-xs font-bold text-slate-300">Bạn cần tư vấn lộ trình học phù hợp?</p>
+            <p className="text-xs font-bold text-slate-300">{t('resources.sidebar.advisory_question')}</p>
             <Link
               href="/portal/courses"
               className="w-full py-2 px-3 bg-slate-900 hover:bg-slate-800 text-amber-400 font-extrabold text-xs rounded-lg sm:rounded-xl border border-amber-500/30 block transition-all"
             >
-              🎓 Xem tất cả khóa học AIZEN
+              {t('resources.sidebar.advisory_btn')}
             </Link>
           </div>
         </div>
@@ -476,7 +528,7 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
-                <h3 className="text-sm sm:text-base font-black text-amber-400">Nhận Tài Liệu Khóa Học</h3>
+                <h3 className="text-sm sm:text-base font-black text-amber-400">{t('resources.modal.title')}</h3>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -509,9 +561,9 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
                 <div className="w-12 h-12 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded-full flex items-center justify-center mx-auto text-2xl shadow-lg">
                   ✓
                 </div>
-                <h4 className="text-base font-black text-emerald-400">Đã Gửi Yêu Cầu Thành Công!</h4>
+                <h4 className="text-base font-black text-emerald-400">{t('resources.modal.success_header')}</h4>
                 <p className="text-slate-300 text-xs leading-relaxed font-medium bg-slate-950/60 p-3 rounded-xl border border-slate-800 text-left">
-                  Ban quản trị AIZEN đã nhận được yêu cầu cấp quyền từ Gmail <strong className="text-amber-300 font-bold">{userEmail}</strong>. Admin sẽ duyệt &amp; thêm Email của bạn vào danh sách được phép truy cập trên Google Drive trong thời gian sớm nhất.
+                  {t('resources.modal.success_message', { email: userEmail })}
                 </p>
                 <div className="pt-2 flex justify-center">
                   <button
@@ -519,7 +571,7 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
                     onClick={() => setIsModalOpen(false)}
                     className="w-full py-3 px-5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs rounded-xl shadow-lg transition-all active:scale-95 text-center cursor-pointer uppercase tracking-wider"
                   >
-                    Đóng
+                    {t('resources.modal.close')}
                   </button>
                 </div>
               </div>
@@ -527,14 +579,14 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
               <>
                 {/* Instruction Text */}
                 <p className="text-slate-200 text-xs leading-relaxed font-medium bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-                  Vui lòng nhập <strong className="text-amber-300 font-bold">Email</strong> bạn đã sử dụng để đăng ký khóa học tại AIZEN:
+                  {t('resources.modal.instruction')}
                 </p>
 
                 {/* Verification Form */}
                 <form onSubmit={handleConfirmEmail} className="space-y-3.5">
                   <div>
                     <label className="block text-xs font-bold text-slate-300 mb-1.5">
-                      Địa chỉ Gmail (*):
+                      {t('resources.modal.email_label')}
                     </label>
                     <input
                       type="email"
@@ -544,7 +596,7 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
                         setUserEmail(e.target.value);
                         setEmailError('');
                       }}
-                      placeholder="ví dụ: hotro@aizen.edu.vn"
+                      placeholder={t('resources.modal.email_placeholder')}
                       className="w-full bg-slate-950 border border-slate-700 focus:border-amber-400 rounded-xl px-3.5 py-3 text-sm sm:text-xs text-white placeholder-slate-500 outline-none transition-all shadow-inner"
                     />
                     {emailError && (
@@ -558,7 +610,7 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
                       onClick={() => setIsModalOpen(false)}
                       className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs transition-colors cursor-pointer text-center"
                     >
-                      Hủy
+                      {t('resources.modal.cancel')}
                     </button>
                     <button
                       type="submit"
@@ -566,9 +618,9 @@ export function ResourcesClient({ initialResources }: { initialResources?: Resou
                       className="px-5 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs rounded-xl shadow-lg transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 touch-manipulation"
                     >
                       {isSubmitting ? (
-                        <span>⏳ Đang gửi yêu cầu...</span>
+                        <span>{t('resources.modal.submitting')}</span>
                       ) : (
-                        <span>🚀 Gửi Yêu Cầu Cấp Quyền ↗</span>
+                        <span>{t('resources.modal.submit')}</span>
                       )}
                     </button>
                   </div>

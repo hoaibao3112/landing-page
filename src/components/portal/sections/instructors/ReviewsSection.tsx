@@ -1,49 +1,53 @@
+'use client';
+
 import { Button } from '@/components/portal/ui/Button';
+import { useLanguage } from '@/context/LanguageContext';
 import type { Review } from '@aizen/types';
 
 interface ReviewsSectionProps {
   reviews?: Review[];
 }
 
-const DEMO_REVIEWS = [
-  {
-    id: '1',
-    author: 'Nguyễn Văn Minh',
-    role: 'Product Manager tại Vingroup',
-    rating: 5,
-    content:
-      'Khóa học thay đổi hoàn toàn cách tôi làm việc. Sau 2 tuần, tôi đã tự động hóa được 60% công việc hàng ngày bằng AI.',
-  },
-  {
-    id: '2',
-    author: 'Trần Thị Hương',
-    role: 'Marketing Director',
-    rating: 5,
-    content:
-      'Giảng viên rất thực chiến, không lý thuyết suông. Mỗi buổi đều có bài tập thực tế áp dụng ngay được vào công việc.',
-  },
-  {
-    id: '3',
-    author: 'Lê Quốc Bảo',
-    role: 'CEO Startup EdTech',
-    rating: 5,
-    content:
-      'Đầu tư tốt nhất của tôi trong năm nay. ROI từ việc áp dụng AI vào vận hành đã bù đắp chi phí học phí gấp 10 lần.',
-  },
-];
+const DEMO_REVIEW_AUTHORS = ['Nguyễn Văn Minh', 'Trần Thị Hương', 'Lê Quốc Bảo'];
+const DEMO_REVIEW_RATINGS = [5, 5, 5];
+const DEMO_REVIEW_IDS = ['1', '2', '3'];
 
 export function ReviewsSection({ reviews }: ReviewsSectionProps) {
-  const displayReviews = DEMO_REVIEWS;
+  const { t } = useLanguage();
+
+  const displayReviews = [
+    {
+      id: DEMO_REVIEW_IDS[0],
+      author: DEMO_REVIEW_AUTHORS[0],
+      role: t('instructors.demo_reviews.review1.role'),
+      rating: DEMO_REVIEW_RATINGS[0],
+      content: t('instructors.demo_reviews.review1.content'),
+    },
+    {
+      id: DEMO_REVIEW_IDS[1],
+      author: DEMO_REVIEW_AUTHORS[1],
+      role: t('instructors.demo_reviews.review2.role'),
+      rating: DEMO_REVIEW_RATINGS[1],
+      content: t('instructors.demo_reviews.review2.content'),
+    },
+    {
+      id: DEMO_REVIEW_IDS[2],
+      author: DEMO_REVIEW_AUTHORS[2],
+      role: t('instructors.demo_reviews.review3.role'),
+      rating: DEMO_REVIEW_RATINGS[2],
+      content: t('instructors.demo_reviews.review3.content'),
+    },
+  ];
 
   return (
     <section className="bg-transparent py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <p className="text-amber-400 text-xs font-extrabold uppercase tracking-widest mb-2">
-            Phản hồi
+            {t('instructors.reviews_tag')}
           </p>
           <h2 className="text-2xl md:text-4xl font-black text-white drop-shadow-md">
-            Học viên nói gì về AIZEN?
+            {t('instructors.reviews_title')}
           </h2>
         </div>
 
@@ -71,7 +75,7 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
 
         <div className="text-center">
           <Button variant="outline" className="border-white/40 text-white bg-slate-900/80 backdrop-blur-md hover:bg-slate-800 hover:border-amber-400 hover:text-amber-300 font-bold px-6 py-2.5 rounded-full cursor-pointer">
-            Xem thêm đánh giá
+            {t('instructors.reviews_view_more')}
           </Button>
         </div>
       </div>

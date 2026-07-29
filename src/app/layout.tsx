@@ -1,26 +1,46 @@
 import type { Metadata } from 'next';
 import { Inter, Manrope } from 'next/font/google';
 import Script from 'next/script';
+import { cookies } from 'next/headers';
+import { LanguageProvider, Language } from '@/context/LanguageContext';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-body' });
 const manrope = Manrope({ subsets: ['latin'], variable: '--font-headline' });
 
-export const metadata: Metadata = {
-  title: 'AI Solutions Talk - Đăng ký Tham gia',
-  description: 'Giao diện điểm đăng ký sự kiện quản trị nhân sự số.',
-  icons: {
-    icon: '/icon.png',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = await cookies();
+  const lang = (cookieStore.get('aizen_language')?.value as Language) || 'vi';
 
-export default function RootLayout({
+  if (lang === 'en') {
+    return {
+      title: 'AI Solutions Talk - Course Registration & Practical AI Training',
+      description: 'Comprehensive AI solutions for automating Sales, Marketing, HR & Enterprise Workflows by AIZEN Education.',
+      icons: {
+        icon: '/icon.png',
+      },
+    };
+  }
+
+  return {
+    title: 'AI Solutions Talk - Đăng ký Tham gia & Đào tạo AI Thực chiến',
+    description: 'Giải pháp ứng dụng Claude AI chuyên sâu giúp tự động hóa quy trình Sale, Marketing, HR & Quản trị doanh nghiệp từ AIZEN Education.',
+    icons: {
+      icon: '/icon.png',
+    },
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const lang = (cookieStore.get('aizen_language')?.value as Language) || 'vi';
+
   return (
-    <html lang="vi" className={`light scroll-smooth ${inter.variable} ${manrope.variable}`}>
+    <html lang={lang} className={`light scroll-smooth ${inter.variable} ${manrope.variable}`}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
@@ -28,7 +48,9 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-on-surface font-body selection:bg-primary-container/30 antialiased">
-        {children}
+        <LanguageProvider initialLanguage={lang}>
+          {children}
+        </LanguageProvider>
 
         {/* Facebook Pixel Code */}
         <Script id="facebook-pixel" strategy="afterInteractive">

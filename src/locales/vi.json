@@ -1,0 +1,551 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "courses": "Khóa học",
+    "resources": "Kho Tài nguyên",
+    "instructors": "Giảng viên",
+    "blog": "Bài viết",
+    "login": "Đăng nhập",
+    "register_now": "Đăng ký ngay",
+    "admin_portal": "Quản trị"
+  },
+  "hero": {
+    "badge": "KHÓA HỌC THỰC CHẠY 2026",
+    "badge_full": "Chương Trình Đào Tạo AI Thực Chiến Cho Lãnh Đạo & Doanh Nghiệp",
+    "words": "Bứt,phá,tăng,trưởng,cùng",
+    "brand": "Aizen Training",
+    "title": "LÀM CHỦ CLAUDE AI",
+    "subtitle": "XÂY DỰNG TRỢ LÝ PHÒNG BAN TỰ ĐỘNG LÀM VIỆC",
+    "description": "Giải pháp ứng dụng Claude AI chuyên sâu giúp tự động hóa quy trình Sale, Marketing, HR & Quản trị doanh nghiệp.",
+    "description_full": "Trang bị tư duy hệ thống và năng lực ứng dụng AI thực tế cho Lãnh đạo, Cấp quản lý và Nhân viên. Giải pháp giúp doanh nghiệp xóa bỏ các điểm nghẽn thủ công, tối ưu chi phí vận hành và chuẩn hóa quy trình làm việc cho toàn bộ bộ máy.",
+    "cta_register": "ĐĂNG KÝ THAM GIA NGAY",
+    "cta_training": "Đăng ký đào tạo →",
+    "cta_explore": "Khám phá Khóa học",
+    "stat1_label": "Lãnh đạo & nhân viên các cấp",
+    "stat2_label": "Chương trình thực hành",
+    "stat3_label": "Đánh giá thực chiến"
+  },
+  "upcoming_courses": {
+    "title": "Lịch Đào Tạo AI Thực Chiến",
+    "subtitle": "Giữ chỗ ngay để trực tiếp cùng đội ngũ AIZEN chuẩn hóa tư duy, làm chủ công cụ và ứng dụng AI vào giải quyết bài toán vận hành thực tế tại doanh nghiệp của bạn.",
+    "starts_in_label": "Bắt đầu sau",
+    "days_count": "{{count}} Ngày",
+    "register_cta": "Đăng ký ngay",
+    "empty_state": "Chưa có khóa học sắp khai giảng. Hãy theo dõi để cập nhật sớm nhất!"
+  },
+  "completed_courses": {
+    "title": "Khóa Đào Tạo Đã Hoàn Thành",
+    "subtitle": "Xem lại chương trình giảng dạy, truy cập tài liệu và xem lại nội dung tóm tắt.",
+    "view_past": "Xem các khóa đã diễn ra →",
+    "status_badge": "Đã hoàn thành",
+    "summary_label": "Tóm tắt nội dung",
+    "view_summary": "Xem tóm tắt →",
+    "empty_state": "Chưa có khóa học nào hoàn thành."
+  },
+  "instructors": {
+    "hero_badge": "Đội ngũ chuyên gia",
+    "hero_title": "Học từ những người làm thực tế",
+    "hero_subtitle": "Tất cả giảng viên của AIZEN đều là những chuyên gia đang trực tiếp ứng dụng AI trong doanh nghiệp và nghiên cứu.",
+    "grid_badge": "Đội Ngũ Chuyên Gia",
+    "grid_title": "Giảng Viên Của AIZEN",
+    "reviews_tag": "Phản hồi",
+    "reviews_title": "Học viên nói gì về AIZEN?",
+    "reviews_view_more": "Xem thêm đánh giá",
+    "demo_reviews": {
+      "review1": {
+        "role": "Product Manager tại Vingroup",
+        "content": "Khóa học thay đổi hoàn toàn cách tôi làm việc. Sau 2 tuần, tôi đã tự động hóa được 60% công việc hàng ngày bằng AI."
+      },
+      "review2": {
+        "role": "Marketing Director",
+        "content": "Giảng viên rất thực chiến, không lý thuyết suông. Mỗi buổi đều có bài tập thực tế áp dụng ngay được vào công việc."
+      },
+      "review3": {
+        "role": "CEO Startup EdTech",
+        "content": "Đầu tư tốt nhất của tôi trong năm nay. ROI từ việc áp dụng AI vào vận hành đã bù đắp chi phí học phí gấp 10 lần."
+      }
+    },
+    "tools_tag": "Công cụ",
+    "tools_title": "Bộ công cụ làm chủ AI",
+    "tools_description": "Thành thạo các công cụ AI hàng đầu như Claude, Gemini, NotebookLM, Dreamina và Hailuo để bứt phá hiệu suất công việc của bạn.",
+    "tools_items": {
+      "claude": {
+        "description": "Hỗ trợ viết lách, phân tích dữ liệu, tóm tắt và lập trình vượt trội.",
+        "badge": "Trợ lý đa năng"
+      },
+      "gemini": {
+        "description": "Mô hình AI đa phương thức thế hệ mới với hiệu năng vượt trội từ Google.",
+        "badge": "Google AI"
+      },
+      "notebooklm": {
+        "description": "Trợ lý đắc lực trong việc tóm tắt, học tập và nghiên cứu tài liệu.",
+        "badge": "Nghiên cứu tài liệu"
+      },
+      "dreamina": {
+        "description": "Công cụ sáng tạo hình ảnh và video nghệ thuật đỉnh cao từ TikTok.",
+        "badge": "Tạo ảnh & Video"
+      },
+      "hailuo": {
+        "description": "Sáng tạo các thước phim chuyển động mượt mà và vô cùng chân thực.",
+        "badge": "Tạo Video AI"
+      }
+    }
+  },
+  "registration": {
+    "title": "Đăng Ký Tham Gia",
+    "subtitle": "Chọn gói phù hợp & nhận ưu đãi học phí",
+    "form_individual": "Cá Nhân",
+    "form_group": "Đăng Ký Nhóm",
+    "fullname": "Họ và tên",
+    "fullname_placeholder": "Nhập họ và tên...",
+    "phone": "Số điện thoại",
+    "phone_placeholder": "Nhập số điện thoại...",
+    "email": "Địa chỉ Email",
+    "email_placeholder": "example@gmail.com",
+    "company": "Tên Công ty / Đơn vị",
+    "company_placeholder": "Nhập tên công ty...",
+    "role": "Chức vụ / Vai trò",
+    "role_placeholder": "Chọn vai trò...",
+    "referral": "Nguồn biết đến",
+    "referral_placeholder": "Bạn biết qua đâu?",
+    "voucher_code": "Mã giảm giá (nếu có)",
+    "voucher_placeholder": "Nhập mã giảm giá...",
+    "apply": "Áp dụng",
+    "submit": "XÁC NHẬN ĐĂNG KÝ",
+    "submitting": "Đang xử lý..."
+  },
+  "resources": {
+    "title": "Kho Tài Nguyên & Tài Liệu AI",
+    "subtitle": "Thư viện tài liệu, Slide bài giảng & Luồng tự động hóa độc quyền từ AIZEN",
+    "search_placeholder": "Tìm kiếm tài liệu, slide, luồng tự động...",
+    "request_btn": "Nhận Tài Liệu Qua Gmail",
+    "popular_badge": "🔥 PHỔ BIẾN NHẤT",
+    "flow_badge": "⚡ LUỒNG TỰ ĐỘNG",
+    "course_badge": "🎓 TÀI LIỆU KHÓA HỌC",
+    "categories": {
+      "all": "Tất cả",
+      "claude_1_2": "Làm chủ Claude AI (Khóa 1 & 2)",
+      "ai_sale_marketing": "AI Sale & Marketing Fullstack",
+      "slide_ebook": "Slide & Ebook",
+      "template_cheat_sheet": "Template & Cheat Sheet"
+    },
+    "hero": {
+      "badge": "❤️ CHO ĐI GIÁ TRỊ THỰC — ĐỒNG HÀNH CÙNG CỘNG ĐỒNG",
+      "title": "Kho Tài Nguyên AI Thực Chiến ",
+      "title_highlight": "Cho Đi Để Cùng Phát Triển",
+      "desc_p1": "AIZEN tin rằng tri thức chỉ thực sự có giá trị khi được chia sẻ. Toàn bộ Slide bài giảng, Ebook, Prompt Library & Template vận hành từ các khóa học",
+      "desc_claude": " Làm chủ Claude AI (Khóa 1 & 2) ",
+      "desc_and": "và",
+      "desc_sale_marketing": " AI Sale & Marketing ",
+      "desc_p2": "đều được chúng tôi công khai 100% miễn phí — Không giấu nghề!",
+      "stat1_value": "100% Free",
+      "stat1_label": "Google Drive",
+      "stat2_value": "150+ Học viên",
+      "stat2_label": "Đã tốt nghiệp",
+      "stat3_value": "Thực Chiến",
+      "stat3_label": "Áp dụng ngay"
+    },
+    "get_document_now": "Nhận Tài Liệu Ngay",
+    "hot_resource_badge": "★ TÀI LIỆU HOT",
+    "empty_search": "Không tìm thấy tài liệu phù hợp với tìm kiếm \"{{query}}\"",
+    "reset_filter": "Đặt lại bộ lọc",
+    "sidebar": {
+      "badge": "🔥 ĐÀO TẠO THỰC CHÍẾN",
+      "title": "Các Khóa Học Sắp Diễn Ra",
+      "subtitle": "Đăng ký giữ chỗ các lớp học đào tạo AI mới nhất từ AIZEN",
+      "card1": {
+        "badge": "🚀 KHAI GIẢNG GẦN NHẤT (22-23/08)",
+        "title": "AI Sale & Marketing Fullstack",
+        "start_date": "📅 Khai giảng: 22-23/08/2026 (2 Ngày Offline)",
+        "highlight": "⚡ Tự động hóa phễu marketing & sales doanh nghiệp",
+        "cta": "Đăng ký Khóa 22-23/08 →"
+      },
+      "card2": {
+        "badge": "🔥 ĐANG MỞ CỔNG KHÓA 3 (05/09)",
+        "title": "Làm Chủ Claude AI (Khóa 3)",
+        "start_date": "📅 Khai giảng: 05/09/2026 (Offline & Online)",
+        "highlight": "⚡ Chỉ còn 15 suất ưu đãi Early Bird",
+        "cta": "Đăng ký Khóa 3 ngay →"
+      },
+      "advisory_question": "Bạn cần tư vấn lộ trình học phù hợp?",
+      "advisory_btn": "🎓 Xem tất cả khóa học AIZEN"
+    },
+    "modal": {
+      "title": "Nhận Tài Liệu Khóa Học",
+      "success_header": "Đã Gửi Yêu Cầu Thành Công!",
+      "success_message": "Ban quản trị AIZEN đã nhận được yêu cầu cấp quyền từ Gmail {{email}}. Admin sẽ duyệt & thêm Email của bạn vào danh sách được phép truy cập trên Google Drive trong thời gian sớm nhất.",
+      "close": "Đóng",
+      "instruction": "Vui lòng nhập Email bạn đã sử dụng để đăng ký khóa học tại AIZEN:",
+      "email_label": "Địa chỉ Gmail (*):",
+      "email_placeholder": "ví dụ: hotro@aizen.edu.vn",
+      "err_empty_email": "Vui lòng nhập Email để mở tài liệu.",
+      "err_invalid_email": "Vui lòng nhập đúng định dạng Email (ví dụ: name@gmail.com).",
+      "err_submit_fallback": "Có lỗi xảy ra khi gửi yêu cầu.",
+      "cancel": "Hủy",
+      "submitting": "⏳ Đang gửi yêu cầu...",
+      "submit": "🚀 Gửi Yêu Cầu Cấp Quyền ↗"
+    }
+  },
+  "registration_form": {
+    "header_tag": "ĐĂNG KÝ",
+    "header_title": "Chọn hình thức đăng ký",
+    "limited_qty": "SỐ LƯỢNG CÓ HẠN",
+    "hot": "HOT NHẤT",
+    "best_savings": "TIẾT KIỆM NHẤT",
+    "early_bird": "Early Bird",
+    "individual": "Cá nhân",
+    "group_2": "Nhóm 2 người",
+    "group_4": "Nhóm 4 người",
+    "person_info": "Thông tin người",
+    "fullname": "Họ và Tên",
+    "fullname_placeholder": "Nguyễn Văn A",
+    "phone": "Số điện thoại",
+    "phone_placeholder": "090 xxx xxx",
+    "email": "Email",
+    "email_placeholder": "email@example.com",
+    "company": "Tên Công Ty",
+    "company_placeholder": "Công ty của bạn",
+    "position": "Chức vụ",
+    "position_placeholder": "Chọn vị trí...",
+    "referral_question": "Bạn biết đến chương trình từ đâu",
+    "referral_placeholder": "Chọn nguồn...",
+    "promo_label": "Mã khuyến mãi",
+    "promo_optional": "(không bắt buộc)",
+    "promo_placeholder": "Nhập mã VD: AIZEN50",
+    "promo_apply": "Áp dụng",
+    "promo_error_check": "Không thể kiểm tra mã, thử lại sau.",
+    "discount": "Khuyến mãi",
+    "original_price": "Giá gốc",
+    "total_payment": "Tổng thanh toán",
+    "savings": "Tiết kiệm",
+    "next": "Tiếp tục",
+    "submit": "Gửi đăng ký",
+    "submitting": "Đang xử lý...",
+    "back_to": "Quay lại người",
+    "terms_agree": "Đăng ký đồng ý với",
+    "terms_link": "Điều khoản dịch vụ",
+    "success_title": "Đăng ký thành công!",
+    "register_more": "Đăng ký thêm",
+    "err_fullname": "Vui lòng nhập họ tên",
+    "err_phone": "Vui lòng nhập số điện thoại",
+    "err_email": "Vui lòng nhập email",
+    "err_email_invalid": "Email không hợp lệ",
+    "err_referral": "Vui lòng chọn nguồn",
+    "err_submit_fallback": "Đăng ký thất bại, thử lại sau.",
+    "discount_percent": "Giảm {{value}}% (-{{amount}})",
+    "discount_fixed": "Giảm cố định -{{amount}}",
+    "clear_code_aria": "Xóa mã",
+    "referral_sources": {
+      "ai_community": "Cộng Đồng AI ỨNG DỤNG SALE & MARKETING",
+      "aizen_customer": "Khách hàng AIZEN",
+      "acquaintance": "Người quen giới thiệu",
+      "social": "Facebook / Instagram",
+      "other": "Khác"
+    }
+  },
+  "course_plan": {
+    "section_tag": "ĐĂNG KÝ NGAY",
+    "section_title_prefix": "Chọn hình thức ",
+    "section_title_highlight": "đăng ký",
+    "course_completed": "Khóa học này đã hoàn thành. Hiện tại hệ thống đã đóng cổng nhận đăng ký mới!",
+    "register_now": "Đăng ký ngay",
+    "register_group": "Đăng ký nhóm",
+    "expired_reason": "Đã hết hạn đăng ký",
+    "completed_reason": "Đã hoàn thành · Đóng đăng ký",
+    "modal_tag": "ĐĂNG KÝ THAM GIA",
+    "fill_info_prefix": "Điền thông tin cho",
+    "fill_info_suffix": "học viên",
+    "qr_success_title": "Đăng ký thành công!",
+    "qr_instruction": "Vui lòng quét mã QR dưới đây để hoàn tất thanh toán học phí:",
+    "qr_no_img": "Không có hình ảnh QR thanh toán nào được thiết lập. Ban hỗ trợ sẽ liên hệ với bạn trong 24h.",
+    "qr_contact_notice": "Chúng tôi sẽ xác nhận đăng ký và liên hệ với bạn qua SĐT/Email trong 24h.",
+    "confirm_close": "Xác nhận & Đóng",
+    "promo_has_code": "🎟️ Có mã khuyến mãi?",
+    "promo_optional": "(Không bắt buộc)",
+    "promo_applied": "Đã áp dụng giảm",
+    "total_group": "Tổng nhóm:",
+    "until": "Đến",
+    "default_placeholder": "Chọn...",
+    "qr_alt": "Mã QR Thanh toán",
+    "referral_channels": {
+      "ai_community": "Cộng Đồng AI ỨNG DỤNG SALE & MARKETING",
+      "aizen_customer": "Khách hàng AIZEN",
+      "acquaintance": "Người quen giới thiệu",
+      "social": "Facebook / Instagram",
+      "other": "Khác"
+    },
+    "roles": {
+      "ceo": "Chủ doanh nghiệp / CEO",
+      "c_level": "Giám đốc / C-level",
+      "manager": "Trưởng phòng / Manager",
+      "team_lead": "Team Lead",
+      "staff": "Chuyên viên / Nhân viên",
+      "freelancer": "Freelancer / Tự kinh doanh",
+      "student": "Sinh viên",
+      "other": "Khác"
+    }
+  },
+  "course_detail": {
+    "program_content": "NỘI DUNG CHƯƠNG TRÌNH",
+    "skills_tag": "KỸ NĂNG BẠN SẼ CÓ",
+    "skills_headline": "Kết thúc khóa học, bạn sở hữu ngay",
+    "speaker_tag": "DIỄN GIẢ CHƯƠNG TRÌNH",
+    "share": "Chia sẻ",
+    "email": "Email",
+    "co_organizer_desc": "Khóa đào tạo do Aizen phối hợp tổ chức cùng Trung tâm đào tạo bưu chính viễn thông (PTTC), trực thuộc Học viện công nghệ bưu chính viễn thông (PTIT).",
+    "default_highlight1_val": "01 Ngày",
+    "default_highlight1_lbl": "Offline thực hành",
+    "default_highlight2_val": "03 Ngày",
+    "default_highlight2_lbl": "Online hỗ trợ",
+    "default_highlight3_val": "Trọn đời",
+    "default_highlight3_lbl": "Học lại miễn phí"
+  },
+  "course_skills": {
+    "special_badge": "ĐẶC BIỆT",
+    "items": {
+      "cowork": {
+        "description": "Cowork là cả một phòng ban AI trong lòng bàn tay – mỗi agent đảm nhận một vai trò, tự vận hành, tự phối hợp với nhau, và giao cho bạn kết quả cuối cùng như một đội ngũ thực thụ."
+      },
+      "skills": {
+        "description": "Biến mỗi nhân sự hoặc quy trình công ty thành Skill cố định – gọi một lúc nhiều Skills, Claude tự xử lý đa nhiệm mà không cần ra lệnh lại."
+      },
+      "projects": {
+        "description": "Giao việc cho đúng người, giúp bạn tạo ra những \"chuyên gia ảo\" theo từng lĩnh vực, luôn hiểu đúng context và làm việc theo chuẩn của bạn."
+      },
+      "connectors": {
+        "description": "Chìa khóa để Claude kết nối với hệ thống công việc như Gmail, Google Drive, Calendar... để xây dựng các trợ lý tự động."
+      },
+      "artifacts": {
+        "description": "Xây luôn cho bạn một app, website, landing page hay công cụ tương tác ngay trong khung chat, không cần code."
+      }
+    }
+  },
+  "home_client": {
+    "other": "Khác",
+    "enter_info_placeholder": "Vui lòng nhập thông tin của bạn",
+    "voucher_required": "Vui lòng nhập mã giảm giá.",
+    "voucher_applied": "Áp dụng mã thành công!",
+    "registration_success": "Đăng ký thành công!",
+    "error_occurred": "Có lỗi xảy ra.",
+    "slots_remaining": "Chỉ còn lại",
+    "slots_unit": "suất",
+    "days": "Ngày",
+    "hours": "Giờ",
+    "minutes": "Phút",
+    "seconds": "Giây",
+    "confirm_payment": "Xác nhận & Thanh toán",
+    "transfer_note": "Nội dung chuyển khoản"
+  },
+  "blog": {
+    "categories_title": "Danh mục bài viết",
+    "connect_title": "Kết nối với AIZEN",
+    "search_placeholder": "Tìm kiếm bài viết...",
+    "read_more": "Xem thêm",
+    "related_posts": "Bài viết liên quan",
+    "author": "Tác giả",
+    "published_at": "Ngày đăng",
+    "by": "bởi",
+    "all": "Tất cả",
+    "news": "Tin tức",
+    "prev_post": "Bài trước",
+    "next_post": "Bài sau",
+    "hero_badge": "Khám phá thế giới AI",
+    "hero_description": "Cập nhật kiến thức, xu hướng công nghệ và tin tức AI mới nhất — được tuyển chọn bởi đội ngũ AIZEN.",
+    "page_title": "Blog & Tin tức",
+    "total_posts": "{{count}} bài viết mới nhất",
+    "empty_state": "Chưa có bài viết nào.",
+    "meta_title": "Blog & Tin tức AI",
+    "meta_description": "Cập nhật kiến thức, xu hướng và tin tức AI mới nhất từ AIZEN.",
+    "meta_not_found": "Không tìm thấy bài viết",
+    "breadcrumb_home": "Trang chủ",
+    "breadcrumb_blog": "Blog",
+    "author_prefix": "Tác giả: {{author}}",
+    "source_label": "Nguồn bài viết:",
+    "toc_title": "Mục lục nội dung",
+    "toc_hide": "Ẩn",
+    "toc_show": "Hiện"
+  },
+  "courses": {
+    "title": "Thư viện khóa học",
+    "available_count": "khóa học có sẵn",
+    "search_placeholder": "Tìm khóa học...",
+    "category_prefix": "Danh mục:",
+    "year_prefix": "Năm:",
+    "all_categories": "Tất cả",
+    "all_years": "Tất cả",
+    "empty_title": "Không tìm thấy khóa học phù hợp.",
+    "upcoming_title": "Các khóa học sắp diễn ra",
+    "past_title": "Các khóa học đã diễn ra",
+    "courses_count": "khóa",
+    "starts_in_days": "• KHAI GIẢNG SAU {days} NGÀY",
+    "upcoming_badge": "SẮP DIỄN RA",
+    "past_badge": "ĐÃ DIỄN RA",
+    "starts_in": "⏱ Bắt đầu sau {days} ngày",
+    "register_now": "Đăng ký ngay",
+    "view_summary": "Xem tóm tắt",
+    "case_study": "Tình huống",
+    "default_category": "CHƯƠNG TRÌNH AI"
+  },
+  "learning_path": {
+    "tag": "Career Roadmap",
+    "title_prefix": "Lộ trình học tập ",
+    "title_highlight": "chuyên gia AI",
+    "description": "Khám phá con đường từ người mới bắt đầu đến chuyên gia làm chủ công nghệ AI, thiết kế riêng cho kỷ nguyên kinh tế số.",
+    "cta_title": "Sẵn sàng bắt đầu hành trình của bạn?",
+    "cta_desc": "Đăng ký ngay hôm nay để nhận được lộ trình cá nhân hóa và các bài giảng miễn phí từ chuyên gia hàng đầu.",
+    "start_free": "Bắt đầu miễn phí",
+    "view_courses": "Xem chi tiết khóa học",
+    "steps": {
+      "foundation": {
+        "sublabel": "NỀN TẢNG",
+        "description": "Xây dựng tư duy AI và hiểu biết căn bản về cách tương tác với máy tính thông qua ngôn ngữ tự nhiên.",
+        "bullet1": "AI Mindset",
+        "bullet2": "Basic Prompt Engineering",
+        "bullet3": "Generative AI Tools"
+      },
+      "professional": {
+        "sublabel": "CHUYÊN NGHIỆP",
+        "description": "Trở thành người sử dụng thành thạo các mô hình AI mạnh nhất để giải quyết các vấn đề phức tạp.",
+        "bullet1": "Master Claude & GPT-4",
+        "bullet2": "Midjourney Visuals",
+        "bullet3": "Advanced Prompting Techniques"
+      },
+      "advanced": {
+        "sublabel": "NÂNG CAO",
+        "description": "Tích hợp AI vào quy trình làm việc kinh doanh và tự động hóa các tác vụ lặp đi lặp lại.",
+        "bullet1": "AI for Business Strategy",
+        "bullet2": "Automation Workflows",
+        "bullet3": "Zapier & Make Integration"
+      },
+      "mastery": {
+        "sublabel": "CHUYÊN GIA",
+        "description": "Xây dựng các giải pháp AI tùy chỉnh, độc quyền và dẫn dắt sự thay đổi công nghệ trong doanh nghiệp.",
+        "bullet1": "Custom AI Systems",
+        "bullet2": "Enterprise Deployment",
+        "bullet3": "AI Leadership"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng nhập",
+      "subtitle": "Chào mừng trở lại!",
+      "email_label": "Địa chỉ Email",
+      "email_placeholder": "email@company.com",
+      "password_label": "Mật khẩu",
+      "password_placeholder": "••••••••",
+      "error_required": "Vui lòng nhập đầy đủ thông tin.",
+      "error_failed": "Đăng nhập thất bại.",
+      "submit_btn": "Đăng nhập",
+      "no_account": "Chưa có tài khoản?",
+      "register_now": "Đăng ký ngay"
+    },
+    "register": {
+      "title": "Tạo tài khoản",
+      "subtitle": "Bắt đầu hành trình AI của bạn",
+      "fullname_label": "Họ và tên",
+      "fullname_placeholder": "Nguyễn Văn A",
+      "email_label": "Email",
+      "email_placeholder": "email@company.com",
+      "phone_label": "Số điện thoại",
+      "phone_placeholder": "0901234567 (không bắt buộc)",
+      "password_label": "Mật khẩu",
+      "password_placeholder": "Tối thiểu 8 ký tự, gồm chữ và số",
+      "err_fullname_required": "Vui lòng nhập họ tên",
+      "err_email_required": "Vui lòng nhập email",
+      "err_email_invalid": "Email không hợp lệ",
+      "err_password_format": "Mật khẩu tối thiểu 8 ký tự, gồm chữ và số",
+      "err_api_failed": "Đăng ký thất bại, thử lại sau.",
+      "submit_btn": "Đăng ký",
+      "has_account": "Đã có tài khoản?",
+      "login_link": "Đăng nhập"
+    }
+  },
+  "my_courses": {
+    "title": "Khóa học của tôi",
+    "subtitle": "Quản lý và theo dõi tiến độ học tập của bạn.",
+    "upcoming_section": "Khóa học sắp diễn ra",
+    "completed_section": "Khóa học đã tham gia",
+    "no_upcoming": "Bạn chưa đăng ký khóa học nào sắp diễn ra.",
+    "no_completed": "Bạn chưa hoàn thành khóa học nào.",
+    "upcoming_badge": "Sắp diễn ra",
+    "starts_in_days": "⏱ Bắt đầu sau {{days}} ngày",
+    "enter_now": "Vào học ngay",
+    "opens_in_days": "Mở sau {{days}} ngày",
+    "completed_badge": "Đã hoàn thành",
+    "completed_on": "✅ Hoàn thành: {{date}}",
+    "view_content_btn": "Xem lại nội dung",
+    "download_cert_btn": "⬇ Tải chứng chỉ"
+  },
+  "course_hero": {
+    "weekday_0": "Chủ Nhật",
+    "weekday_1": "Thứ Hai",
+    "weekday_2": "Thứ Ba",
+    "weekday_3": "Thứ Tư",
+    "weekday_4": "Thứ Năm",
+    "weekday_5": "Thứ Sáu",
+    "weekday_6": "Thứ Bảy",
+    "map_link_title": "Mở vị trí trên Google Maps"
+  },
+  "course_curriculum": {
+    "default_headline": "1 ngày – {{count}} module thực chiến",
+    "duration_minutes": "{{count}} phút",
+    "duration_hours_minutes": "{{h}}h{{m}}p",
+    "duration_hours": "{{count}} giờ"
+  },
+  "promo_popup": {
+    "default_title": "ƯU ĐÃI ĐẶC BIỆT KHÓA HỌC",
+    "default_desc": "Đăng ký ngay hôm nay để nhận ngay voucher ưu đãi 20% học phí!",
+    "default_cta": "ĐĂNG KÝ NGAY",
+    "badge": "CHƯƠNG TRÌNH ĐẶC BIỆT",
+    "upcoming_notice": "Chương trình ưu đãi sắp diễn ra! Hãy đăng ký ngay để không bỏ lỡ.",
+    "countdown_label": "Thời gian ưu đãi còn lại",
+    "unit_days": "Ngày",
+    "unit_hours": "Giờ",
+    "unit_minutes": "Phút",
+    "unit_seconds": "Giây",
+    "dismiss_btn": "Để sau",
+    "close_aria": "Đóng popup"
+  },
+  "vertical_modal": {
+    "title": "Lịch Đào Tạo & Ưu Đãi",
+    "card1_title": "AI SALE & MARKETING FULLSTACK",
+    "card2_title": "LÀM CHỦ CLAUDE AI (KHÓA 3)",
+    "register_now": "Đăng ký ngay",
+    "early_bird_badge": "🔥 ƯU ĐÃI EARLY BIRD",
+    "days_left": "⏳ CHỈ CÒN {{days}} NGÀY",
+    "unit_days": "Ngày",
+    "unit_hours": "Giờ",
+    "unit_minutes": "Phút",
+    "unit_seconds": "Giây",
+    "close_aria": "Đóng popup"
+  },
+  "footer": {
+    "brand_desc": "Đồng hành cùng doanh nghiệp trong kỷ nguyên trí tuệ nhân tạo. Giải pháp tối ưu, hiệu suất đột phá và thực chiến.",
+    "contact_title": "Thông tin liên hệ",
+    "address": "112 Lý Phục Man, Phường Tân Thuận, TP. Hồ Chí Minh",
+    "policy_title": "Chính sách & Liên kết",
+    "privacy": "Chính sách bảo mật",
+    "terms": "Điều khoản dịch vụ",
+    "contact": "Liên hệ",
+    "about": "Về AIZEN",
+    "support": "Trung tâm trợ giúp",
+    "careers": "Tuyển dụng",
+    "copyright": "AIZEN Academy. Tôn vinh Sự Xuất sắc Chuyên nghiệp.",
+    "zalo_support": "Hỗ trợ Zalo",
+    "rights": "Bản quyền thuộc về AIZEN. Bảo lưu mọi quyền."
+  },
+  "navbar": {
+    "toggle_menu_aria": "Toggle menu",
+    "menu_category_label": "Danh mục Menu",
+    "close_menu_aria": "Đóng menu"
+  },
+  "common": {
+    "processing": "Đang xử lý...",
+    "pagination_aria": "Phân trang",
+    "prev_page_aria": "Trang trước",
+    "prev_page_btn": "← Trước",
+    "next_page_aria": "Trang sau",
+    "next_page_btn": "Sau →"
+  }
+}

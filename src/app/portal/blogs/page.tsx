@@ -5,13 +5,17 @@ import { BlogPaginationNav } from '@/components/portal/sections/blogs/BlogPagina
 import type { Blog, PaginatedResponse } from '@aizen/types';
 import type { Metadata } from 'next';
 import { fetchBlogsServer } from '@/lib/portal/server-data';
+import { getServerDict } from '@/lib/portal/get-server-language';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'Blog & Tin tức AI',
-  description: 'Cập nhật kiến thức, xu hướng và tin tức AI mới nhất từ AIZEN.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const dict = await getServerDict();
+  return {
+    title: dict.blog.meta_title,
+    description: dict.blog.meta_description,
+  };
+}
 
 interface SearchParams {
   category?: string;
@@ -31,6 +35,7 @@ export default async function BlogsPage({
 }: {
   searchParams: Promise<SearchParams>;
 }) {
+  const dict = await getServerDict();
   const params = await searchParams;
   const { items, pagination } = await fetchBlogs(params);
   const currentPage = Number(params.page ?? 1);
@@ -41,13 +46,12 @@ export default async function BlogsPage({
       <section className="relative overflow-hidden bg-slate-900/80 backdrop-blur-md border border-slate-700/60 rounded-3xl py-12 max-w-6xl mx-auto shadow-2xl">
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
           <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-400/40 rounded-full px-6 py-2 shadow-sm">
-            <span className="text-amber-300 font-extrabold text-base">Khám phá thế giới AI</span>
+            <span className="text-amber-300 font-extrabold text-base">{dict.blog.hero_badge}</span>
             <span className="text-xl">🤖</span>
           </div>
 
           <p className="text-slate-100 font-medium mt-4 max-w-xl text-sm md:text-base">
-            Cập nhật kiến thức, xu hướng công nghệ và tin tức AI mới nhất — được tuyển chọn bởi
-            đội ngũ AIZEN.
+            {dict.blog.hero_description}
           </p>
         </div>
       </section>
@@ -55,8 +59,10 @@ export default async function BlogsPage({
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-2xl md:text-4xl font-black text-white drop-shadow-md">Blog & Tin tức</h1>
-            <p className="text-amber-400 font-bold mt-1 text-sm">{pagination.total} bài viết mới nhất</p>
+            <h1 className="text-2xl md:text-4xl font-black text-white drop-shadow-md">{dict.blog.page_title}</h1>
+            <p className="text-amber-400 font-bold mt-1 text-sm">
+              {dict.blog.total_posts.replace('{{count}}', String(pagination.total))}
+            </p>
           </div>
 
           <Suspense fallback={<div className="flex gap-2"><div className="w-20 h-9 bg-slate-800 rounded-full animate-pulse" /></div>}>
@@ -73,7 +79,7 @@ export default async function BlogsPage({
         ) : (
           <div className="mt-16 text-center bg-slate-900/80 p-12 rounded-3xl border border-slate-700/60 backdrop-blur-md">
             <p className="text-5xl mb-4">📭</p>
-            <p className="text-slate-200 font-medium">Chưa có bài viết nào.</p>
+            <p className="text-slate-200 font-medium">{dict.blog.empty_state}</p>
           </div>
         )}
 

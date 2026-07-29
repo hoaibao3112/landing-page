@@ -8,6 +8,7 @@ import { submitRegistration, submitGroupRegistration, validateVoucherAction, typ
 import { SpotlightEffects } from './SpotlightEffects';
 import PromoPopup from '@/components/PromoPopup';
 import { cleanupLegacyAdminStorage } from '@/lib/portal/admin/auth';
+import { useLanguage } from '@/context/LanguageContext';
 
 function CustomSelect({
   label,
@@ -24,11 +25,12 @@ function CustomSelect({
   placeholder: string;
   required?: boolean;
 }) {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState('');
   const [otherValue, setOtherValue] = useState('');
 
-  const isOther = selected === 'Khác';
+  const isOther = selected === 'Khác' || selected === 'Other';
 
   return (
     <div className="space-y-2 relative">
@@ -102,7 +104,7 @@ function CustomSelect({
           >
             <input
               type="text"
-              placeholder="Vui lòng nhập thông tin của bạn"
+              placeholder={t('home_client.enter_info_placeholder')}
               value={otherValue}
               onChange={(e) => setOtherValue(e.target.value)}
               required={required}

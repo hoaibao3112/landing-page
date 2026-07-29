@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import type { CourseWithDetails } from '@aizen/types';
 import { computeCoursePlanPrices } from '@/lib/portal/utils/pricing';
 
+import { useLanguage } from '@/context/LanguageContext';
+
 interface CourseHeroProps {
   course: CourseWithDetails;
 }
@@ -19,13 +21,12 @@ function formatDate(dateStr: string | null) {
   return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
-function formatWeekdayDate(dateStr: string | null, endDateStr?: string | null) {
+function formatWeekdayDate(dateStr: string | null, endDateStr: string | null | undefined, t: (keyPath: string) => string) {
   if (!dateStr) return null;
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return null;
 
-  const weekdays = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
-  const weekday = weekdays[d.getDay()];
+  const weekday = t(`course_hero.weekday_${d.getDay()}`);
   const day = String(d.getDate()).padStart(2, '0');
   const month = String(d.getMonth() + 1).padStart(2, '0');
   const year = d.getFullYear();
@@ -33,7 +34,7 @@ function formatWeekdayDate(dateStr: string | null, endDateStr?: string | null) {
   if (endDateStr) {
     const dEnd = new Date(endDateStr);
     if (!isNaN(dEnd.getTime())) {
-      const weekdayEnd = weekdays[dEnd.getDay()];
+      const weekdayEnd = t(`course_hero.weekday_${dEnd.getDay()}`);
       const dayEnd = String(dEnd.getDate()).padStart(2, '0');
       const monthEnd = String(dEnd.getMonth() + 1).padStart(2, '0');
       const yearEnd = dEnd.getFullYear();
@@ -68,6 +69,7 @@ const fadeUp = {
 };
 
 export function CourseHero({ course }: CourseHeroProps) {
+  const { t } = useLanguage();
   const date = formatDate(course.start_date);
   const planPrices = computeCoursePlanPrices({
     price: course.price || 0,
@@ -82,7 +84,7 @@ export function CourseHero({ course }: CourseHeroProps) {
   const displayGroupPrice = Number.isFinite(minGroupPrice) && minGroupPrice > 0
     ? minGroupPrice
     : (course.price_group > 0 ? course.price_group : 0);
-  const formattedWeekdayDate = formatWeekdayDate(course.start_date, course.end_date);
+  const formattedWeekdayDate = formatWeekdayDate(course.start_date, course.end_date, t);
   const isCompleted = course.status === 'completed';
   const isPtitCourse = Boolean(
     course.slug?.toLowerCase().includes('aisalemark') ||
@@ -127,8 +129,7 @@ export function CourseHero({ course }: CourseHeroProps) {
         {(() => {
           if (isPtitCourse) {
             const descriptionText =
-              course.description ||
-              'Khóa đào tạo do Aizen phối hợp tổ chức cùng Trung tâm đào tạo bưu chính viễn thông (PTTC), trực thuộc Học viện công nghệ bưu chính viễn thông (PTIT).';
+              course.description || t('course_detail.co_organizer_desc');
             return (
               <motion.p
                 variants={fadeUp}
@@ -158,7 +159,7 @@ export function CourseHero({ course }: CourseHeroProps) {
           );
         })()}
 
-        {/* Date + Time + Location Sub-bar (Matching Image 1 Exact Layout) */}
+        {/* Date + Time + Location Sub-bar */}
         {(formattedWeekdayDate || course.location) && (
           <motion.div
             variants={fadeUp}
@@ -194,7 +195,7 @@ export function CourseHero({ course }: CourseHeroProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white font-black text-sm sm:text-base hover:text-sky-300 transition-colors cursor-pointer leading-snug break-words"
-                    title="Mở vị trí trên Google Maps"
+                    title={t('course_hero.map_link_title')}
                   >
                     {renderLocationText(course.location)}
                   </a>
@@ -213,9 +214,9 @@ export function CourseHero({ course }: CourseHeroProps) {
           const items = (course.highlights && course.highlights.length > 0)
             ? course.highlights
             : [
-                { icon: 'groups', value: '01 Ngày', label: 'Offline thực hành' },
-                { icon: 'headset_mic', value: '03 Ngày', label: 'Online hỗ trợ' },
-                { icon: 'all_inclusive', value: 'Trọn đời', label: 'Học lại miễn phí' },
+                { icon: 'groups', value: t('course_detail.default_highlight1_val'), label: t('course_detail.default_highlight1_lbl') },
+                { icon: 'headset_mic', value: t('course_detail.default_highlight2_val'), label: t('course_detail.default_highlight2_lbl') },
+                { icon: 'all_inclusive', value: t('course_detail.default_highlight3_val'), label: t('course_detail.default_highlight3_lbl') },
               ];
 
           return (
@@ -242,8 +243,6 @@ export function CourseHero({ course }: CourseHeroProps) {
             </motion.div>
           );
         })()}
-
-        {/* Price + Date block removed per user request */}
       </motion.div>
     </section>
   );

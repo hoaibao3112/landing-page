@@ -1,13 +1,17 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { formatDateBlog } from '@/lib/portal/utils/format';
 import type { Blog } from '@aizen/types';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface BlogCardProps {
   blog: Blog;
 }
 
 export function BlogCard({ blog }: BlogCardProps) {
+  const { t } = useLanguage();
   return (
     <Link
       href={`/blogs/${blog.slug}`}
@@ -45,7 +49,7 @@ export function BlogCard({ blog }: BlogCardProps) {
             {blog.published_at ? formatDateBlog(blog.published_at) : ''}
           </span>
           <span>·</span>
-          <span className="text-amber-300">bởi: {blog.author}</span>
+          <span className="text-amber-300">{t('blog.by')}: {blog.author}</span>
         </div>
 
         <h3 className="font-bold text-base md:text-lg leading-snug text-white line-clamp-2 group-hover:text-sky-300 transition-colors">
@@ -55,7 +59,7 @@ export function BlogCard({ blog }: BlogCardProps) {
         <p className="text-xs md:text-sm text-slate-300 line-clamp-2 flex-1 leading-relaxed">{blog.excerpt}</p>
 
         <span className="text-sky-400 text-xs md:text-sm font-semibold flex items-center gap-1.5 group-hover:text-amber-300 group-hover:gap-2.5 transition-all mt-2 pt-2 border-t border-slate-800/80">
-          Xem thêm
+          {t('blog.read_more')}
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>

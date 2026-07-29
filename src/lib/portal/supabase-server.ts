@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder-url-for-buildtime.supabase.co';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-key-for-buildtime';
@@ -93,16 +93,17 @@ export async function verifyAdmin(req: NextRequest): Promise<UserPayload | null>
   }
 }
 
-import { NextResponse } from 'next/server';
-
 // Replicate HTTP error handling and response structures from NestJS filters/interceptors
 export function successResponse<T>(data: T, status = 200) {
-  return NextResponse.json({
-    success: true,
-    data,
-    statusCode: status,
-    timestamp: new Date().toISOString(),
-  }, { status });
+  return NextResponse.json(
+    {
+      success: true,
+      data,
+      statusCode: status,
+      timestamp: new Date().toISOString(),
+    },
+    { status }
+  );
 }
 
 export function errorResponse(message: string | string[], status = 500, path = '') {
@@ -122,4 +123,22 @@ export function errorResponse(message: string | string[], status = 500, path = '
     },
     { status }
   );
+}
+
+/**
+ * Escape/Sanitize user search string for safe use inside PostgREST filter expressions (.or(), .ilike(), etc.)
+ * Prevents PostgREST filter injection by removing/escaping reserved characters (, () % _ \ " ')
+ */
+export function sanitizePostgrestSearch(search: string): string {
+  if (!search) return '';
+  return search
+    .replace(/\\/g, '\\\\')
+    .replace(/%/g, '\\%')
+    .replace(/_/g, '\\_')
+    .replace(/,/g, '')
+    .replace(/\(/g, '')
+    .replace(/\)/g, '')
+    .replace(/"/g, '')
+    .replace(/'/g, '')
+    .trim();
 }

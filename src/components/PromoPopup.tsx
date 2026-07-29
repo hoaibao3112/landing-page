@@ -4,6 +4,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { getPopupConfigAction, PopupConfig } from '@/app/actions';
+import { useLanguage } from '@/context/LanguageContext';
 
 // Sanitize HTML thuần JS — chặn XSS mà không cần thư viện ngoài
 const ALLOWED_TAGS = new Set(['strong', 'em', 'span', 'br', 'mark', 'p', 'b', 'i', 'u']);
@@ -48,6 +49,7 @@ export default function PromoPopup({
   previewConfig,
 }: PromoPopupProps) {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [config, setConfig] = useState<PopupConfig | null>(initialConfig || null);
   const [isOpen, setIsOpen] = useState<boolean>(isPreview);
@@ -210,12 +212,12 @@ export default function PromoPopup({
     }
   };
 
-  const title = activeConfig.title || 'ƯU ĐÃI ĐẶC BIỆT KHÓA HỌC';
+  const title = activeConfig.title || t('promo_popup.default_title');
   const description =
     activeConfig.description ||
-    'Đăng ký ngay hôm nay để nhận ngay voucher ưu đãi 20% học phí!';
+    t('promo_popup.default_desc');
   const sanitizedDescription = useMemo(() => sanitizeHtml(description), [description]);
-  const ctaText = activeConfig.cta_text || 'ĐĂNG KÝ NGAY';
+  const ctaText = activeConfig.cta_text || t('promo_popup.default_cta');
 
   const titleColor = activeConfig.title_color || '#ffffff';
   const timerColor = activeConfig.timer_color || '#34d399';
@@ -275,7 +277,7 @@ export default function PromoPopup({
             <button
               onClick={handleClose}
               className="absolute top-3.5 right-3.5 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-slate-800/80 text-slate-300 backdrop-blur-sm transition-all hover:bg-slate-700 hover:text-white border border-slate-600/40"
-              aria-label="Đóng popup"
+              aria-label={t('promo_popup.close_aria')}
             >
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -299,7 +301,7 @@ export default function PromoPopup({
               {/* Badge */}
               <div className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400 border border-emerald-500/30">
                 <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-                <span>CHƯƠNG TRÌNH ĐẶC BIỆT</span>
+                <span>{t('promo_popup.badge')}</span>
               </div>
 
               {/* Title */}
@@ -321,37 +323,37 @@ export default function PromoPopup({
                 timeLeft.expired ? (
                   <div className="mt-5 rounded-2xl bg-amber-500/10 p-3.5 border border-amber-500/30 text-amber-400 text-xs font-semibold text-center flex items-center justify-center gap-2">
                     <span className="animate-bounce">🔥</span>
-                    <span>Chương trình ưu đãi sắp diễn ra! Hãy đăng ký ngay để không bỏ lỡ.</span>
+                    <span>{t('promo_popup.upcoming_notice')}</span>
                   </div>
                 ) : (
                   <div className={`mt-6 rounded-2xl p-4 border backdrop-blur-sm ${activeConfig.bg_image_url ? 'bg-black/30 border-white/10' : 'bg-slate-800/80 border-slate-700/60'}`}>
                     <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2.5 text-center">
-                      ⏰ Thời gian ưu đãi còn lại
+                      ⏰ {t('promo_popup.countdown_label')}
                     </p>
                     <div className="grid grid-cols-4 gap-2 text-center">
                       <div className={`rounded-xl p-2.5 border ${activeConfig.bg_image_url ? 'bg-black/30 border-white/10' : 'bg-slate-900/90 border-slate-700/50'}`}>
                         <span className="block text-xl sm:text-2xl font-black" style={{ color: timerColor }}>
                           {String(timeLeft.days).padStart(2, '0')}
                         </span>
-                        <span className="text-[10px] uppercase font-bold text-slate-400">Ngày</span>
+                        <span className="text-[10px] uppercase font-bold text-slate-400">{t('promo_popup.unit_days')}</span>
                       </div>
                       <div className={`rounded-xl p-2.5 border ${activeConfig.bg_image_url ? 'bg-black/30 border-white/10' : 'bg-slate-900/90 border-slate-700/50'}`}>
                         <span className="block text-xl sm:text-2xl font-black" style={{ color: timerColor }}>
                           {String(timeLeft.hours).padStart(2, '0')}
                         </span>
-                        <span className="text-[10px] uppercase font-bold text-slate-400">Giờ</span>
+                        <span className="text-[10px] uppercase font-bold text-slate-400">{t('promo_popup.unit_hours')}</span>
                       </div>
                       <div className={`rounded-xl p-2.5 border ${activeConfig.bg_image_url ? 'bg-black/30 border-white/10' : 'bg-slate-900/90 border-slate-700/50'}`}>
                         <span className="block text-xl sm:text-2xl font-black" style={{ color: timerColor }}>
                           {String(timeLeft.minutes).padStart(2, '0')}
                         </span>
-                        <span className="text-[10px] uppercase font-bold text-slate-400">Phút</span>
+                        <span className="text-[10px] uppercase font-bold text-slate-400">{t('promo_popup.unit_minutes')}</span>
                       </div>
                       <div className={`rounded-xl p-2.5 border ${activeConfig.bg_image_url ? 'bg-black/30 border-white/10' : 'bg-slate-900/90 border-slate-700/50'}`}>
                         <span className="block text-xl sm:text-2xl font-black" style={{ color: timerColor }}>
                           {String(timeLeft.seconds).padStart(2, '0')}
                         </span>
-                        <span className="text-[10px] uppercase font-bold text-slate-400">Giây</span>
+                        <span className="text-[10px] uppercase font-bold text-slate-400">{t('promo_popup.unit_seconds')}</span>
                       </div>
                     </div>
                   </div>
@@ -371,7 +373,7 @@ export default function PromoPopup({
                   onClick={handleClose}
                   className={`w-full sm:w-auto rounded-xl px-4 py-3.5 text-center text-sm font-semibold transition-all ${activeConfig.bg_image_url ? 'bg-white/15 text-white border border-white/20 hover:bg-white/25' : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'}`}
                 >
-                  Để sau
+                  {t('promo_popup.dismiss_btn')}
                 </button>
               </div>
             </div>

@@ -15,6 +15,7 @@ coverage/
 tests/
 vitest.config.ts
 tsconfig.test.json
+check-*.js
 
 # next.js and nest.js build outputs
 .next/

@@ -3,12 +3,14 @@ import { Badge } from '@/components/portal/ui/Badge';
 import { Button } from '@/components/portal/ui/Button';
 import { formatDateLong, getDaysUntil } from '@/lib/portal/utils/format';
 import type { Enrollment } from '@aizen/types';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface UpcomingCourseCardProps {
   enrollment: Enrollment;
 }
 
 export function UpcomingCourseCard({ enrollment }: UpcomingCourseCardProps) {
+  const { t } = useLanguage();
   const course = enrollment.courses;
   if (!course) return null;
 
@@ -30,7 +32,7 @@ export function UpcomingCourseCard({ enrollment }: UpcomingCourseCardProps) {
             </span>
             <h3 className="font-bold text-gray-900 mt-0.5 leading-snug">{course.title}</h3>
           </div>
-          <Badge variant="upcoming">Sắp diễn ra</Badge>
+          <Badge variant="upcoming">{t('my_courses.upcoming_badge')}</Badge>
         </div>
 
         {course.start_date && (
@@ -41,7 +43,7 @@ export function UpcomingCourseCard({ enrollment }: UpcomingCourseCardProps) {
 
         {daysUntil !== null && daysUntil > 0 && (
           <p className="text-sm text-amber-500 font-medium mt-1">
-            ⏱ Bắt đầu sau {daysUntil} ngày
+            {t('my_courses.starts_in_days', { days: daysUntil })}
           </p>
         )}
 
@@ -52,7 +54,7 @@ export function UpcomingCourseCard({ enrollment }: UpcomingCourseCardProps) {
               variant={isStarted ? 'primary' : 'outline'}
               disabled={!isStarted}
             >
-              {isStarted ? 'Vào học ngay' : `Mở sau ${daysUntil} ngày`}
+              {isStarted ? t('my_courses.enter_now') : t('my_courses.opens_in_days', { days: daysUntil ?? 0 })}
             </Button>
           </Link>
         </div>

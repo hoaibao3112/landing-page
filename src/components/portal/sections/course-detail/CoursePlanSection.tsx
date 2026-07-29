@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 
 import { useState, useEffect, useCallback } from 'react';
 import { formatCurrency } from '@/lib/portal/utils/format';
+import { useLanguage } from '@/context/LanguageContext';
 import { createRegistration, createGroupRegistration, validatePromoCode, type PromoValidateResult } from '@/lib/portal/api/registrations.api';
 
 // ─── Types ────────────────────────────────────────────
@@ -65,6 +66,14 @@ const REFERRAL_SOURCES = [
   'Khác',
 ];
 
+const REFERRAL_KEYS: Record<string, string> = {
+  'Cộng Đồng AI ỨNG DỤNG SALE & MARKETING': 'course_plan.referral_channels.ai_community',
+  'Khách hàng AIZEN': 'course_plan.referral_channels.aizen_customer',
+  'Người quen giới thiệu': 'course_plan.referral_channels.acquaintance',
+  'Facebook / Instagram': 'course_plan.referral_channels.social',
+  'Khác': 'course_plan.referral_channels.other',
+};
+
 const POSITION_OPTIONS = [
   'Chủ doanh nghiệp / CEO',
   'Giám đốc / C-level',
@@ -75,6 +84,17 @@ const POSITION_OPTIONS = [
   'Sinh viên',
   'Khác',
 ];
+
+const POSITION_KEYS: Record<string, string> = {
+  'Chủ doanh nghiệp / CEO': 'course_plan.roles.ceo',
+  'Giám đốc / C-level': 'course_plan.roles.c_level',
+  'Trưởng phòng / Manager': 'course_plan.roles.manager',
+  'Team Lead': 'course_plan.roles.team_lead',
+  'Chuyên viên / Nhân viên': 'course_plan.roles.staff',
+  'Freelancer / Tự kinh doanh': 'course_plan.roles.freelancer',
+  'Sinh viên': 'course_plan.roles.student',
+  'Khác': 'course_plan.roles.other',
+};
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -127,12 +147,15 @@ interface DarkSelectProps {
   label: string;
   value: string;
   options: string[];
+  optionKeyMap?: Record<string, string>;
   placeholder?: string;
   required?: boolean;
   error?: string;
   onChange: (v: string) => void;
 }
-function DarkSelect({ id, label, value, options, placeholder = 'Chọn...', required, error, onChange }: DarkSelectProps) {
+function DarkSelect({ id, label, value, options, optionKeyMap, placeholder, required, error, onChange }: DarkSelectProps) {
+  const { t } = useLanguage();
+  const defaultPh = placeholder || t('course_plan.default_placeholder');
   return (
     <div className="flex flex-col gap-1">
       <label htmlFor={id} className="text-xs font-medium text-slate-300">
@@ -144,8 +167,12 @@ function DarkSelect({ id, label, value, options, placeholder = 'Chọn...', requ
           className={`w-full appearance-none px-3 py-2 pr-8 border rounded-lg bg-slate-700/60 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/60 transition-colors ${
             error ? 'border-red-400/60' : 'border-white/15 hover:border-white/25'
           } ${value === '' ? 'text-slate-500' : 'text-white'}`}>
-          <option value="" disabled className="bg-slate-900">{placeholder}</option>
-          {options.map((o) => <option key={o} value={o} className="bg-slate-900">{o}</option>)}
+          <option value="" disabled className="bg-slate-900">{defaultPh}</option>
+          {options.map((o) => (
+            <option key={o} value={o} className="bg-slate-900">
+              {optionKeyMap && optionKeyMap[o] ? t(optionKeyMap[o]) : o}
+            </option>
+          ))}
         </select>
         <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400">
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -169,6 +196,7 @@ interface RegistrationModalProps {
 }
 
 function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUrl, onClose }: RegistrationModalProps) {
+  const { t } = useLanguage();
   const [members, setMembers] = useState<MemberForm[]>(
     Array.from({ length: plan.memberCount }, emptyMember),
   );
@@ -212,11 +240,11 @@ function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUr
     let valid = true;
     const errors = members.map((m) => {
       const e: MemberErrors = {};
-      if (!m.fullName.trim()) { e.fullName = 'Vui lòng nhập họ tên'; valid = false; }
-      if (!m.phone.trim()) { e.phone = 'Vui lòng nhập số điện thoại'; valid = false; }
-      if (!m.email.trim()) { e.email = 'Vui lòng nhập email'; valid = false; }
-      else if (!EMAIL_REGEX.test(m.email)) { e.email = 'Email không hợp lệ'; valid = false; }
-      if (!m.referral) { e.referral = 'Vui lòng chọn nguồn'; valid = false; }
+      if (!m.fullName.trim()) { e.fullName = t('registration_form.err_fullname'); valid = false; }
+      if (!m.phone.trim()) { e.phone = t('registration_form.err_phone'); valid = false; }
+      if (!m.email.trim()) { e.email = t('registration_form.err_email'); valid = false; }
+      else if (!EMAIL_REGEX.test(m.email)) { e.email = t('registration_form.err_email_invalid'); valid = false; }
+      if (!m.referral) { e.referral = t('registration_form.err_referral'); valid = false; }
       return e;
     });
     setMemberErrors(errors);
@@ -240,7 +268,7 @@ function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUr
         setPromoError(result.message);
       }
     } catch (err) {
-      setPromoError('Không thể kiểm tra mã khuyến mãi, vui lòng thử lại.');
+      setPromoError(t('registration_form.promo_error_check'));
     } finally {
       setIsCheckingPromo(false);
     }
@@ -280,7 +308,7 @@ function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUr
       }
       setSuccess(true);
     } catch (err) {
-      setApiError(err instanceof Error ? err.message : 'Đăng ký thất bại, thử lại sau.');
+      setApiError(err instanceof Error ? err.message : t('registration_form.err_submit_fallback'));
     } finally {
       setIsLoading(false);
     }
@@ -313,13 +341,13 @@ function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUr
 
         {/* Header */}
         <div className="flex-shrink-0 px-6 pt-5 pb-4 border-b border-white/8">
-          <p className="text-sky-400 text-[10px] font-bold uppercase tracking-widest mb-1">ĐĂNG KÝ THAM GIA</p>
+          <p className="text-sky-400 text-[10px] font-bold uppercase tracking-widest mb-1">{t('course_plan.modal_tag')}</p>
           <div className="flex items-start justify-between gap-4">
             <div>
               <h2 className="text-xl font-extrabold text-white">{plan.label}</h2>
               {plan.memberCount > 1 && (
                 <p className="text-slate-400 text-sm mt-0.5">
-                  Điền thông tin cho {plan.memberCount} học viên
+                  {t('course_plan.fill_info_prefix')} {plan.memberCount} {t('course_plan.fill_info_suffix')}
                 </p>
               )}
               <p className="text-slate-500 text-xs mt-1">📚 {courseTitle}</p>
@@ -338,15 +366,15 @@ function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUr
           {success ? (
             <div className="text-center py-6 flex flex-col items-center">
               <p className="text-5xl mb-3">🎉</p>
-              <p className="text-white font-bold text-lg mb-1">Đăng ký thành công!</p>
-              <p className="text-slate-300 text-sm mb-4">Vui lòng quét mã QR dưới đây để hoàn tất thanh toán học phí:</p>
+              <p className="text-white font-bold text-lg mb-1">{t('course_plan.qr_success_title')}</p>
+              <p className="text-slate-300 text-sm mb-4">{t('course_plan.qr_instruction')}</p>
               
               {appliedPromo && qrPromoUrl ? (
                 <div className="bg-white p-3 rounded-2xl border border-white/10 shadow-lg max-w-[240px] w-full aspect-square flex items-center justify-center mb-4">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={qrPromoUrl}
-                    alt="Mã QR Thanh toán (Khuyến mãi)"
+                    alt={t('course_plan.qr_alt')}
                     className="w-full h-full object-contain rounded-xl"
                   />
                 </div>
@@ -355,19 +383,19 @@ function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUr
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={qrNormalUrl}
-                    alt="Mã QR Thanh toán"
+                    alt={t('course_plan.qr_alt')}
                     className="w-full h-full object-contain rounded-xl"
                   />
                 </div>
               ) : (
-                <p className="text-slate-400 text-xs mb-4 italic">Không có hình ảnh QR thanh toán nào được thiết lập. Ban hỗ trợ sẽ liên hệ với bạn trong 24h.</p>
+                <p className="text-slate-400 text-xs mb-4 italic">{t('course_plan.qr_no_img')}</p>
               )}
 
-              <p className="text-sky-400 text-xs font-semibold mb-6">Chúng tôi sẽ xác nhận đăng ký và liên hệ với bạn qua SĐT/Email trong 24h.</p>
+              <p className="text-sky-400 text-xs font-semibold mb-6">{t('course_plan.qr_contact_notice')}</p>
 
               <button onClick={onClose}
                 className="px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-semibold text-sm transition-colors cursor-pointer">
-                Xác nhận & Đóng
+                {t('course_plan.confirm_close')}
               </button>
             </div>
           ) : (
@@ -382,38 +410,38 @@ function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUr
                       <div className="w-6 h-6 rounded-full bg-sky-500 text-white text-xs font-bold flex items-center justify-center">
                         {idx + 1}
                       </div>
-                      <p className="text-sm font-semibold text-white">Người {idx + 1}</p>
+                      <p className="text-sm font-semibold text-white">{t('registration_form.person_info')} {idx + 1}</p>
                     </div>
                   )}
 
                   {/* Row 1: Name + Phone */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <DarkInput id={`fullName_${idx}`} label="Họ và Tên" placeholder="Nguyễn Văn A"
+                    <DarkInput id={`fullName_${idx}`} label={t('registration_form.fullname')} placeholder={t('registration_form.fullname_placeholder')}
                       value={member.fullName} error={memberErrors[idx]?.fullName} required
                       onChange={(e) => updateMember(idx, 'fullName', e.target.value)} />
-                    <DarkInput id={`phone_${idx}`} label="Số điện thoại" placeholder="090 xxx xxx"
+                    <DarkInput id={`phone_${idx}`} label={t('registration_form.phone')} placeholder={t('registration_form.phone_placeholder')}
                       type="tel" value={member.phone} error={memberErrors[idx]?.phone} required
                       onChange={(e) => updateMember(idx, 'phone', e.target.value)} />
                   </div>
 
                   {/* Row 2: Email + Company */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <DarkInput id={`email_${idx}`} label="Email" placeholder="email@example.com"
+                    <DarkInput id={`email_${idx}`} label={t('registration_form.email')} placeholder={t('registration_form.email_placeholder')}
                       type="email" value={member.email} error={memberErrors[idx]?.email} required
                       onChange={(e) => updateMember(idx, 'email', e.target.value)} />
-                    <DarkInput id={`company_${idx}`} label="Tên Công Ty" placeholder="Công ty của bạn"
+                    <DarkInput id={`company_${idx}`} label={t('registration_form.company')} placeholder={t('registration_form.company_placeholder')}
                       value={member.company}
                       onChange={(e) => updateMember(idx, 'company', e.target.value)} />
                   </div>
 
                   {/* Row 3: Position + Referral */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <DarkSelect id={`position_${idx}`} label="Chức vụ" value={member.position}
-                      options={POSITION_OPTIONS} placeholder="Chọn vị trí..."
+                    <DarkSelect id={`position_${idx}`} label={t('registration_form.position')} value={member.position}
+                      options={POSITION_OPTIONS} optionKeyMap={POSITION_KEYS} placeholder={t('registration_form.position_placeholder')}
                       onChange={(v) => updateMember(idx, 'position', v)} />
-                    <DarkSelect id={`referral_${idx}`} label="Bạn biết đến chương trình từ đâu"
-                      value={member.referral} options={REFERRAL_SOURCES}
-                      placeholder="Chọn nguồn..." required
+                    <DarkSelect id={`referral_${idx}`} label={t('registration_form.referral_question')}
+                      value={member.referral} options={REFERRAL_SOURCES} optionKeyMap={REFERRAL_KEYS}
+                      placeholder={t('registration_form.referral_placeholder')} required
                       error={memberErrors[idx]?.referral}
                       onChange={(v) => updateMember(idx, 'referral', v)} />
                   </div>
@@ -423,7 +451,7 @@ function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUr
               {/* Promo Code Input */}
               <div className="rounded-xl border border-white/8 bg-white/3 p-4 space-y-3">
                 <label htmlFor="promo-code-input" className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                  🎟️ Có mã khuyến mãi? <span className="text-slate-500 font-normal">(Không bắt buộc)</span>
+                  {t('course_plan.promo_has_code')} <span className="text-slate-500 font-normal">{t('course_plan.promo_optional')}</span>
                 </label>
 
                 {appliedPromo ? (
@@ -436,8 +464,8 @@ function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUr
                         <p className="text-emerald-300 text-sm font-bold tracking-wider">{promoCodeInput.trim().toUpperCase()}</p>
                         <p className="text-emerald-400/80 text-xs">
                           {appliedPromo.discount_type === 'percent'
-                            ? `Đã áp dụng giảm ${appliedPromo.discount_value}%`
-                            : `Đã áp dụng giảm ${formatCurrency(appliedPromo.discount_value ?? 0)}`}
+                            ? `${t('course_plan.promo_applied')} ${appliedPromo.discount_value}%`
+                            : `${t('course_plan.promo_applied')} ${formatCurrency(appliedPromo.discount_value ?? 0)}`}
                         </p>
                       </div>
                     </div>
@@ -456,7 +484,7 @@ function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUr
                     <input
                       id="promo-code-input"
                       type="text"
-                      placeholder="Ví dụ: AIZEN50"
+                      placeholder={t('registration_form.promo_placeholder')}
                       value={promoCodeInput}
                       onChange={(e) => {
                         setPromoCodeInput(e.target.value.toUpperCase());
@@ -476,7 +504,7 @@ function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUr
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                         </svg>
-                      ) : 'Áp dụng'}
+                      ) : t('registration_form.promo_apply')}
                     </button>
                   </div>
                 )}
@@ -493,25 +521,25 @@ function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUr
               {/* Price summary */}
               <div className="rounded-xl border border-white/8 bg-white/3 px-4 py-3 space-y-2">
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-slate-400">Giá gốc:</span>
+                  <span className="text-slate-400">{t('registration_form.original_price')}:</span>
                   <span className="text-slate-500 line-through">{formatCurrency(plan.originalTotal)}</span>
                 </div>
                 {discountFromPlan > 0 && (
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-slate-400">Giảm giá ({plan.label}):</span>
+                    <span className="text-slate-400">{t('registration_form.discount')} ({plan.label}):</span>
                     <span className="text-emerald-400 font-semibold">-{formatCurrency(discountFromPlan)}</span>
                   </div>
                 )}
                 {discountFromPromo > 0 && (
                   <div className="flex justify-between items-center text-sm">
                     <span className="text-emerald-400 font-bold flex items-center gap-1">
-                      🎟️ Mã KM ({promoCodeInput.trim().toUpperCase()}):
+                      🎟️ {t('course_plan.promo_has_code')} ({promoCodeInput.trim().toUpperCase()}):
                     </span>
                     <span className="text-emerald-400 font-semibold">-{formatCurrency(discountFromPromo)}</span>
                   </div>
                 )}
                 <div className="border-t border-white/8 pt-2 flex justify-between items-center">
-                  <span className="text-white font-semibold text-sm">Tổng thanh toán:</span>
+                  <span className="text-white font-semibold text-sm">{t('registration_form.total_payment')}:</span>
                   <span className="text-sky-300 font-extrabold text-lg">{formatCurrency(finalPrice)}</span>
                 </div>
               </div>
@@ -534,15 +562,15 @@ function RegistrationModal({ plan, courseId, courseTitle, qrNormalUrl, qrPromoUr
                 <><svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                </svg>Đang xử lý...</>
+                </svg>{t('registration_form.submitting')}</>
               ) : (
                 <><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                </svg>Gửi đăng ký</>
+                </svg>{t('registration_form.submit')}</>
               )}
             </button>
             <p className="text-center text-xs text-slate-500">
-              Chúng tôi sẽ liên hệ với bạn qua điện thoại trong 24h.
+              {t('course_plan.qr_contact_notice')}
             </p>
           </div>
         )}
@@ -569,10 +597,14 @@ interface PlanCardProps {
   onClick: () => void;
 }
 
-function PlanCard({ plan, disabled, disabledReason = 'Đã hết hạn đăng ký', earlyBirdDeadline, onClick }: PlanCardProps) {
+function PlanCard({ plan, disabled, disabledReason, earlyBirdDeadline, onClick }: PlanCardProps) {
+  const { t } = useLanguage();
   const isEarlyBird = plan.key === 'early_bird';
   const isGroup4 = plan.key === 'group_4';
   const isGroup2 = plan.key === 'group_2';
+
+  const defaultDisabledReason = t('course_plan.expired_reason');
+  const actualReason = disabledReason || defaultDisabledReason;
 
   const getBadgeGradient = () => {
     if (plan.badge?.color.includes('amber')) return 'linear-gradient(90deg, #d97706, #f59e0b)';
@@ -655,7 +687,7 @@ function PlanCard({ plan, disabled, disabledReason = 'Đã hết hạn đăng k�
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-600 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-rose-500"></span>
               </span>
-              Đến {formatDate(earlyBirdDeadline)}
+              {t('course_plan.until')} {formatDate(earlyBirdDeadline)}
             </span>
           </div>
         )}
@@ -698,14 +730,14 @@ function PlanCard({ plan, disabled, disabledReason = 'Đã hết hạn đăng k�
           </p>
           {plan.memberCount > 1 && (
             <p className="text-slate-400 text-xs mt-0.5 mb-4">
-              Tổng nhóm: {formatCurrency(plan.totalPrice)}
+              {t('course_plan.total_group')} {formatCurrency(plan.totalPrice)}
             </p>
           )}
           {plan.memberCount === 1 && <div className="mb-4" />}
 
           {disabled ? (
             <div className="w-full py-2.5 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-300 text-xs font-bold text-center">
-              {disabledReason}
+              {actualReason}
             </div>
           ) : (
             <button
@@ -746,27 +778,27 @@ export function CoursePlanSection({
   plansConfig,
   earlyBirdDeadline,
 }: CoursePlanSectionProps) {
+  const { t } = useLanguage();
   const earlyBirdPrice = plansConfig?.early_bird?.price ?? price;
   const earlyBirdLabel = plansConfig?.early_bird?.label || 'Early Bird';
   const earlyBirdSublabel = plansConfig?.early_bird?.sublabel || '';
 
-  const plansList = plansConfig || {};
   const isExpired = earlyBirdDeadline ? new Date(earlyBirdDeadline) < new Date() : false;
   const isCompleted = courseStatus === 'completed';
 
   const individualPrice = plansConfig?.individual?.price ?? price;
   const individualOriginalPrice = plansConfig?.individual?.original_price ?? null; // null = không gạch ngang
-  const individualLabel = plansConfig?.individual?.label || 'Cá nhân';
+  const individualLabel = plansConfig?.individual?.label || t('registration_form.individual');
   const individualSublabel = plansConfig?.individual?.sublabel || '';
 
   const group2PricePerPerson = plansConfig?.group_2?.price ?? priceGroup;
   const group2OriginalPerPerson = plansConfig?.group_2?.original_price ?? price; // fallback: giá cá nhân
-  const group2Label = plansConfig?.group_2?.label || 'Nhóm 2 người';
+  const group2Label = plansConfig?.group_2?.label || t('registration_form.group_2');
   const group2Sublabel = plansConfig?.group_2?.sublabel || '';
 
   const group4PricePerPerson = plansConfig?.group_4?.price ?? Math.round(priceGroup * 1.8 / 4);
   const group4OriginalPerPerson = plansConfig?.group_4?.original_price ?? price; // fallback: giá cá nhân
-  const group4Label = plansConfig?.group_4?.label || 'Nhóm 4 người';
+  const group4Label = plansConfig?.group_4?.label || t('registration_form.group_4');
   const group4Sublabel = plansConfig?.group_4?.sublabel || '';
 
   const PLANS: PlanConfig[] = [
@@ -778,9 +810,9 @@ export function CoursePlanSection({
       totalPrice: earlyBirdPrice,
       originalTotal: price,
       memberCount: 1,
-      badge: { text: 'SỐ LƯỢNG CÓ HẠN', color: 'bg-amber-500' },
+      badge: { text: t('registration_form.limited_qty'), color: 'bg-amber-500' },
       icon: <IconBolt className="w-5 h-5 text-amber-400" />,
-      buttonLabel: 'Đăng ký ngay',
+      buttonLabel: t('course_plan.register_now'),
     },
     {
       key: 'individual',
@@ -792,7 +824,7 @@ export function CoursePlanSection({
       originalTotal: individualOriginalPrice ?? individualPrice,
       memberCount: 1,
       icon: <IconUser className="w-5 h-5 text-sky-400" />,
-      buttonLabel: 'Đăng ký ngay',
+      buttonLabel: t('course_plan.register_now'),
     },
     {
       key: 'group_2',
@@ -802,9 +834,9 @@ export function CoursePlanSection({
       totalPrice: group2PricePerPerson * 2,
       originalTotal: group2OriginalPerPerson * 2, // ← từ plans_config.group_2.original_price
       memberCount: 2,
-      badge: { text: 'HOT NHẤT', color: 'bg-sky-500' },
+      badge: { text: t('registration_form.hot'), color: 'bg-sky-500' },
       icon: <IconUsers className="w-5 h-5 text-sky-400" />,
-      buttonLabel: 'Đăng ký ngay',
+      buttonLabel: t('course_plan.register_now'),
     },
     {
       key: 'group_4',
@@ -814,9 +846,9 @@ export function CoursePlanSection({
       totalPrice: group4PricePerPerson * 4,
       originalTotal: group4OriginalPerPerson * 4, // ← từ plans_config.group_4.original_price
       memberCount: 4,
-      badge: { text: 'TIẾT KIỆM NHẤT', color: 'bg-emerald-500' },
+      badge: { text: t('registration_form.best_savings'), color: 'bg-emerald-500' },
       icon: <IconUsers className="w-5 h-5 text-emerald-400" />,
-      buttonLabel: 'Đăng ký nhóm',
+      buttonLabel: t('course_plan.register_group'),
     },
   ];
 
@@ -835,13 +867,13 @@ export function CoursePlanSection({
         >
           <p className="inline-flex items-center gap-2 text-[11px] font-black tracking-[0.2em] text-[#38bdf8] uppercase mb-3">
             <span className="w-6 h-px bg-[#38bdf8]/60" />
-            ĐĂNG KÝ NGAY
+            {t('course_plan.section_tag')}
             <span className="w-6 h-px bg-[#38bdf8]/60" />
           </p>
           <h2 className="text-3xl md:text-4xl font-black text-white">
-            Chọn hình thức{' '}
+            {t('course_plan.section_title_prefix')}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#38bdf8] to-[#3b82f6]">
-              đăng ký
+              {t('course_plan.section_title_highlight')}
             </span>
           </h2>
         </motion.div>
@@ -853,7 +885,7 @@ export function CoursePlanSection({
             className="mb-8 p-4 rounded-2xl bg-amber-500/15 border border-amber-400/40 text-amber-300 text-center text-sm font-bold backdrop-blur-md flex items-center justify-center gap-2 shadow-xl"
           >
             <span className="text-lg">🔒</span>
-            <span>Khóa học này đã hoàn thành. Hiện tại hệ thống đã đóng cổng nhận đăng ký mới!</span>
+            <span>{t('course_plan.course_completed')}</span>
           </motion.div>
         )}
 
@@ -870,7 +902,7 @@ export function CoursePlanSection({
               <PlanCard
                 plan={plan}
                 disabled={isCompleted || (plan.key === 'early_bird' && isExpired)}
-                disabledReason={isCompleted ? 'Đã hoàn thành · Đóng đăng ký' : 'Đã hết hạn đăng ký'}
+                disabledReason={isCompleted ? t('course_plan.completed_reason') : t('course_plan.expired_reason')}
                 earlyBirdDeadline={earlyBirdDeadline}
                 onClick={() => setActivePlan(plan)}
               />

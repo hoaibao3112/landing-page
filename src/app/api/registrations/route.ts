@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { supabaseAdmin, verifyAdmin, successResponse, errorResponse } from '@/lib/portal/supabase-server';
+import { supabaseAdmin, verifyAdmin, successResponse, errorResponse, sanitizePostgrestSearch } from '@/lib/portal/supabase-server';
 import { applyCode } from '@/lib/portal/promo-codes';
 import { checkRateLimit, getClientIp } from '@/lib/portal/rate-limit';
 import { createRegistrationSchema } from '@/schemas/registration.schema';
@@ -150,7 +150,14 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (error) {
-      console.warn('Supabase insert registration failed/RLS policy fallback to SQLite:', error.message || error);
+      console.error('Supabase insert registration failed:', {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      });
+
+      // Quietly backup to SQLite so data is not completely lost
       try {
         const stmt = db.prepare(`
           INSERT INTO registrations (fullname, phone, email, referral, role, company, payment_status, amount)
@@ -160,7 +167,12 @@ export async function POST(req: NextRequest) {
       } catch (sqErr) {
         console.error('SQLite fallback insert error:', sqErr);
       }
-    } else if (data) {
+
+      // Return explicit errorResponse to client (do NOT return fake success)
+      return errorResponse('Đăng ký không thành công, vui lòng thử lại sau ít phút', 500, req.nextUrl.pathname);
+    }
+
+    if (data) {
       regId = data.id;
       createdAt = data.created_at;
     }
@@ -212,7 +224,10 @@ export async function GET(req: NextRequest) {
       .range(offset, offset + limit - 1);
 
     if (search) {
-      query = query.or(`full_name.ilike.%${search}%,email.ilike.%${search}%,phone.ilike.%${search}%`);
+      const safeSearch = sanitizePostgrestSearch(search);
+      if (safeSearch) {
+        query = query.or(`full_name.ilike.%${safeSearch}%,email.ilike.%${safeSearch}%,phone.ilike.%${safeSearch}%`);
+      }
     }
     if (courseId) {
       query = query.eq('course_id', courseId);

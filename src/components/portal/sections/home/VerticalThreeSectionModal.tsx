@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function VerticalThreeSectionModal() {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -104,13 +106,13 @@ export function VerticalThreeSectionModal() {
                   transition={{ duration: 0.5, delay: 0.15 }}
                   className="text-xs sm:text-base font-black uppercase tracking-wider bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400 bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(251,191,36,0.35)] animate-pulse"
                 >
-                  Lịch Đào Tạo & Ưu Đãi
+                  {t('vertical_modal.title')}
                 </motion.h3>
               </div>
               <button
                 onClick={handleClose}
                 className="w-8 h-8 sm:w-8 sm:h-8 rounded-full bg-slate-800/90 hover:bg-slate-700 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer border border-slate-700/60 touch-manipulation active:scale-90"
-                aria-label="Đóng popup"
+                aria-label={t('vertical_modal.close_aria')}
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
@@ -141,7 +143,7 @@ export function VerticalThreeSectionModal() {
                   </span>
 
                   <h4 className="font-black text-sm sm:text-base text-white group-hover:text-sky-300 transition-colors leading-snug">
-                    AI SALE & MARKETING FULLSTACK
+                    {t('vertical_modal.card1_title')}
                   </h4>
 
                   <Link
@@ -150,7 +152,7 @@ export function VerticalThreeSectionModal() {
                     className="w-fit mt-0.5"
                   >
                     <button className="px-4 sm:px-5 py-1.5 sm:py-2 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all hover:scale-[1.02] active:scale-95 cursor-pointer uppercase tracking-wider touch-manipulation whitespace-nowrap">
-                      Đăng ký ngay
+                      {t('vertical_modal.register_now')}
                     </button>
                   </Link>
                 </div>
@@ -162,7 +164,7 @@ export function VerticalThreeSectionModal() {
                 <div className="relative w-44 sm:w-56 h-28 sm:h-34 rounded-xl overflow-hidden bg-slate-950 border border-slate-800 shrink-0">
                   <Image
                     src="/claudeKhoa3moi.jpg"
-                    alt="Làm chủ Claude AI khóa 3"
+                    alt={t('vertical_modal.card2_title')}
                     fill
                     className="object-contain group-hover:scale-105 transition-transform duration-500"
                     sizes="250px"
@@ -176,7 +178,7 @@ export function VerticalThreeSectionModal() {
                   </span>
 
                   <h4 className="font-black text-sm sm:text-base text-white group-hover:text-amber-300 transition-colors leading-snug">
-                    LÀM CHỦ CLAUDE AI (KHÓA 3)
+                    {t('vertical_modal.card2_title')}
                   </h4>
 
                   <Link
@@ -185,7 +187,7 @@ export function VerticalThreeSectionModal() {
                     className="w-fit mt-0.5"
                   >
                     <button className="px-4 sm:px-5 py-1.5 sm:py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs sm:text-sm rounded-xl shadow-md transition-all hover:scale-[1.02] active:scale-95 cursor-pointer uppercase tracking-wider touch-manipulation whitespace-nowrap">
-                      Đăng ký ngay
+                      {t('vertical_modal.register_now')}
                     </button>
                   </Link>
                 </div>
@@ -196,39 +198,39 @@ export function VerticalThreeSectionModal() {
                 {/* Badge Early Bird - Chữ to, không có khung nhỏ */}
                 <div className="flex items-center justify-center pt-0.5">
                   <span className="text-amber-300 text-xs sm:text-sm font-black uppercase tracking-wider animate-pulse drop-shadow-[0_2px_8px_rgba(251,191,36,0.3)]">
-                    🔥 ƯU ĐÃI EARLY BIRD
+                    {t('vertical_modal.early_bird_badge')}
                   </span>
                 </div>
 
                 {/* Đồng hồ đếm ngược thời gian thực - Ôm khít 100% chiều ngang khung */}
                 <div className="bg-slate-950/90 border border-amber-500/30 rounded-lg p-1.5 text-center w-full shadow-inner">
                   <p className="text-[8px] sm:text-[9px] font-extrabold text-amber-400 uppercase tracking-wider mb-1">
-                    ⏳ CHỈ CÒN {timeLeft.days} NGÀY
+                    {t('vertical_modal.days_left', { days: timeLeft.days })}
                   </p>
                   <div className="grid grid-cols-4 gap-1 text-center">
                     <div className="bg-slate-900/90 border border-slate-800 rounded p-1">
                       <span className="block text-xs sm:text-sm font-black text-amber-400 leading-none">
                         {String(timeLeft.days).padStart(2, '0')}
                       </span>
-                      <span className="text-[7px] sm:text-[8px] font-bold text-slate-400 uppercase">Ngày</span>
+                      <span className="text-[7px] sm:text-[8px] font-bold text-slate-400 uppercase">{t('vertical_modal.unit_days')}</span>
                     </div>
                     <div className="bg-slate-900/90 border border-slate-800 rounded p-1">
                       <span className="block text-xs sm:text-sm font-black text-amber-400 leading-none">
                         {String(timeLeft.hours).padStart(2, '0')}
                       </span>
-                      <span className="text-[7px] sm:text-[8px] font-bold text-slate-400 uppercase">Giờ</span>
+                      <span className="text-[7px] sm:text-[8px] font-bold text-slate-400 uppercase">{t('vertical_modal.unit_hours')}</span>
                     </div>
                     <div className="bg-slate-900/90 border border-slate-800 rounded p-1">
                       <span className="block text-xs sm:text-sm font-black text-amber-400 leading-none">
                         {String(timeLeft.minutes).padStart(2, '0')}
                       </span>
-                      <span className="text-[7px] sm:text-[8px] font-bold text-slate-400 uppercase">Phút</span>
+                      <span className="text-[7px] sm:text-[8px] font-bold text-slate-400 uppercase">{t('vertical_modal.unit_minutes')}</span>
                     </div>
                     <div className="bg-slate-900/90 border border-slate-800 rounded p-1">
                       <span className="block text-xs sm:text-sm font-black text-amber-400 animate-pulse leading-none">
                         {String(timeLeft.seconds).padStart(2, '0')}
                       </span>
-                      <span className="text-[7px] sm:text-[8px] font-bold text-slate-400 uppercase">Giây</span>
+                      <span className="text-[7px] sm:text-[8px] font-bold text-slate-400 uppercase">{t('vertical_modal.unit_seconds')}</span>
                     </div>
                   </div>
                 </div>

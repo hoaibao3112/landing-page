@@ -1,15 +1,20 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/portal/ui/Button';
 import { FadeIn, StaggerChildren } from '@/components/portal/ui/AnimationWrapper';
 import { formatDateRange } from '@/lib/portal/utils/format';
 import type { Course } from '@aizen/types';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface CompletedCoursesPreviewSectionProps {
   courses: Course[];
 }
 
 export function CompletedCoursesPreviewSection({ courses }: CompletedCoursesPreviewSectionProps) {
+  const { t } = useLanguage();
+
   return (
     <section className="pt-6 md:pt-8 pb-16 md:pb-20 bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -17,15 +22,15 @@ export function CompletedCoursesPreviewSection({ courses }: CompletedCoursesPrev
         <FadeIn direction="up" className="flex flex-col md:flex-row md:items-end md:justify-between mb-10 gap-4">
           <div>
             <h2 className="text-2xl md:text-3xl font-black text-white mb-2 drop-shadow-md">
-              Khóa Đào Tạo Đã Hoàn Thành
+              {t('completed_courses.title')}
             </h2>
             <p className="text-slate-100 text-sm max-w-lg font-medium">
-              Xem lại chương trình giảng dạy, truy cập tài liệu và xem lại nội dung tóm tắt.
+              {t('completed_courses.subtitle')}
             </p>
           </div>
           <Link href="/portal/courses?status=completed">
             <Button size="sm" className="self-start md:self-auto bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-0 rounded-full px-6 py-2.5 font-bold text-sm whitespace-nowrap hover:scale-105 transition-transform shadow-md cursor-pointer">
-              Xem các khóa đã diễn ra →
+              {t('completed_courses.view_past')}
             </Button>
           </Link>
         </FadeIn>
@@ -75,7 +80,7 @@ export function CompletedCoursesPreviewSection({ courses }: CompletedCoursesPrev
                       {/* Status & Date Bar moved above button area */}
                       <div className="flex items-center justify-between gap-2 pt-3 mb-3 border-t border-slate-800/80">
                         <span className="inline-block px-2.5 py-1 bg-emerald-500/20 text-emerald-300 text-[10px] font-extrabold rounded-full border border-emerald-400/40 uppercase tracking-wider">
-                          Đã hoàn thành
+                          {t('completed_courses.status_badge')}
                         </span>
                         {dateText && (
                           <span className="flex items-center gap-1.5 text-[11px] text-slate-200 bg-slate-800/80 px-2.5 py-1 rounded-full border border-slate-700/80 font-bold">
@@ -93,11 +98,11 @@ export function CompletedCoursesPreviewSection({ courses }: CompletedCoursesPrev
                           <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
-                          Tóm tắt nội dung
+                          {t('completed_courses.summary_label')}
                         </span>
                         <Link href={`/courses/${course.slug}`}>
                           <Button size="sm" variant="outline" className="px-4 py-2 bg-slate-900/80 border-slate-700/80 text-white hover:bg-amber-500 hover:border-amber-400 hover:text-white text-xs font-bold rounded-xl transition-all cursor-pointer">
-                            Xem tóm tắt →
+                            {t('completed_courses.view_summary')}
                           </Button>
                         </Link>
                       </div>
@@ -111,7 +116,7 @@ export function CompletedCoursesPreviewSection({ courses }: CompletedCoursesPrev
           <FadeIn>
             <div className="text-center py-16 text-slate-300 bg-slate-900/80 backdrop-blur-xl rounded-3xl border border-slate-700/60 shadow-xl">
               <p className="text-4xl mb-3 animate-float inline-block">📚</p>
-              <p className="font-medium">Chưa có khóa học nào hoàn thành.</p>
+              <p className="font-medium">{t('completed_courses.empty_state')}</p>
             </div>
           </FadeIn>
         )}

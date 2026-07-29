@@ -3,17 +3,21 @@
 import { motion } from 'framer-motion';
 import type { CourseModule } from '@aizen/types';
 
+import { useLanguage } from '@/context/LanguageContext';
+
 interface CourseCurriculumProps {
   modules: CourseModule[];
   headline?: string | null;
 }
 
-function formatDuration(minutes: number): string {
+function formatDuration(minutes: number, t: (key: string, params?: Record<string, any>) => string): string {
   if (!minutes) return '';
-  if (minutes < 60) return `${minutes} phút`;
+  if (minutes < 60) return t('course_curriculum.duration_minutes', { count: minutes });
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
-  return m > 0 ? `${h}h${m}p` : `${h} giờ`;
+  return m > 0
+    ? t('course_curriculum.duration_hours_minutes', { h, m })
+    : t('course_curriculum.duration_hours', { count: h });
 }
 
 function resolveStartTimes(modules: CourseModule[]): string[] {
@@ -33,10 +37,12 @@ function resolveStartTimes(modules: CourseModule[]): string[] {
 }
 
 export function CourseCurriculum({ modules, headline }: CourseCurriculumProps) {
+  const { t } = useLanguage();
   if (!modules.length) return null;
 
   const moduleCount = modules.filter((m) => m.item_type === 'module').length;
-  const displayHeadline = headline ?? `1 ngày – ${moduleCount} module thực chiến`;
+  const defaultHeadline = t('course_curriculum.default_headline', { count: moduleCount });
+  const displayHeadline = headline ?? defaultHeadline;
 
   return (
     <section className="mb-6 md:mb-8">
@@ -50,7 +56,7 @@ export function CourseCurriculum({ modules, headline }: CourseCurriculumProps) {
       >
         <p className="inline-flex items-center gap-2 text-[11px] font-black tracking-[0.2em] text-white uppercase mb-3">
           <span className="w-6 h-px bg-white/40" />
-          NỘI DUNG CHƯƠNG TRÌNH
+          {t('course_detail.program_content')}
           <span className="w-6 h-px bg-white/40" />
         </p>
         <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">

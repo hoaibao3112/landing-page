@@ -1,7 +1,10 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { formatDate, getDaysUntil, formatDateRange } from '@/lib/portal/utils/format';
 import type { Course } from '@aizen/types';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface CourseCardProps {
   course: Course;
@@ -12,6 +15,7 @@ interface CourseCardProps {
 }
 
 export function CourseCard({ course, showActions = true, isNearestUpcoming = false }: CourseCardProps) {
+  const { t } = useLanguage();
   const daysUntil = course.start_date ? getDaysUntil(course.start_date) : null;
   const isUpcoming = course.status === 'upcoming';
   const isUrgent = isUpcoming && isNearestUpcoming;
@@ -45,19 +49,19 @@ export function CourseCard({ course, showActions = true, isNearestUpcoming = fal
           <div>
             <div className="flex items-center justify-between gap-2 mb-1">
               <p className="text-amber-400 font-extrabold text-[11px] uppercase tracking-widest">
-                {course.category || 'CHƯƠNG TRÌNH AI'}
+                {course.category || t('courses.default_category')}
               </p>
               {isUrgent ? (
                 <span className="inline-block bg-gradient-to-r from-amber-500 to-orange-500 text-white font-extrabold text-[9px] px-2.5 py-0.5 rounded-full shadow-md uppercase tracking-wider animate-pulse border border-amber-300/40">
-                  • KHAI GIẢNG SAU {daysUntil} NGÀY
+                  {t('courses.starts_in_days').replace('{days}', String(daysUntil ?? 0))}
                 </span>
               ) : course.status === 'upcoming' ? (
                 <span className="inline-block bg-amber-500/20 text-amber-300 border border-amber-400/40 backdrop-blur-md font-extrabold text-[9px] px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                  SẮP DIỄN RA
+                  {t('courses.upcoming_badge')}
                 </span>
               ) : (
                 <span className="inline-block bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 backdrop-blur-md font-extrabold text-[9px] px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                  ĐÃ DIỄN RA
+                  {t('courses.past_badge')}
                 </span>
               )}
             </div>
@@ -77,7 +81,7 @@ export function CourseCard({ course, showActions = true, isNearestUpcoming = fal
             <div className="text-xs font-semibold text-slate-300 flex items-center gap-1.5 mt-1">
               {course.status === 'upcoming' && daysUntil !== null && daysUntil > 0 ? (
                 <span className="text-amber-400 font-bold flex items-center gap-1">
-                  ⏱ Bắt đầu sau {daysUntil} ngày
+                  {t('courses.starts_in').replace('{days}', String(daysUntil))}
                 </span>
               ) : (
                 <span className="text-slate-400 flex items-center gap-1">
@@ -99,7 +103,7 @@ export function CourseCard({ course, showActions = true, isNearestUpcoming = fal
                   type="button"
                   className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold text-xs py-2.5 rounded-xl shadow-md cursor-pointer transition-all hover:scale-[1.02]"
                 >
-                  Đăng ký ngay
+                  {t('courses.register_now')}
                 </button>
               </Link>
             ) : (
@@ -109,7 +113,7 @@ export function CourseCard({ course, showActions = true, isNearestUpcoming = fal
                     type="button"
                     className="w-full bg-white/10 hover:bg-white/20 text-amber-300 border border-amber-400/40 font-extrabold text-xs py-2.5 rounded-xl transition-all cursor-pointer hover:border-amber-400"
                   >
-                    Xem tóm tắt
+                    {t('courses.view_summary')}
                   </button>
                 </Link>
                 <Link href={`/courses/${course.slug}#case`} className="flex-1">
@@ -117,7 +121,7 @@ export function CourseCard({ course, showActions = true, isNearestUpcoming = fal
                     type="button"
                     className="w-full bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white font-bold text-xs py-2.5 rounded-xl border border-slate-700 transition-all cursor-pointer"
                   >
-                    Tình huống
+                    {t('courses.case_study')}
                   </button>
                 </Link>
               </>

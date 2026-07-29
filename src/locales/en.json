@@ -1,0 +1,551 @@
+{
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "resources": "Resources Hub",
+    "instructors": "Instructors",
+    "blog": "Blog",
+    "login": "Sign In",
+    "register_now": "Register Now",
+    "admin_portal": "Portal Admin"
+  },
+  "hero": {
+    "badge": "PRACTICAL COURSE 2026",
+    "badge_full": "Practical AI Training Program For Leaders & Enterprises",
+    "words": "Accelerate,Growth,With",
+    "brand": "Aizen Training",
+    "title": "MASTER CLAUDE AI",
+    "subtitle": "BUILD AUTOMATED DEPARTMENT ASSISTANTS",
+    "description": "Comprehensive Claude AI solutions for automating Sales, Marketing, HR & Enterprise Workflows.",
+    "description_full": "Equip leaders, managers, and staff with systematic mindsets & practical AI capabilities. Automate manual bottlenecks, optimize operating costs, and standardize workflows for your whole enterprise.",
+    "cta_register": "REGISTER NOW",
+    "cta_training": "Register Training →",
+    "cta_explore": "Explore Courses",
+    "stat1_label": "Leaders & Enterprise Staff",
+    "stat2_label": "Hands-on Practice",
+    "stat3_label": "Practical Satisfaction"
+  },
+  "upcoming_courses": {
+    "title": "Practical AI Training Schedule",
+    "subtitle": "Reserve your seat to work directly with AIZEN team, mastering tools and automating enterprise workflows.",
+    "starts_in_label": "Starts in",
+    "days_count": "{{count}} Days",
+    "register_cta": "Register now",
+    "empty_state": "No upcoming courses available. Please check back later for updates!"
+  },
+  "completed_courses": {
+    "title": "Completed Training Courses",
+    "subtitle": "Review curriculum, access learning resources, and view course summaries.",
+    "view_past": "View past courses →",
+    "status_badge": "Completed",
+    "summary_label": "Content summary",
+    "view_summary": "View summary →",
+    "empty_state": "No completed courses available."
+  },
+  "instructors": {
+    "hero_badge": "Expert Team",
+    "hero_title": "Learn From Practical Experts",
+    "hero_subtitle": "All AIZEN instructors are active industry experts directly applying & researching enterprise AI.",
+    "grid_badge": "Expert Team",
+    "grid_title": "AIZEN Instructors",
+    "reviews_tag": "Testimonials",
+    "reviews_title": "What students say about AIZEN?",
+    "reviews_view_more": "View more reviews",
+    "demo_reviews": {
+      "review1": {
+        "role": "Product Manager at Vingroup",
+        "content": "This course completely changed how I work. Within 2 weeks, I automated 60% of my daily tasks using AI."
+      },
+      "review2": {
+        "role": "Marketing Director",
+        "content": "The instructors are very hands-on, not just theory. Every session includes real exercises you can apply to your work right away."
+      },
+      "review3": {
+        "role": "CEO Startup EdTech",
+        "content": "Best investment I made this year. The ROI from applying AI to operations recovered the tuition cost 10 times over."
+      }
+    },
+    "tools_tag": "Tools",
+    "tools_title": "AI Mastery Toolkit",
+    "tools_description": "Master leading AI tools like Claude, Gemini, NotebookLM, Dreamina and Hailuo to supercharge your productivity.",
+    "tools_items": {
+      "claude": {
+        "description": "Superior support for writing, data analysis, summarization, and coding.",
+        "badge": "Multi-purpose Assistant"
+      },
+      "gemini": {
+        "description": "Next-generation multimodal AI model with outstanding performance from Google.",
+        "badge": "Google AI"
+      },
+      "notebooklm": {
+        "description": "Powerful assistant for summarizing, learning, and researching documents.",
+        "badge": "Document Research"
+      },
+      "dreamina": {
+        "description": "High-end artistic image and video creation tool from TikTok.",
+        "badge": "Image & Video Gen"
+      },
+      "hailuo": {
+        "description": "Create smooth and incredibly realistic motion video clips.",
+        "badge": "AI Video Gen"
+      }
+    }
+  },
+  "registration": {
+    "title": "Course Registration",
+    "subtitle": "Select your plan & claim tuition discounts",
+    "form_individual": "Individual",
+    "form_group": "Group Plan",
+    "fullname": "Full Name",
+    "fullname_placeholder": "Enter full name...",
+    "phone": "Phone Number",
+    "phone_placeholder": "Enter phone number...",
+    "email": "Email Address",
+    "email_placeholder": "example@gmail.com",
+    "company": "Company / Organization",
+    "company_placeholder": "Enter company name...",
+    "role": "Job Position / Role",
+    "role_placeholder": "Select your role...",
+    "referral": "How did you hear about us?",
+    "referral_placeholder": "Select channel...",
+    "voucher_code": "Voucher / Promo Code",
+    "voucher_placeholder": "Enter promo code...",
+    "apply": "Apply",
+    "submit": "CONFIRM REGISTRATION",
+    "submitting": "Processing..."
+  },
+  "resources": {
+    "title": "AI Resources & Materials Hub",
+    "subtitle": "Exclusive document library, lecture slides & automation workflows from AIZEN",
+    "search_placeholder": "Search documents, slides, automation workflows...",
+    "request_btn": "Get via Gmail",
+    "popular_badge": "🔥 MOST POPULAR",
+    "flow_badge": "⚡ AUTOMATION FLOW",
+    "course_badge": "🎓 COURSE MATERIAL",
+    "categories": {
+      "all": "All",
+      "claude_1_2": "Master Claude AI (Batches 1 & 2)",
+      "ai_sale_marketing": "AI Sale & Marketing Fullstack",
+      "slide_ebook": "Slides & Ebooks",
+      "template_cheat_sheet": "Templates & Cheat Sheets"
+    },
+    "hero": {
+      "badge": "❤️ GIVING REAL VALUE — ACCOMPANYING THE COMMUNITY",
+      "title": "Practical AI Resource Hub ",
+      "title_highlight": "Give To Grow Together",
+      "desc_p1": "AIZEN believes knowledge is truly valuable when shared. All lecture slides, Ebooks, Prompt Libraries & Operational Templates from",
+      "desc_claude": " Master Claude AI (Batches 1 & 2) ",
+      "desc_and": "and",
+      "desc_sale_marketing": " AI Sale & Marketing ",
+      "desc_p2": "are 100% publicly available for free — No secrets kept!",
+      "stat1_value": "100% Free",
+      "stat1_label": "Google Drive",
+      "stat2_value": "150+ Alumni",
+      "stat2_label": "Graduated",
+      "stat3_value": "Practical",
+      "stat3_label": "Apply Immediately"
+    },
+    "get_document_now": "Get Material Now",
+    "hot_resource_badge": "★ HOT RESOURCE",
+    "empty_search": "No materials found matching \"{{query}}\"",
+    "reset_filter": "Reset filters",
+    "sidebar": {
+      "badge": "🔥 PRACTICAL TRAINING",
+      "title": "Upcoming Courses",
+      "subtitle": "Reserve your seat for the latest AI training cohorts by AIZEN",
+      "card1": {
+        "badge": "🚀 NEXT COHORT (AUG 22-23)",
+        "title": "AI Sale & Marketing Fullstack",
+        "start_date": "📅 Opening: Aug 22-23, 2026 (2 Offline Days)",
+        "highlight": "⚡ Automate enterprise marketing & sales funnels",
+        "cta": "Register Aug 22-23 Cohort →"
+      },
+      "card2": {
+        "badge": "🔥 COHORT 3 OPEN (SEP 5)",
+        "title": "Master Claude AI (Batch 3)",
+        "start_date": "📅 Opening: Sep 5, 2026 (Offline & Online)",
+        "highlight": "⚡ Only 15 Early Bird slots left",
+        "cta": "Register Batch 3 Now →"
+      },
+      "advisory_question": "Need advice on the right learning path?",
+      "advisory_btn": "🎓 View all AIZEN courses"
+    },
+    "modal": {
+      "title": "Get Course Material",
+      "success_header": "Request Submitted Successfully!",
+      "success_message": "AIZEN administration has received your permission request for Gmail {{email}}. Admin will review and grant access to your email on Google Drive shortly.",
+      "close": "Close",
+      "instruction": "Please enter the Email address you used to register for AIZEN courses:",
+      "email_label": "Gmail Address (*):",
+      "email_placeholder": "e.g. support@aizen.edu.vn",
+      "err_empty_email": "Please enter your email to access materials.",
+      "err_invalid_email": "Please enter a valid email address (e.g. name@gmail.com).",
+      "err_submit_fallback": "An error occurred while submitting the request.",
+      "cancel": "Cancel",
+      "submitting": "⏳ Submitting request...",
+      "submit": "🚀 Submit Permission Request ↗"
+    }
+  },
+  "registration_form": {
+    "header_tag": "REGISTRATION",
+    "header_title": "Choose Plan & Options",
+    "limited_qty": "LIMITED SLOTS",
+    "hot": "MOST POPULAR",
+    "best_savings": "BEST VALUE",
+    "early_bird": "Early Bird",
+    "individual": "Individual",
+    "group_2": "Group of 2",
+    "group_4": "Group of 4",
+    "person_info": "Participant info",
+    "fullname": "Full Name",
+    "fullname_placeholder": "John Doe",
+    "phone": "Phone Number",
+    "phone_placeholder": "+84 90 xxx xxx",
+    "email": "Email Address",
+    "email_placeholder": "email@example.com",
+    "company": "Company Name",
+    "company_placeholder": "Your company...",
+    "position": "Job Title",
+    "position_placeholder": "Select position...",
+    "referral_question": "How did you hear about this program?",
+    "referral_placeholder": "Select channel...",
+    "promo_label": "Promo Code",
+    "promo_optional": "(optional)",
+    "promo_placeholder": "Enter code e.g. AIZEN50",
+    "promo_apply": "Apply",
+    "promo_error_check": "Unable to verify promo code, please try again.",
+    "discount": "Discount",
+    "original_price": "Original Price",
+    "total_payment": "Total Payment",
+    "savings": "You save",
+    "next": "Next Step",
+    "submit": "Submit Registration",
+    "submitting": "Processing...",
+    "back_to": "Back to participant",
+    "terms_agree": "By registering you agree to our",
+    "terms_link": "Terms of Service",
+    "success_title": "Registration Successful!",
+    "register_more": "Register another participant",
+    "err_fullname": "Please enter full name",
+    "err_phone": "Please enter phone number",
+    "err_email": "Please enter email",
+    "err_email_invalid": "Invalid email address",
+    "err_referral": "Please select referral source",
+    "err_submit_fallback": "Registration failed, please try again later.",
+    "discount_percent": "{{value}}% off (-{{amount}})",
+    "discount_fixed": "Fixed discount -{{amount}}",
+    "clear_code_aria": "Clear code",
+    "referral_sources": {
+      "ai_community": "AI Sale & Marketing Community",
+      "aizen_customer": "AIZEN Customer",
+      "acquaintance": "Referred by friend",
+      "social": "Facebook / Instagram",
+      "other": "Other"
+    }
+  },
+  "course_plan": {
+    "section_tag": "REGISTER NOW",
+    "section_title_prefix": "Choose your ",
+    "section_title_highlight": "registration plan",
+    "course_completed": "This course has been completed. Registration is currently closed!",
+    "register_now": "Register now",
+    "register_group": "Register group",
+    "expired_reason": "Expired",
+    "completed_reason": "Course completed · Registration closed",
+    "modal_tag": "COURSE REGISTRATION",
+    "fill_info_prefix": "Fill info for",
+    "fill_info_suffix": "participants",
+    "qr_success_title": "Registration Successful!",
+    "qr_instruction": "Please scan the QR code below to complete tuition payment:",
+    "qr_no_img": "No QR payment image set up. Support team will contact you within 24h.",
+    "qr_contact_notice": "We will confirm registration and contact you via phone/email within 24h.",
+    "confirm_close": "Confirm & Close",
+    "promo_has_code": "🎟️ Have a promo code?",
+    "promo_optional": "(Optional)",
+    "promo_applied": "Applied discount of",
+    "total_group": "Group total:",
+    "until": "Until",
+    "default_placeholder": "Select...",
+    "qr_alt": "Payment QR Code",
+    "referral_channels": {
+      "ai_community": "AI Sale & Marketing Community",
+      "aizen_customer": "AIZEN Customer",
+      "acquaintance": "Referred by friend",
+      "social": "Facebook / Instagram",
+      "other": "Other"
+    },
+    "roles": {
+      "ceo": "Business Owner / CEO",
+      "c_level": "Director / C-level",
+      "manager": "Department Head / Manager",
+      "team_lead": "Team Lead",
+      "staff": "Specialist / Employee",
+      "freelancer": "Freelancer / Self-employed",
+      "student": "Student",
+      "other": "Other"
+    }
+  },
+  "course_detail": {
+    "program_content": "PROGRAM CURRICULUM",
+    "skills_tag": "SKILLS YOU WILL MASTER",
+    "skills_headline": "Upon course completion, you will master",
+    "speaker_tag": "KEYNOTE SPEAKER",
+    "share": "Share",
+    "email": "Email",
+    "co_organizer_desc": "Training program co-organized by Aizen & Posts and Telecommunications Training Center (PTTC), under Posts and Telecommunications Institute of Technology (PTIT).",
+    "default_highlight1_val": "01 Day",
+    "default_highlight1_lbl": "Offline Hands-on",
+    "default_highlight2_val": "03 Days",
+    "default_highlight2_lbl": "Online Support",
+    "default_highlight3_val": "Lifetime",
+    "default_highlight3_lbl": "Free Retake"
+  },
+  "course_skills": {
+    "special_badge": "SPECIAL",
+    "items": {
+      "cowork": {
+        "description": "Cowork is an entire AI department in your palm – each agent takes on a role, operates autonomously, collaborates with each other, and delivers final results like a real team."
+      },
+      "skills": {
+        "description": "Turn every employee or company process into a fixed Skill – call multiple Skills at once, Claude multi-tasks without re-prompting."
+      },
+      "projects": {
+        "description": "Delegate to the right role, helping you create \"virtual experts\" for each domain, always understanding context and working to your standards."
+      },
+      "connectors": {
+        "description": "The key for Claude to connect with work systems like Gmail, Google Drive, Calendar... to build automated assistants."
+      },
+      "artifacts": {
+        "description": "Build an app, website, landing page, or interactive tool right inside the chat window, no coding required."
+      }
+    }
+  },
+  "home_client": {
+    "other": "Other",
+    "enter_info_placeholder": "Please enter your info",
+    "voucher_required": "Please enter a discount code.",
+    "voucher_applied": "Discount code applied!",
+    "registration_success": "Registration successful!",
+    "error_occurred": "An error occurred.",
+    "slots_remaining": "Only",
+    "slots_unit": "slots left",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Mins",
+    "seconds": "Secs",
+    "confirm_payment": "Confirm & Pay",
+    "transfer_note": "Transfer note"
+  },
+  "blog": {
+    "categories_title": "Article Categories",
+    "connect_title": "Connect with AIZEN",
+    "search_placeholder": "Search articles...",
+    "read_more": "Read more",
+    "related_posts": "Related Articles",
+    "author": "Author",
+    "published_at": "Published on",
+    "by": "by",
+    "all": "All",
+    "news": "News",
+    "prev_post": "Previous post",
+    "next_post": "Next post",
+    "hero_badge": "Explore the World of AI",
+    "hero_description": "Stay updated with the latest AI knowledge, tech trends, and news — curated by the AIZEN team.",
+    "page_title": "Blog & News",
+    "total_posts": "{{count}} latest articles",
+    "empty_state": "No articles available yet.",
+    "meta_title": "AI Blog & News",
+    "meta_description": "Stay updated with the latest AI knowledge, trends, and news from AIZEN.",
+    "meta_not_found": "Article not found",
+    "breadcrumb_home": "Home",
+    "breadcrumb_blog": "Blog",
+    "author_prefix": "Author: {{author}}",
+    "source_label": "Article source:",
+    "toc_title": "Table of Contents",
+    "toc_hide": "Hide",
+    "toc_show": "Show"
+  },
+  "courses": {
+    "title": "Course Library",
+    "available_count": "courses available",
+    "search_placeholder": "Search courses...",
+    "category_prefix": "Category:",
+    "year_prefix": "Year:",
+    "all_categories": "All",
+    "all_years": "All",
+    "empty_title": "No matching courses found.",
+    "upcoming_title": "Upcoming Courses",
+    "past_title": "Past Courses",
+    "courses_count": "courses",
+    "starts_in_days": "• STARTS IN {days} DAYS",
+    "upcoming_badge": "UPCOMING",
+    "past_badge": "PAST",
+    "starts_in": "⏱ Starts in {days} days",
+    "register_now": "Register Now",
+    "view_summary": "View Summary",
+    "case_study": "Case Study",
+    "default_category": "AI PROGRAM"
+  },
+  "learning_path": {
+    "tag": "Career Roadmap",
+    "title_prefix": "Learning path for ",
+    "title_highlight": "AI Experts",
+    "description": "Discover the path from beginner to AI expert, tailored for the digital economy era.",
+    "cta_title": "Ready to start your journey?",
+    "cta_desc": "Register today to receive a personalized roadmap and free lessons from leading experts.",
+    "start_free": "Start for Free",
+    "view_courses": "View All Courses",
+    "steps": {
+      "foundation": {
+        "sublabel": "FOUNDATION",
+        "description": "Build an AI mindset and foundational understanding of how to interact with computers through natural language.",
+        "bullet1": "AI Mindset",
+        "bullet2": "Basic Prompt Engineering",
+        "bullet3": "Generative AI Tools"
+      },
+      "professional": {
+        "sublabel": "PROFESSIONAL",
+        "description": "Become a proficient user of the most powerful AI models to solve complex problems.",
+        "bullet1": "Master Claude & GPT-4",
+        "bullet2": "Midjourney Visuals",
+        "bullet3": "Advanced Prompting Techniques"
+      },
+      "advanced": {
+        "sublabel": "ADVANCED",
+        "description": "Integrate AI into business workflows and automate repetitive tasks.",
+        "bullet1": "AI for Business Strategy",
+        "bullet2": "Automation Workflows",
+        "bullet3": "Zapier & Make Integration"
+      },
+      "mastery": {
+        "sublabel": "MASTERY",
+        "description": "Build custom, proprietary AI solutions and lead technological change in the enterprise.",
+        "bullet1": "Custom AI Systems",
+        "bullet2": "Enterprise Deployment",
+        "bullet3": "AI Leadership"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Welcome back!",
+      "email_label": "Email Address",
+      "email_placeholder": "email@company.com",
+      "password_label": "Password",
+      "password_placeholder": "••••••••",
+      "error_required": "Please fill in all required fields.",
+      "error_failed": "Login failed.",
+      "submit_btn": "Sign In",
+      "no_account": "Don't have an account?",
+      "register_now": "Register now"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Start your AI journey",
+      "fullname_label": "Full Name",
+      "fullname_placeholder": "John Doe",
+      "email_label": "Email",
+      "email_placeholder": "email@company.com",
+      "phone_label": "Phone Number",
+      "phone_placeholder": "0901234567 (optional)",
+      "password_label": "Password",
+      "password_placeholder": "Min. 8 characters, letters & numbers",
+      "err_fullname_required": "Please enter your full name",
+      "err_email_required": "Please enter your email",
+      "err_email_invalid": "Invalid email address",
+      "err_password_format": "Password must be at least 8 characters with letters and numbers",
+      "err_api_failed": "Registration failed, please try again later.",
+      "submit_btn": "Register",
+      "has_account": "Already have an account?",
+      "login_link": "Sign In"
+    }
+  },
+  "my_courses": {
+    "title": "My Courses",
+    "subtitle": "Manage and track your learning progress.",
+    "upcoming_section": "Upcoming Courses",
+    "completed_section": "Completed Courses",
+    "no_upcoming": "You have not registered for any upcoming courses.",
+    "no_completed": "You have not completed any courses yet.",
+    "upcoming_badge": "Upcoming",
+    "starts_in_days": "⏱ Starts in {{days}} days",
+    "enter_now": "Enter course now",
+    "opens_in_days": "Opens in {{days}} days",
+    "completed_badge": "Completed",
+    "completed_on": "✅ Completed on: {{date}}",
+    "view_content_btn": "Review Content",
+    "download_cert_btn": "⬇ Download Certificate"
+  },
+  "course_hero": {
+    "weekday_0": "Sunday",
+    "weekday_1": "Monday",
+    "weekday_2": "Tuesday",
+    "weekday_3": "Wednesday",
+    "weekday_4": "Thursday",
+    "weekday_5": "Friday",
+    "weekday_6": "Saturday",
+    "map_link_title": "Open location on Google Maps"
+  },
+  "course_curriculum": {
+    "default_headline": "1 Day – {{count}} Practical Modules",
+    "duration_minutes": "{{count}} mins",
+    "duration_hours_minutes": "{{h}}h {{m}}m",
+    "duration_hours": "{{count}} hours"
+  },
+  "promo_popup": {
+    "default_title": "SPECIAL COURSE OFFER",
+    "default_desc": "Register today to claim a 20% tuition discount voucher!",
+    "default_cta": "REGISTER NOW",
+    "badge": "SPECIAL PROGRAM",
+    "upcoming_notice": "Special offer coming soon! Register now so you don't miss out.",
+    "countdown_label": "Time remaining for special offer",
+    "unit_days": "Days",
+    "unit_hours": "Hours",
+    "unit_minutes": "Mins",
+    "unit_seconds": "Secs",
+    "dismiss_btn": "Maybe later",
+    "close_aria": "Close popup"
+  },
+  "vertical_modal": {
+    "title": "Training Schedule & Offers",
+    "card1_title": "AI SALE & MARKETING FULLSTACK",
+    "card2_title": "MASTER CLAUDE AI (BATCH 3)",
+    "register_now": "Register now",
+    "early_bird_badge": "🔥 EARLY BIRD OFFER",
+    "days_left": "⏳ ONLY {{days}} DAYS LEFT",
+    "unit_days": "Days",
+    "unit_hours": "Hours",
+    "unit_minutes": "Mins",
+    "unit_seconds": "Secs",
+    "close_aria": "Close popup"
+  },
+  "footer": {
+    "brand_desc": "Empowering enterprises in the AI era. Optimal solutions, breakthrough productivity, and practical execution.",
+    "contact_title": "Contact Information",
+    "address": "112 Ly Phuc Man, Tan Thuan Ward, Ho Chi Minh City",
+    "policy_title": "Policies & Links",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact Us",
+    "about": "About AIZEN",
+    "support": "Help Center",
+    "careers": "Careers",
+    "copyright": "AIZEN Academy. Honoring Professional Excellence.",
+    "zalo_support": "Zalo Support",
+    "rights": "All rights reserved by AIZEN."
+  },
+  "navbar": {
+    "toggle_menu_aria": "Toggle menu",
+    "menu_category_label": "Menu Categories",
+    "close_menu_aria": "Close menu"
+  },
+  "common": {
+    "processing": "Processing...",
+    "pagination_aria": "Pagination",
+    "prev_page_aria": "Previous page",
+    "prev_page_btn": "\u2190 Prev",
+    "next_page_aria": "Next page",
+    "next_page_btn": "Next \u2192"
+  }
+}

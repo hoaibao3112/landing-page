@@ -1,12 +1,7 @@
-import Link from 'next/link';
+'use client';
 
-const CATEGORY_LINKS = [
-  { href: '/', label: 'Trang chủ' },
-  { href: '/portal/courses', label: 'Khóa học' },
-  { href: '/portal/instructors', label: 'Giảng viên' },
-  { href: '/portal/resources', label: 'Tài liệu' },
-  { href: '/portal/blogs', label: 'Blogs' },
-];
+import Link from 'next/link';
+import { useLanguage } from '@/context/LanguageContext';
 
 const SOCIAL_LINKS = [
   {
@@ -33,15 +28,25 @@ const SOCIAL_LINKS = [
 ];
 
 export function BlogSidebar() {
+  const { t } = useLanguage();
+
+  const categoryLinks = [
+    { href: '/', label: t('nav.home') },
+    { href: '/portal/courses', label: t('nav.courses') },
+    { href: '/portal/instructors', label: t('nav.instructors') },
+    { href: '/portal/resources', label: t('nav.resources') },
+    { href: '/portal/blogs', label: t('nav.blog') },
+  ];
+
   return (
     <aside className="space-y-6">
       <div className="bg-slate-900/60 border border-slate-700/60 rounded-3xl p-5 backdrop-blur-xl shadow-xl shadow-sky-950/20">
         <h3 className="text-sm font-extrabold text-white uppercase tracking-wider mb-4 border-b border-slate-800 pb-2 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-sky-400"></span>
-          Danh mục bài viết
+          {t('blog.categories_title')}
         </h3>
         <ul className="space-y-1.5">
-          {CATEGORY_LINKS.map((link) => (
+          {categoryLinks.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
@@ -58,7 +63,7 @@ export function BlogSidebar() {
       <div className="rounded-3xl bg-slate-900/60 border border-slate-700/60 backdrop-blur-xl p-5 shadow-xl shadow-sky-950/20">
         <h3 className="text-sm font-extrabold text-white uppercase tracking-wider mb-4 border-b border-slate-800 pb-2 flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-          Kết nối với AIZEN
+          {t('blog.connect_title')}
         </h3>
         <div className="flex items-center gap-3">
           {SOCIAL_LINKS.map((social) => (

@@ -1,25 +1,41 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/portal/ui/Button';
 import { FadeIn, StaggerChildren } from '@/components/portal/ui/AnimationWrapper';
 import { getDaysUntil, formatDateRange } from '@/lib/portal/utils/format';
 import type { Course } from '@aizen/types';
+import { useLanguage } from '@/context/LanguageContext';
+
+const COURSE_EN_MAP: Record<string, { title: string; description: string }> = {
+  'lam-chu-claude-ai': {
+    title: 'Master Claude AI - Automated Department Assistants',
+    description: 'Practical AI training designed for leaders & managers to automate enterprise operations and boost productivity.',
+  },
+  'aisalemarkertingfullstack': {
+    title: 'AI Sale & Marketing Fullstack',
+    description: 'Comprehensive AI toolkit for building automated consultation funnels and sales scripts.',
+  },
+};
 
 interface UpcomingCoursesSectionProps {
   courses: Course[];
 }
 
 export function UpcomingCoursesSection({ courses }: UpcomingCoursesSectionProps) {
+  const { language, t } = useLanguage();
+
   return (
     <section className="pt-4 md:pt-6 pb-14 md:pb-20 bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <FadeIn direction="up" className="mb-10">
           <h2 className="text-2xl md:text-3xl font-black text-white mb-2 drop-shadow-md">
-            Lịch Đào Tạo AI Thực Chiến
+            {t('upcoming_courses.title')}
           </h2>
           <p className="text-slate-100 text-sm leading-relaxed max-w-xl font-medium">
-            Giữ chỗ ngay để trực tiếp cùng đội ngũ AIZEN chuẩn hóa tư duy, làm chủ công cụ và ứng dụng AI vào giải quyết bài toán vận hành thực tế tại doanh nghiệp của bạn.
+            {t('upcoming_courses.subtitle')}
           </p>
         </FadeIn>
 
@@ -29,6 +45,9 @@ export function UpcomingCoursesSection({ courses }: UpcomingCoursesSectionProps)
             {courses.map((course) => {
               const daysUntil = course.start_date ? getDaysUntil(course.start_date) : 0;
               const dateText = formatDateRange(course.start_date, course.end_date);
+              const enData = COURSE_EN_MAP[course.slug] || COURSE_EN_MAP[course.id];
+              const displayTitle = (language === 'en' && (course as any).title_en) || (language === 'en' && enData?.title) || course.title;
+              const displayDesc = (language === 'en' && (course as any).description_en) || (language === 'en' && enData?.description) || course.description;
 
               return (
                 <div
@@ -40,7 +59,7 @@ export function UpcomingCoursesSection({ courses }: UpcomingCoursesSectionProps)
                     {course.thumbnail_url ? (
                       <Image
                         src={course.thumbnail_url}
-                        alt={course.title}
+                        alt={displayTitle}
                         fill
                         className="object-contain group-hover:scale-105 transition-transform duration-500"
                         sizes="(max-width: 768px) 100vw, 33vw"
@@ -57,7 +76,7 @@ export function UpcomingCoursesSection({ courses }: UpcomingCoursesSectionProps)
                     <div>
                       <h3 className="text-lg font-black text-white leading-snug mb-2 group-hover:text-amber-300 transition-colors duration-300">
                         <Link href={`/courses/${course.slug}`}>
-                          {course.title}
+                          {displayTitle}
                         </Link>
                       </h3>
                       {dateText && (
@@ -69,7 +88,7 @@ export function UpcomingCoursesSection({ courses }: UpcomingCoursesSectionProps)
                         </div>
                       )}
                       <p className="text-slate-300 text-xs leading-relaxed line-clamp-3 font-medium">
-                        {course.description}
+                        {displayDesc}
                       </p>
                     </div>
 
@@ -77,12 +96,12 @@ export function UpcomingCoursesSection({ courses }: UpcomingCoursesSectionProps)
                       {/* Bottom Row */}
                       <div className="flex justify-between items-center">
                         <div>
-                          <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Bắt đầu sau</p>
-                          <p className="text-amber-400 font-black text-lg leading-tight">{daysUntil} Ngày</p>
+                          <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">{t('upcoming_courses.starts_in_label')}</p>
+                          <p className="text-amber-400 font-black text-lg leading-tight">{t('upcoming_courses.days_count', { count: daysUntil })}</p>
                         </div>
                         <Link href={`/courses/${course.slug}`}>
                           <Button size="sm" className="px-5 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 font-extrabold text-xs text-white border-0 rounded-xl hover:scale-105 transition-transform shadow-md cursor-pointer">
-                            Đăng ký ngay
+                            {t('upcoming_courses.register_cta')}
                           </Button>
                         </Link>
                       </div>
@@ -96,7 +115,7 @@ export function UpcomingCoursesSection({ courses }: UpcomingCoursesSectionProps)
           <FadeIn>
             <div className="text-center py-16 bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-700/60">
               <p className="text-4xl mb-4 animate-float inline-block">📅</p>
-              <p className="text-slate-300 font-medium">Chưa có khóa học sắp khai giảng. Hãy theo dõi để cập nhật sớm nhất!</p>
+              <p className="text-slate-300 font-medium">{t('upcoming_courses.empty_state')}</p>
             </div>
           </FadeIn>
         )}

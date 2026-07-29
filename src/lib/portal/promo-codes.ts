@@ -93,13 +93,19 @@ export async function applyCode(
       p_plan: plan,
     });
 
+    if (!error && data) {
+      return data as PromoValidationResult;
+    }
+
     if (error) {
-      console.error(`DB error khi apply_promo_code "${upperCode}"`, error);
-      // KNOWN LIMITATION (non-atomic fallback):
-      // RPC `apply_promo_code` chưa được tạo trong DB → fallback về lookupCode + increment riêng lẻ.
-      // Nếu lookupCode thành công nhưng increment_promo_used_count fail, mã được dùng nhưng used_count
-      // không tăng → overselling tiềm ẩn.
-      // TODO: Khi DB đã có RPC `apply_promo_code`, bỏ toàn bộ fallback block này.
+      // Log full RPC error detail for debugging
+      console.warn(`RPC apply_promo_code error for "${upperCode}":`, {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+      });
+
+      // Fallback for environments where RPC migration script has not been executed yet
       const fallbackResult = await lookupCode(code, courseId, plan);
       if (!fallbackResult.valid || !fallbackResult.promo_code_id) return fallbackResult;
 
@@ -108,17 +114,16 @@ export async function applyCode(
       });
 
       if (incError) {
-        console.warn(`Fallback increment_promo_used_count failed: ${JSON.stringify(incError)}`);
+        console.warn(`Fallback increment_promo_used_count error:`, {
+          code: incError.code,
+          message: incError.message,
+        });
       }
 
       return fallbackResult;
     }
 
-    if (!data) {
-      return { valid: false, message: 'Không thể xác thực mã khuyến mãi' };
-    }
-
-    return data as PromoValidationResult;
+    return { valid: false, message: 'Không thể xác thực mã khuyến mãi' };
   } catch (err) {
     console.error('applyCode error:', err);
     return { valid: false, message: 'Lỗi máy chủ khi áp dụng mã' };
