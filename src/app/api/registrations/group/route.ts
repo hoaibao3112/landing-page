@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { supabaseAdmin, successResponse, errorResponse } from '@/lib/portal/supabase-server';
 import { applyCode } from '@/lib/portal/promo-codes';
 import { checkRateLimit, getClientIp } from '@/lib/portal/rate-limit';
+import { getLarkWebhookUrl } from '@/lib/portal/lark-settings';
 import { randomUUID } from 'crypto';
 import db from '@/lib/db';
 
@@ -21,7 +22,7 @@ async function verifyCourse(courseIdOrSlug: string) {
 }
 
 async function postLark(bodyText: string) {
-  const webhookUrl = process.env.LARK_WEBHOOK_URL;
+  const webhookUrl = await getLarkWebhookUrl();
   if (!webhookUrl) {
     console.warn('LARK_WEBHOOK_URL chưa được cấu hình');
     return;

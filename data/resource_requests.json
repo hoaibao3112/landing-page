@@ -1,5 +1,21 @@
 [
   {
+    "id": "req-1785294586733-n35s3",
+    "user_email": "baohoaitran3112hkfvfv@gmail.com",
+    "resource_id": "claude-khoa1-2-slide",
+    "resource_title": "Claude AI Lecture Slides & Curriculum (Batches 1 & 2)",
+    "status": "pending",
+    "created_at": "2026-07-29T03:09:46.733Z"
+  },
+  {
+    "id": "req-1785294366811-ey71o",
+    "user_email": "test.user.1785294366811@gmail.com",
+    "resource_id": "test-dup-doc-1",
+    "resource_title": "Tài Liệu Test Trùng Lặp",
+    "status": "pending",
+    "created_at": "2026-07-29T03:06:06.811Z"
+  },
+  {
     "id": "req-1785293099654-c8p9n",
     "user_email": "test.user.1785293099653@gmail.com",
     "resource_id": "test-dup-doc-1",

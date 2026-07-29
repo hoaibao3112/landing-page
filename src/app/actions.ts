@@ -8,6 +8,7 @@ import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { supabaseAdmin } from '@/lib/portal/supabase-server';
+import { getLarkWebhookUrl } from '@/lib/portal/lark-settings';
 import { z } from 'zod';
 
 // ─────────────────────────────────────────────
@@ -188,7 +189,7 @@ export async function submitRegistration(formData: FormData): Promise<
 
     // Gửi thông báo sang Lark webhook
     try {
-      const larkUrl = process.env.LARK_WEBHOOK_URL;
+      const larkUrl = await getLarkWebhookUrl();
       if (larkUrl) {
         const voucherLarkMsg = voucherCode ? `\nMã giảm giá: ${voucherCode} (Giảm ${discountPercent}%)` : '';
         const messageText = `🆕 Đăng ký mới!${voucherLarkMsg}\nHọ tên: ${fullname}\nĐiện thoại: ${phone}\nEmail: ${email}\nNguồn: ${referral}\nVai trò: ${role}\nCông ty: ${company}\nGói: ${packageType} (${members} người)\nSố tiền: ${amount.toLocaleString('vi-VN')}đ\nMã CK: ${paymentContent}\nThời gian: ${vietnamTime}`;
@@ -403,7 +404,7 @@ export async function submitGroupRegistration(formData: FormData): Promise<
         const refLine = ref ? `\n   Nguồn: ${ref}` : '';
         return `👤 Người ${idx}: ${fn}\n   Điện thoại: ${ph}\n   Email: ${em}${compLine}${roleLine}${refLine}`;
       }).join('\n');
-      const larkUrl = process.env.LARK_WEBHOOK_URL;
+      const larkUrl = await getLarkWebhookUrl();
       if (larkUrl) {
         const voucherLarkMsg = voucherCode ? `\nMã giảm giá: ${voucherCode} (Giảm ${discountPercent}%)` : '';
         const messageText = `🆕 Đăng ký nhóm mới!${voucherLarkMsg}\nGói: ${packageType} (${memberCount} người)\nSố tiền: ${(amountPerPerson * memberCount).toLocaleString('vi-VN')}đ\nMã CK: ${paymentContent}\nThời gian: ${vietnamTime}\n\n${memberDetails}`;
@@ -1507,7 +1508,7 @@ export async function submitResourceAccessRequestAction(
 }
 
 async function sendLarkResourceNotification(userEmail: string, resourceTitle: string) {
-  const webhookUrl = process.env.LARK_WEBHOOK_URL;
+  const webhookUrl = await getLarkWebhookUrl();
   if (!webhookUrl) return;
 
   const vnTime = new Date(new Date().getTime() + 7 * 60 * 60 * 1000)

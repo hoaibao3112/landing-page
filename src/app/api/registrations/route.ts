@@ -3,6 +3,7 @@ import { supabaseAdmin, verifyAdmin, successResponse, errorResponse, sanitizePos
 import { applyCode } from '@/lib/portal/promo-codes';
 import { checkRateLimit, getClientIp } from '@/lib/portal/rate-limit';
 import { createRegistrationSchema } from '@/schemas/registration.schema';
+import { getLarkWebhookUrl } from '@/lib/portal/lark-settings';
 import db from '@/lib/db';
 import crypto from 'crypto';
 
@@ -22,7 +23,7 @@ async function verifyCourse(courseIdOrSlug: string) {
 }
 
 async function postLark(bodyText: string) {
-  const webhookUrl = process.env.LARK_WEBHOOK_URL;
+  const webhookUrl = await getLarkWebhookUrl();
   if (!webhookUrl) {
     console.warn('LARK_WEBHOOK_URL chưa được cấu hình');
     return;

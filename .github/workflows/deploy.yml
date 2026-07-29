@@ -117,6 +117,9 @@ jobs:
             }
 
             update_env "LARK_WEBHOOK_URL" "${{ secrets.LARK_WEBHOOK_URL }}"
+            update_env "NEXT_PUBLIC_SUPABASE_URL" "${{ secrets.SUPABASE_URL }}"
+            update_env "NEXT_PUBLIC_SUPABASE_ANON_KEY" "${{ secrets.SUPABASE_ANON_KEY }}"
+            update_env "SUPABASE_SERVICE_ROLE_KEY" "${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
 
             # ── BƯỚC 3: Khôi phục database từ backup ────────────────────────────
             echo "==> Đang khôi phục database..."
